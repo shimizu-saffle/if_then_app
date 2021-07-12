@@ -1,56 +1,159 @@
+/// Flutter code sample for BottomAppBar
+
+// This example shows the [BottomAppBar], which can be configured to have a notch using the
+// [BottomAppBar.shape] property. This also includes an optional [FloatingActionButton], which illustrates
+// the [FloatingActionButtonLocation]s in relation to the [BottomAppBar].
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const BottomAppBarDemo());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class BottomAppBarDemo extends StatefulWidget {
+  const BottomAppBarDemo({Key? key}) : super(key: key);
+
+  @override
+  State createState() => _BottomAppBarDemoState();
+}
+
+class _BottomAppBarDemoState extends State<BottomAppBarDemo> {
+  bool _showFab = true;
+  bool _showNotch = true;
+  FloatingActionButtonLocation _fabLocation =
+      FloatingActionButtonLocation.endDocked;
+
+  void _onShowNotchChanged(bool value) {
+    setState(() {
+      _showNotch = value;
+    });
+  }
+
+  void _onShowFabChanged(bool value) {
+    setState(() {
+      _showFab = value;
+    });
+  }
+
+  void _onFabLocationChanged(FloatingActionButtonLocation? value) {
+    setState(() {
+      _fabLocation = value ?? FloatingActionButtonLocation.endDocked;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'If-Then plans',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      home: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Text('Bottom App Bar Demo'),
+        ),
+        body: ListView(
+          padding: const EdgeInsets.only(bottom: 88),
+          children: <Widget>[
+            SwitchListTile(
+              title: const Text(
+                'Floating Action Button',
+              ),
+              value: _showFab,
+              onChanged: _onShowFabChanged,
+            ),
+            SwitchListTile(
+              title: const Text('Notch'),
+              value: _showNotch,
+              onChanged: _onShowNotchChanged,
+            ),
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text('Floating action button position'),
+            ),
+            RadioListTile<FloatingActionButtonLocation>(
+              title: const Text('Docked - End'),
+              value: FloatingActionButtonLocation.endDocked,
+              groupValue: _fabLocation,
+              onChanged: _onFabLocationChanged,
+            ),
+            RadioListTile<FloatingActionButtonLocation>(
+              title: const Text('Docked - Center'),
+              value: FloatingActionButtonLocation.centerDocked,
+              groupValue: _fabLocation,
+              onChanged: _onFabLocationChanged,
+            ),
+            RadioListTile<FloatingActionButtonLocation>(
+              title: const Text('Floating - End'),
+              value: FloatingActionButtonLocation.endFloat,
+              groupValue: _fabLocation,
+              onChanged: _onFabLocationChanged,
+            ),
+            RadioListTile<FloatingActionButtonLocation>(
+              title: const Text('Floating - Center'),
+              value: FloatingActionButtonLocation.centerFloat,
+              groupValue: _fabLocation,
+              onChanged: _onFabLocationChanged,
+            ),
+          ],
+        ),
+        floatingActionButton: _showFab
+            ? FloatingActionButton(
+                onPressed: () {},
+                child: const Icon(Icons.add),
+                tooltip: 'Create',
+              )
+            : null,
+        floatingActionButtonLocation: _fabLocation,
+        bottomNavigationBar: _DemoBottomAppBar(
+          fabLocation: _fabLocation,
+          shape: _showNotch ? const CircularNotchedRectangle() : null,
+        ),
       ),
-      home: MyHomePage(title: 'If-Then plans'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class _DemoBottomAppBar extends StatelessWidget {
+  const _DemoBottomAppBar({
+    this.fabLocation = FloatingActionButtonLocation.endDocked,
+    this.shape = const CircularNotchedRectangle(),
+  });
 
-  final String title;
+  final FloatingActionButtonLocation fabLocation;
+  final NotchedShape? shape;
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+  static final List<FloatingActionButtonLocation> centerLocations =
+      <FloatingActionButtonLocation>[
+    FloatingActionButtonLocation.centerDocked,
+    FloatingActionButtonLocation.centerFloat,
+  ];
 
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+    return BottomAppBar(
+      shape: shape,
+      color: Colors.blue,
+      child: IconTheme(
+        data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
+        child: Row(
           children: <Widget>[
-            Text(
-              'If → Then',
+            IconButton(
+              tooltip: 'Open navigation menu',
+              icon: const Icon(Icons.menu),
+              onPressed: () {},
+            ),
+            if (centerLocations.contains(fabLocation)) const Spacer(),
+            IconButton(
+              tooltip: 'Search',
+              icon: const Icon(Icons.search),
+              onPressed: () {},
+            ),
+            IconButton(
+              tooltip: 'Favorite',
+              icon: const Icon(Icons.favorite),
+              onPressed: () {},
             ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(),
     );
   }
 }
-
-// items: [
-// BottomNavigationBarItem(icon: Icon(Icons.create)),
-// BottomNavigationBarItem(icon: Icon(Icons.create)),
-// BottomNavigationBarItem(icon: Icon(Icons.create)),
-// ],

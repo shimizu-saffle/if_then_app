@@ -1,99 +1,32 @@
-/// Flutter code sample for BottomAppBar
-
-// This example shows the [BottomAppBar], which can be configured to have a notch using the
-// [BottomAppBar.shape] property. This also includes an optional [FloatingActionButton], which illustrates
-// the [FloatingActionButtonLocation]s in relation to the [BottomAppBar].
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const BottomAppBarDemo());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
-class BottomAppBarDemo extends StatefulWidget {
-  const BottomAppBarDemo({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  State createState() => _BottomAppBarDemoState();
+  State createState() => _MyAppState();
 }
 
-class _BottomAppBarDemoState extends State<BottomAppBarDemo> {
+class _MyAppState extends State<MyApp> {
   bool _showFab = true;
   bool _showNotch = true;
   FloatingActionButtonLocation _fabLocation =
       FloatingActionButtonLocation.endDocked;
-
-  void _onShowNotchChanged(bool value) {
-    setState(() {
-      _showNotch = value;
-    });
-  }
-
-  void _onShowFabChanged(bool value) {
-    setState(() {
-      _showFab = value;
-    });
-  }
-
-  void _onFabLocationChanged(FloatingActionButtonLocation? value) {
-    setState(() {
-      _fabLocation = value ?? FloatingActionButtonLocation.endDocked;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text('Bottom App Bar Demo'),
+          toolbarHeight: 45,
+          title: const Text('If Then Plans'),
         ),
-        body: ListView(
-          padding: const EdgeInsets.only(bottom: 88),
-          children: <Widget>[
-            SwitchListTile(
-              title: const Text(
-                'Floating Action Button',
-              ),
-              value: _showFab,
-              onChanged: _onShowFabChanged,
-            ),
-            SwitchListTile(
-              title: const Text('Notch'),
-              value: _showNotch,
-              onChanged: _onShowNotchChanged,
-            ),
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text('Floating action button position'),
-            ),
-            RadioListTile<FloatingActionButtonLocation>(
-              title: const Text('Docked - End'),
-              value: FloatingActionButtonLocation.endDocked,
-              groupValue: _fabLocation,
-              onChanged: _onFabLocationChanged,
-            ),
-            RadioListTile<FloatingActionButtonLocation>(
-              title: const Text('Docked - Center'),
-              value: FloatingActionButtonLocation.centerDocked,
-              groupValue: _fabLocation,
-              onChanged: _onFabLocationChanged,
-            ),
-            RadioListTile<FloatingActionButtonLocation>(
-              title: const Text('Floating - End'),
-              value: FloatingActionButtonLocation.endFloat,
-              groupValue: _fabLocation,
-              onChanged: _onFabLocationChanged,
-            ),
-            RadioListTile<FloatingActionButtonLocation>(
-              title: const Text('Floating - Center'),
-              value: FloatingActionButtonLocation.centerFloat,
-              groupValue: _fabLocation,
-              onChanged: _onFabLocationChanged,
-            ),
-          ],
-        ),
+        body: ListView(),
         floatingActionButton: _showFab
             ? FloatingActionButton(
                 onPressed: () {},

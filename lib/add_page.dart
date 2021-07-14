@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 //↓アプリを開いた時に最初に読み込まれるメソッド
-// void main() {
-//   runApp(AddPage());
-// }
+void main() {
+  runApp(AddPage());
+}
 
 class AddPage extends StatelessWidget {
   @override
@@ -11,7 +11,7 @@ class AddPage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('YouTubeクローン'),
+          title: const Text('add page'),
         ),
         body: Container(),
       ),

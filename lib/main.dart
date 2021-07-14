@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:if_then_app/add_page.dart';
 
 void main() {
   runApp(ProviderScope(child: const MyApp()));
@@ -29,7 +30,15 @@ class _MyAppState extends State<MyApp> {
         body: ListView(),
         floatingActionButton: _showFab
             ? FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddPage(),
+                      fullscreenDialog: true,
+                    ),
+                  );
+                },
                 child: const Icon(Icons.add),
                 tooltip: 'Create',
               )

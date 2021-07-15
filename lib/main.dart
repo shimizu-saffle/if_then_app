@@ -1,23 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:if_then_app/add_page.dart';
 
 //↓アプリを開いた時に最初に読み込まれるメソッド
 void main() {
-  runApp(AddPage());
+  runApp(MyApp());
 }
 
-class AddPage extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('If Then Plans'),
-        ),
-        body: ListView(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: null,
-          child: Icon(Icons.add),
-        ),
+      title: 'If Then Plans',
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('If Then Plans'),
+      ),
+      body: ListView(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddPage(),
+              fullscreenDialog: true,
+            ),
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

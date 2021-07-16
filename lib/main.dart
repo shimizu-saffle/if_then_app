@@ -1,41 +1,23 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:if_then_app/add_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:if_then_app/timeline.dart';
 
-//↓アプリを開いた時に最初に読み込まれるメソッド
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(
+    ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'If Then Plans',
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('If Then Plans'),
-      ),
-      body: ListView(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddPage(),
-              fullscreenDialog: true,
-            ),
-          );
-        },
-        child: Icon(Icons.add),
-      ),
+      home: TimeLine(),
     );
   }
 }

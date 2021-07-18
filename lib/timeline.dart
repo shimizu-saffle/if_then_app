@@ -14,6 +14,7 @@ class TimeLine extends StatelessWidget {
         builder: (context, watch, child) {
           final itList = watch(itListProvider).itList;
           return ListView(
+            //意味を理解できてない記述箇所②
             children: itList
                 .map(
                   (ifthen) => ListTile(

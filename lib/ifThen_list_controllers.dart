@@ -10,7 +10,7 @@ final itListProvider = ChangeNotifierProvider<ItListController>(
 
 class ItListController extends ChangeNotifier {
   List<IfThen> itList = [];
-  String newIfThenText = '';
+  // String newIfThenText = '';
 
   Future getItList() async {
     await Firebase.initializeApp();

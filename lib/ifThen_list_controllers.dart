@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/IfThen.dart';
 
 final itListProvider = ChangeNotifierProvider<ItListController>(
-  (ref) => ItListController(),
+  (ref) => ItListController()..getItList(),
 );
 
 class ItListController extends ChangeNotifier {
@@ -13,7 +12,6 @@ class ItListController extends ChangeNotifier {
   // String newIfThenText = '';
 
   Future getItList() async {
-    await Firebase.initializeApp();
     final snapshot =
         await FirebaseFirestore.instance.collection('itList').get();
     final docs = snapshot.docs;

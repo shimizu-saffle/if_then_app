@@ -12,8 +12,16 @@ class TimeLine extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final itList = watch(itListProvider);
-          return ListView();
+          final itList = watch(itListProvider).itList;
+          return ListView(
+            children: itList
+                .map(
+                  (ifthen) => ListTile(
+                    title: Text(ifthen.title!),
+                  ),
+                )
+                .toList(),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(

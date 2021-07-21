@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/IfThen.dart';
 
 final itListProvider = ChangeNotifierProvider<ItListController>(
-  (ref) => ItListController()..getItList(),
+  (ref) => ItListController()..getItListRealtime(),
 );
 
 class ItListController extends ChangeNotifier {
@@ -17,5 +17,17 @@ class ItListController extends ChangeNotifier {
     final itList = docs.map((doc) => IfThen(doc)).toList();
     this.itList = itList;
     notifyListeners();
+  }
+
+  void getItListRealtime() async {
+    final snapshots =
+        FirebaseFirestore.instance.collection('itList').snapshots();
+    snapshots.listen((snapshot) {
+      final docs = snapshot.docs;
+      final itList = docs.map((doc) => IfThen(doc)).toList();
+      itList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      this.itList = itList;
+      notifyListeners();
+    });
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:if_then_app/add_page.dart';
+import 'package:if_then_app/add/add_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/ifThen_list_controllers.dart';
 
@@ -25,8 +25,8 @@ class TimeLine extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => AddPage(),

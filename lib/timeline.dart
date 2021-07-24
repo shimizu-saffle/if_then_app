@@ -17,7 +17,8 @@ class TimeLine extends StatelessWidget {
             children: itList
                 .map(
                   (ifthen) => ListTile(
-                    title: Text(ifthen.title!),
+                    title: Text(ifthen.ifText!),
+                    subtitle: Text(ifthen.thenText!),
                   ),
                 )
                 .toList(),

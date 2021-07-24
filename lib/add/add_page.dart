@@ -3,10 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/ifThen_list_controllers.dart';
 
 class AddPage extends StatelessWidget {
-  // final ItListController model;
-  // AddPage(this.model);
-  // String? newIfThenModel;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,21 +20,26 @@ class AddPage extends StatelessWidget {
                   decoration:
                       InputDecoration(labelText: "IF", hintText: "〇〇な時"),
                   onChanged: (text) {
-                    addController.newIfThenText = text;
+                    addController.newIfText = text;
                   },
                 ),
                 TextField(
                   decoration:
                       InputDecoration(labelText: "THEN", hintText: "〇〇する"),
+                  onChanged: (text) {
+                    addController.newThenText = text;
+                  },
                 ),
                 SizedBox(
                   height: 16,
                 ),
                 ElevatedButton(
-                    onPressed: () async {
-                      await addController.ifThenAdd();
-                    },
-                    child: Text('追加する'))
+                  onPressed: () async {
+                    await addController.ifThenAdd();
+                    Navigator.pop(context);
+                  },
+                  child: Text('追加する'),
+                )
               ],
             ),
           );

@@ -6,10 +6,12 @@ class IfThen {
     Firebase.initializeApp();
     //　意味を理解できてない記述箇所①
     final Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-    this.title = data['title'];
+    this.ifText = data['ifText'];
+    this.thenText = data['thenText'];
     this.createdAt = data['createdAt'];
   }
 
-  String? title;
+  String? ifText;
+  String? thenText;
   Timestamp? createdAt;
 }

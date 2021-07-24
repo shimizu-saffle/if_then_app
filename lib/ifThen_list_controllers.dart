@@ -13,7 +13,9 @@ final AddProvider = ChangeNotifierProvider<ItListController>(
 
 class ItListController extends ChangeNotifier {
   List<IfThen> itList = [];
-  String newIfThenText = '';
+  // Map<IfThen, String> itMap = {};
+  String newIfText = '';
+  String newThenText = '';
 
   Future getItList() async {
     final snapshot =
@@ -39,7 +41,9 @@ class ItListController extends ChangeNotifier {
   Future ifThenAdd() async {
     final collection = FirebaseFirestore.instance.collection('itList');
     await collection.add({
-      'title': newIfThenText,
+      'title': newIfText,
+      'ifText': newIfText,
+      'thenText': newThenText,
       'createdAt': Timestamp.now(),
     });
   }

@@ -15,7 +15,7 @@ class AddPage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final newIfThenText = watch(AddProvider);
+          final addController = watch(AddProvider);
           return Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -23,7 +23,9 @@ class AddPage extends StatelessWidget {
                 TextField(
                   decoration:
                       InputDecoration(labelText: "IF", hintText: "〇〇な時"),
-                  onChanged: (text) {},
+                  onChanged: (text) {
+                    addController.newIfThenText = text;
+                  },
                 ),
                 TextField(
                   decoration:
@@ -33,8 +35,8 @@ class AddPage extends StatelessWidget {
                   height: 16,
                 ),
                 ElevatedButton(
-                    onPressed: () {
-                      context.read(AddProvider);
+                    onPressed: () async {
+                      await addController.ifThenAdd();
                     },
                     child: Text('追加する'))
               ],

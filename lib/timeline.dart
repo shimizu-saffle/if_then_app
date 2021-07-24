@@ -16,9 +16,20 @@ class TimeLine extends StatelessWidget {
           return ListView(
             children: itList
                 .map(
-                  (ifthen) => ListTile(
-                    title: Text(ifthen.ifText!),
-                    subtitle: Text(ifthen.thenText!),
+                  (ifthen) => Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.5),
+                      child: ListTile(
+                        title: Text(
+                          '${ifthen.ifText!}\n${ifthen.thenText!}',
+                          style: TextStyle(
+                            height: 2.0,
+                          ),
+                        ),
+                        trailing: Icon(Icons.more_vert),
+                      ),
+                    ),
+                    elevation: 3,
                   ),
                 )
                 .toList(),

@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/IfThen.dart';
 
-final itListProvider = ChangeNotifierProvider<ItListController>(
+final ItListProvider = ChangeNotifierProvider<ItListController>(
   (ref) => ItListController()..getItListRealtime(),
+);
+
+final AddProvider = ChangeNotifierProvider<ItListController>(
+  (ref) => ItListController()..ifThenAdd(),
 );
 
 class ItListController extends ChangeNotifier {
   List<IfThen> itList = [];
+  String newIfThenText = '';
 
   Future getItList() async {
     final snapshot =
@@ -28,6 +33,14 @@ class ItListController extends ChangeNotifier {
       itList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       this.itList = itList;
       notifyListeners();
+    });
+  }
+
+  Future ifThenAdd() async {
+    final collection = FirebaseFirestore.instance.collection('itList');
+    await collection.add({
+      'title': newIfThenText,
+      'createdAt': Timestamp.now(),
     });
   }
 }

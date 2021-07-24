@@ -12,7 +12,7 @@ class TimeLine extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final itList = watch(itListProvider).itList;
+          final itList = watch(ItListProvider).itList;
           return ListView(
             children: itList
                 .map(
@@ -24,17 +24,21 @@ class TimeLine extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddPage(),
-              fullscreenDialog: true,
-            ),
+      floatingActionButton: Consumer(
+        builder: (context, model, child) {
+          return FloatingActionButton(
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddPage(),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+            child: Icon(Icons.add),
           );
         },
-        child: Icon(Icons.add),
       ),
     );
   }

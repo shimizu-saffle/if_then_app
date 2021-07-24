@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:if_then_app/add/add_controllers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:if_then_app/ifThen_list_controllers.dart';
 
 class AddPage extends StatelessWidget {
+  // final ItListController model;
+  // AddPage(this.model);
+  // String? newIfThenModel;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +15,7 @@ class AddPage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final addList = watch(AddProvider);
+          final newIfThenText = watch(AddProvider);
           return Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -19,6 +23,7 @@ class AddPage extends StatelessWidget {
                 TextField(
                   decoration:
                       InputDecoration(labelText: "IF", hintText: "〇〇な時"),
+                  onChanged: (text) {},
                 ),
                 TextField(
                   decoration:
@@ -27,7 +32,11 @@ class AddPage extends StatelessWidget {
                 SizedBox(
                   height: 16,
                 ),
-                ElevatedButton(onPressed: () {}, child: Text('追加する'))
+                ElevatedButton(
+                    onPressed: () {
+                      context.read(AddProvider);
+                    },
+                    child: Text('追加する'))
               ],
             ),
           );

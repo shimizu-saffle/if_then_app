@@ -3,28 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/IfThen.dart';
 
-final ItListProvider = ChangeNotifierProvider<ItListController>(
-  (ref) => ItListController()..getItListRealtime(),
+final ItListProvider = ChangeNotifierProvider<IfThenListController>(
+  (ref) => IfThenListController()..getItListRealtime(),
 );
 
-final AddProvider = ChangeNotifierProvider<ItListController>(
-  (ref) => ItListController()..ifThenAdd(),
+final AddProvider = ChangeNotifierProvider<IfThenListController>(
+  (ref) => IfThenListController()..ifThenAdd(),
 );
 
-class ItListController extends ChangeNotifier {
+final DeleteProvider = ChangeNotifierProvider<IfThenListController>(
+  (ref) => IfThenListController()..ifThenDelete(),
+);
+
+class IfThenListController extends ChangeNotifier {
   List<IfThen> itList = [];
-  // Map<IfThen, String> itMap = {};
   String newIfText = '';
   String newThenText = '';
-
-  Future getItList() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('itList').get();
-    final docs = snapshot.docs;
-    final itList = docs.map((doc) => IfThen(doc)).toList();
-    this.itList = itList;
-    notifyListeners();
-  }
 
   void getItListRealtime() async {
     final snapshots =
@@ -41,10 +35,16 @@ class ItListController extends ChangeNotifier {
   Future ifThenAdd() async {
     final collection = FirebaseFirestore.instance.collection('itList');
     await collection.add({
-      'title': newIfText,
       'ifText': newIfText,
       'thenText': newThenText,
       'createdAt': Timestamp.now(),
     });
+  }
+
+  Future ifThenDelete() async {
+    final deleteCollection = FirebaseFirestore.instance.collection('itList');
+    //下記のようにドキュメントのIDを指定したら消せる
+    // await deleteCollection.doc('G8PMXhxknuqjPxkQiKdi').delete();
+    await deleteCollection.doc().delete();
   }
 }

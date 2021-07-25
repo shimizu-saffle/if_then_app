@@ -8,11 +8,12 @@ class TimeLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('If Then Plans'),
+        title: const Text('If Then'),
       ),
       body: Consumer(
         builder: (context, watch, child) {
           final itList = watch(ItListProvider).itList;
+          final deleteController = watch(DeleteProvider);
           return ListView(
             children: itList
                 .map(
@@ -22,11 +23,14 @@ class TimeLine extends StatelessWidget {
                       child: ListTile(
                         title: Text(
                           '${ifthen.ifText!}\n${ifthen.thenText!}',
-                          style: TextStyle(
-                            height: 2.0,
-                          ),
+                          style: TextStyle(height: 2.0),
                         ),
-                        trailing: Icon(Icons.more_vert),
+                        trailing: IconButton(
+                          onPressed: () async {
+                            await deleteController.ifThenDelete();
+                          },
+                          icon: Icon(Icons.more_vert),
+                        ),
                       ),
                     ),
                     elevation: 3,

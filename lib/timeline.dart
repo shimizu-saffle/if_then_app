@@ -31,19 +31,24 @@ class TimeLine extends StatelessWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return SimpleDialog(
-                                  title: const Text('Select assignment'),
                                   children: <Widget>[
-                                    SimpleDialogOption(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('Treasury department'),
+                                    Center(
+                                      child: SimpleDialogOption(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('編集'),
+                                      ),
                                     ),
-                                    SimpleDialogOption(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('State department'),
+                                    Center(
+                                      child: SimpleDialogOption(
+                                        onPressed: () async {
+                                          await deleteController
+                                              .ifThenDelete(ifthen);
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('削除'),
+                                      ),
                                     ),
                                   ],
                                 );

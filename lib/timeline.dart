@@ -13,7 +13,7 @@ class TimeLine extends StatelessWidget {
       body: Consumer(
         builder: (context, watch, child) {
           final itList = watch(ItListProvider).itList;
-          final deleteController = watch(DeleteProvider);
+          final deleteController = watch(ItListProvider);
           return ListView(
             children: itList
                 .map(
@@ -27,7 +27,7 @@ class TimeLine extends StatelessWidget {
                         ),
                         trailing: IconButton(
                           onPressed: () async {
-                            await deleteController.ifThenDelete();
+                            await deleteController.ifThenDelete(ifthen);
                           },
                           icon: Icon(Icons.more_vert),
                         ),

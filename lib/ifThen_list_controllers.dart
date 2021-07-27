@@ -11,10 +11,6 @@ final AddProvider = ChangeNotifierProvider<IfThenListController>(
   (ref) => IfThenListController()..ifThenAdd(),
 );
 
-final DeleteProvider = ChangeNotifierProvider<IfThenListController>(
-  (ref) => IfThenListController()..ifThenDelete(),
-);
-
 class IfThenListController extends ChangeNotifier {
   List<IfThen> itList = [];
   String newIfText = '';
@@ -41,10 +37,10 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
-  Future ifThenDelete() async {
-    final deleteCollection = FirebaseFirestore.instance.collection('itList');
-    //下記のようにドキュメントのIDを指定したら消せる
-    // await deleteCollection.doc('G8PMXhxknuqjPxkQiKdi').delete();
-    await deleteCollection.doc().delete();
+  Future ifThenDelete(IfThen ifthen) async {
+    await FirebaseFirestore.instance
+        .collection('itList')
+        .doc(ifthen.documentID)
+        .delete();
   }
 }

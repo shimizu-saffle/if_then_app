@@ -27,7 +27,29 @@ class TimeLine extends StatelessWidget {
                         ),
                         trailing: IconButton(
                           onPressed: () async {
-                            await deleteController.ifThenDelete(ifthen);
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SimpleDialog(
+                                  title: const Text('Select assignment'),
+                                  children: <Widget>[
+                                    SimpleDialogOption(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('Treasury department'),
+                                    ),
+                                    SimpleDialogOption(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('State department'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            // await deleteController.ifThenDelete(ifthen);
                           },
                           icon: Icon(Icons.more_vert),
                         ),

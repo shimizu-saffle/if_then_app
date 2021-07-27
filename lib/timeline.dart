@@ -43,9 +43,27 @@ class TimeLine extends StatelessWidget {
                                     Center(
                                       child: SimpleDialogOption(
                                         onPressed: () async {
-                                          await deleteController
-                                              .ifThenDelete(ifthen);
-                                          Navigator.pop(context);
+                                          await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    '「${ifthen.ifText!}${ifthen.thenText!}」を削除しますか？'),
+                                                actions: <Widget>[
+                                                  ElevatedButton(
+                                                    child: Text('OK'),
+                                                    onPressed: () async {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      await deleteController
+                                                          .ifThenDelete(ifthen);
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
                                         },
                                         child: const Text('削除'),
                                       ),
@@ -54,7 +72,6 @@ class TimeLine extends StatelessWidget {
                                 );
                               },
                             );
-                            // await deleteController.ifThenDelete(ifthen);
                           },
                           icon: Icon(Icons.more_vert),
                         ),

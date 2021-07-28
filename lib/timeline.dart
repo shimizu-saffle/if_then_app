@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:if_then_app/add/add_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:if_then_app/add/edit_page.dart';
 import 'package:if_then_app/ifThen_list_controllers.dart';
 
 class TimeLine extends StatelessWidget {
@@ -34,8 +35,15 @@ class TimeLine extends StatelessWidget {
                                   children: <Widget>[
                                     Center(
                                       child: SimpleDialogOption(
-                                        onPressed: () {
-                                          Navigator.pop(context);
+                                        onPressed: () async {
+                                          await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => EditPage(),
+                                              fullscreenDialog: true,
+                                            ),
+                                          );
+                                          Navigator.of(context).pop();
                                         },
                                         child: const Text('編集'),
                                       ),
@@ -57,13 +65,13 @@ class TimeLine extends StatelessWidget {
                                                           .pop();
                                                       await deleteController
                                                           .ifThenDelete(ifthen);
-                                                      Navigator.pop(context);
                                                     },
                                                   ),
                                                 ],
                                               );
                                             },
                                           );
+                                          Navigator.of(context).pop();
                                         },
                                         child: const Text('削除'),
                                       ),

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/IfThen.dart';
 import 'package:if_then_app/ifThen_list_controllers.dart';
 
-class AddPage extends StatelessWidget {
-  AddPage({this.ifThen});
-  final IfThen? ifThen;
+class EditPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +38,7 @@ class AddPage extends StatelessWidget {
                     await addController.ifThenAdd();
                     Navigator.pop(context);
                   },
-                  child: Text('追加する'),
+                  child: Text('更新する'),
                 )
               ],
             ),

@@ -37,6 +37,16 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
+  Future ifThenEdit(IfThen ifthen) async {
+    final document =
+        FirebaseFirestore.instance.collection('itList').doc(ifthen.documentID);
+    await document.update({
+      'ifText': newIfText,
+      'thenText': newThenText,
+      'createdAt': Timestamp.now(),
+    });
+  }
+
   Future ifThenDelete(IfThen ifthen) async {
     await FirebaseFirestore.instance
         .collection('itList')

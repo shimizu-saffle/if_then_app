@@ -8,9 +8,19 @@ class AddPage extends StatelessWidget {
   final IfThen? ifThen;
   @override
   Widget build(BuildContext context) {
+    //ifThen　が　null　じゃなければ　true
+    final bool isUpdate = ifThen != null;
+    final ifTextEditingController = TextEditingController();
+    final thenTextEditingController = TextEditingController();
+
+    if (isUpdate) {
+      ifTextEditingController.text = ifThen!.ifText!;
+      thenTextEditingController.text = ifThen!.thenText!;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('add'),
+        title: Text(isUpdate ? 'edit' : 'add'),
       ),
       body: Consumer(
         builder: (context, watch, child) {
@@ -20,6 +30,7 @@ class AddPage extends StatelessWidget {
             child: Column(
               children: [
                 TextField(
+                  controller: ifTextEditingController,
                   decoration:
                       InputDecoration(labelText: "IF", hintText: "〇〇な時"),
                   onChanged: (text) {
@@ -27,6 +38,7 @@ class AddPage extends StatelessWidget {
                   },
                 ),
                 TextField(
+                  controller: thenTextEditingController,
                   decoration:
                       InputDecoration(labelText: "THEN", hintText: "〇〇する"),
                   onChanged: (text) {
@@ -38,10 +50,14 @@ class AddPage extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await addController.ifThenAdd();
-                    Navigator.pop(context);
+                    if (isUpdate) {
+                      await addController.ifThenUpdate(ifThen!);
+                    } else {
+                      await addController.ifThenAdd();
+                    }
+                    Navigator.of(context).pop();
                   },
-                  child: Text('追加する'),
+                  child: Text(isUpdate ? '更新する' : '追加する'),
                 )
               ],
             ),
@@ -51,3 +67,6 @@ class AddPage extends StatelessWidget {
     );
   }
 }
+
+//await addController.ifThenAdd();
+//                     Navigator.pop(context);

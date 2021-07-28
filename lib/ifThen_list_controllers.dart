@@ -37,7 +37,7 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
-  Future ifThenEdit(IfThen ifthen) async {
+  Future ifThenUpdate(IfThen ifthen) async {
     final document =
         FirebaseFirestore.instance.collection('itList').doc(ifthen.documentID);
     await document.update({

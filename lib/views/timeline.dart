@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:if_then_app/add/add_page.dart';
+import 'package:if_then_app/views/add_edit_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/ifThen_list_controllers.dart';
+import 'package:if_then_app/controllers/ifthen_controller.dart';
 
 class TimeLine extends StatelessWidget {
   @override
@@ -12,10 +12,10 @@ class TimeLine extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final itList = watch(ItListProvider).itList;
-          final deleteController = watch(ItListProvider);
+          final ifthenList = watch(IfThenListProvider).ifThenList;
+          final deleteController = watch(IfThenListProvider);
           return ListView(
-            children: itList
+            children: ifthenList
                 .map(
                   (ifthen) => Card(
                     child: Padding(

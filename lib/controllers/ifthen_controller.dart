@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/IfThen.dart';
+import 'package:if_then_app/models/ifthen.dart';
 
-final ItListProvider = ChangeNotifierProvider<IfThenListController>(
+final IfThenListProvider = ChangeNotifierProvider<IfThenListController>(
   (ref) => IfThenListController()..getItListRealtime(),
 );
 
@@ -12,7 +12,7 @@ final AddProvider = ChangeNotifierProvider<IfThenListController>(
 );
 
 class IfThenListController extends ChangeNotifier {
-  List<IfThen> itList = [];
+  List<IfThen> ifThenList = [];
   String newIfText = '';
   String newThenText = '';
 
@@ -23,7 +23,7 @@ class IfThenListController extends ChangeNotifier {
       final docs = snapshot.docs;
       final itList = docs.map((doc) => IfThen(doc)).toList();
       itList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-      this.itList = itList;
+      this.ifThenList = itList;
       notifyListeners();
     });
   }

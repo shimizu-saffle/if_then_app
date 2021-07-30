@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/signup_controller.dart';
-import 'package:if_then_app/views/timeline.dart';
 
 class SignUpPage extends StatelessWidget {
   @override
@@ -39,22 +38,15 @@ class SignUpPage extends StatelessWidget {
                   height: 16,
                 ),
                 ElevatedButton(
+                  child: Text('登録する'),
                   onPressed: () async {
                     try {
                       await signUpController.signUp();
+                      _showDialog(context, '登録完了しました');
                     } catch (e) {
                       _showDialog(context, e.toString());
-                    } finally {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TimeLinePage(),
-                        ),
-                      );
-                      Navigator.of(context).pop();
                     }
                   },
-                  child: Text('登録する'),
                 )
               ],
             ),

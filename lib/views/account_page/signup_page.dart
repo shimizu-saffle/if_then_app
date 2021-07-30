@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/signup_controller.dart';
+import 'package:if_then_app/views/timeline.dart';
 
 class SignUpPage extends StatelessWidget {
   @override
@@ -10,7 +11,7 @@ class SignUpPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: Text('アカウント作成'),
       ),
       body: Consumer(
         builder: (context, watch, child) {
@@ -29,6 +30,7 @@ class SignUpPage extends StatelessWidget {
                 TextField(
                   controller: passwordController,
                   decoration: InputDecoration(hintText: "パスワード"),
+                  obscureText: true,
                   onChanged: (text) {
                     signUpController.password = text;
                   },
@@ -42,6 +44,14 @@ class SignUpPage extends StatelessWidget {
                       await signUpController.signUp();
                     } catch (e) {
                       _showDialog(context, e.toString());
+                    } finally {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TimeLinePage(),
+                        ),
+                      );
+                      Navigator.of(context).pop();
                     }
                   },
                   child: Text('登録する'),

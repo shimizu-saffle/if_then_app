@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/signup_controller.dart';
+import 'package:if_then_app/views/timeline.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -10,7 +11,7 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('ログイン'),
       ),
       body: Consumer(
         builder: (context, watch, child) {
@@ -66,7 +67,11 @@ class LoginPage extends StatelessWidget {
           actions: <Widget>[
             ElevatedButton(
               child: Text('OK'),
-              onPressed: () {
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TimeLinePage()),
+                );
                 Navigator.of(context).pop();
               },
             ),

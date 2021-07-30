@@ -3,7 +3,7 @@ import 'package:if_then_app/views/add_edit_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/ifthen_controller.dart';
 
-class TimeLine extends StatelessWidget {
+class TimeLinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

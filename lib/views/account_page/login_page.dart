@@ -43,15 +43,9 @@ class LoginPage extends StatelessWidget {
                   onPressed: () async {
                     try {
                       await logInController.login();
-                      _showDialog(context, 'ログインしました');
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TimeLinePage(),
-                        ),
-                      );
+                      successfulDialog(context, 'おかえりなさい');
                     } catch (e) {
-                      _showDialog(context, e.toString());
+                      failedDialog(context, e.toString());
                     }
                   },
                 )
@@ -63,7 +57,34 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Future _showDialog(
+  Future successfulDialog(
+    BuildContext context,
+    String title,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          actions: <Widget>[
+            ElevatedButton(
+              child: Text('ただいま'),
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TimeLinePage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future failedDialog(
     BuildContext context,
     String title,
   ) {

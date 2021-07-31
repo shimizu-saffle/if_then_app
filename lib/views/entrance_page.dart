@@ -1,7 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:if_then_app/controllers/pallete.dart';
+import 'package:if_then_app/widgets/password-input.dart';
+import 'package:if_then_app/widgets/rounded-button.dart';
+import 'package:if_then_app/widgets/text-input.dart';
 
 class EntrancePage extends StatelessWidget {
   @override
@@ -20,126 +22,47 @@ class EntrancePage extends StatelessWidget {
               ),
             ),
           ),
-          TextInputField(
-            icon: FontAwesomeIcons.envelope,
-            hint: 'メールアドレス',
-            inputType: TextInputType.emailAddress,
-            inputAction: TextInputAction.next,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextInputField(
+                icon: FontAwesomeIcons.envelope,
+                hint: 'メールアドレス',
+                inputType: TextInputType.emailAddress,
+                inputAction: TextInputAction.next,
+              ),
+              PasswordInput(
+                icon: FontAwesomeIcons.lock,
+                hint: 'パスワード',
+                inputType: TextInputType.emailAddress,
+                inputAction: TextInputAction.done,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                child: Text(
+                  'パスワードを忘れた方はこちら',
+                  style: kBodyText,
+                ),
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              RoundedButton(buttonName: 'ログイン'),
+              SizedBox(height: 25),
+            ],
           ),
-          PasswordInput(
-            icon: FontAwesomeIcons.lock,
-            hint: 'パスワード',
-            inputType: TextInputType.emailAddress,
-            inputAction: TextInputAction.next,
+          Container(
+            child: Text(
+              '初めての方はこちら',
+              style: kBodyText,
+            ),
+            decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(width: 1, color: kBlue))),
           ),
+          SizedBox(
+            height: 20,
+          )
         ],
-      ),
-    );
-  }
-}
-
-class PasswordInput extends StatelessWidget {
-  const PasswordInput({
-    Key? key,
-    required this.icon,
-    required this.hint,
-    this.inputType,
-    this.inputAction,
-  }) : super(key: key);
-
-  final IconData? icon;
-  final String? hint;
-  final TextInputType? inputType;
-  final TextInputAction? inputAction;
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Container(
-        height: size.height * 0.08,
-        width: size.width * 0.8,
-        decoration: BoxDecoration(
-          color: Colors.blue.withOpacity(0.7),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Center(
-          child: TextField(
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              prefixIcon: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                ),
-                child: Icon(
-                  icon,
-                  size: 28,
-                  color: Colors.white,
-                ),
-              ),
-              hintText: hint,
-              hintStyle: TextStyle(color: Colors.white),
-            ),
-            obscureText: true,
-            style: TextStyle(color: Colors.white),
-            keyboardType: inputType,
-            textInputAction: inputAction,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class TextInputField extends StatelessWidget {
-  const TextInputField({
-    Key? key,
-    required this.icon,
-    required this.hint,
-    this.inputType,
-    this.inputAction,
-  }) : super(key: key);
-
-  final IconData? icon;
-  final String? hint;
-  final TextInputType? inputType;
-  final TextInputAction? inputAction;
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Container(
-        height: size.height * 0.08,
-        width: size.width * 0.8,
-        decoration: BoxDecoration(
-          color: Colors.blue.withOpacity(0.7),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Center(
-          child: TextField(
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              prefixIcon: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                ),
-                child: Icon(
-                  icon,
-                  size: 28,
-                  color: Colors.white,
-                ),
-              ),
-              hintText: hint,
-              hintStyle: TextStyle(color: Colors.white),
-            ),
-            style: TextStyle(color: Colors.white),
-            keyboardType: inputType,
-            textInputAction: inputAction,
-          ),
-        ),
       ),
     );
   }

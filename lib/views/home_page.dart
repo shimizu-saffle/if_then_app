@@ -7,7 +7,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('If-Then App'),
+        title: Text('If-Then'),
         automaticallyImplyLeading: false,
       ),
       body: Center(

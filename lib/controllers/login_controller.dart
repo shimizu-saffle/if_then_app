@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +12,7 @@ class LogInController extends ChangeNotifier {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future signUp() async {
+  Future login() async {
     if (mail.isEmpty) {
       throw ('メールアドレスを入力してください');
     }
@@ -23,19 +22,10 @@ class LogInController extends ChangeNotifier {
     }
 
     // todo
-    final User? user = (await _auth.createUserWithEmailAndPassword(
+    final result = await _auth.signInWithEmailAndPassword(
       email: mail,
       password: password,
-    ))
-        .user;
-    final email = user!.email;
-
-    FirebaseFirestore.instance.collection('users').add(
-      {
-        'email': email,
-        'createdAt': Timestamp.now(),
-      },
     );
+    final uid = result.user!.uid;
   }
 }
-//shimizu.saffle@gmail.com

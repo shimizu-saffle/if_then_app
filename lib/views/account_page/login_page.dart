@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/controllers/signup_controller.dart';
+import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:if_then_app/views/timeline.dart';
 
 class LoginPage extends StatelessWidget {
@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final signUpController = watch(SignUpProvider);
+          final logInController = watch(LogInProvider);
           return Padding(
             padding: const EdgeInsets.all(8),
             child: Column(
@@ -24,28 +24,30 @@ class LoginPage extends StatelessWidget {
                   controller: mailController,
                   decoration: InputDecoration(hintText: "メールアドレス"),
                   onChanged: (text) {
-                    signUpController.mail = text;
+                    logInController.mail = text;
                   },
                 ),
                 TextField(
                   controller: passwordController,
                   decoration: InputDecoration(hintText: "パスワード"),
+                  obscureText: true,
                   onChanged: (text) {
-                    signUpController.password = text;
+                    logInController.password = text;
                   },
                 ),
                 SizedBox(
                   height: 16,
                 ),
                 ElevatedButton(
+                  child: Text('ログイン'),
                   onPressed: () async {
                     try {
-                      await signUpController.signUp();
+                      await logInController.login();
+                      _showDialog(context, 'ログインしました');
                     } catch (e) {
                       _showDialog(context, e.toString());
                     }
                   },
-                  child: Text('登録する'),
                 )
               ],
             ),
@@ -67,11 +69,7 @@ class LoginPage extends StatelessWidget {
           actions: <Widget>[
             ElevatedButton(
               child: Text('OK'),
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TimeLinePage()),
-                );
+              onPressed: () {
                 Navigator.of(context).pop();
               },
             ),

@@ -43,7 +43,7 @@ class LoginPage extends StatelessWidget {
                   onPressed: () async {
                     try {
                       await logInController.login();
-                      successfulDialog(context, 'おかえりなさい');
+                      successfulDialog(context, 'おかえりなさい\u{1F61A}');
                     } catch (e) {
                       failedDialog(context, e.toString());
                     }
@@ -68,7 +68,7 @@ class LoginPage extends StatelessWidget {
           title: Text(title),
           actions: <Widget>[
             ElevatedButton(
-              child: Text('ただいま'),
+              child: Text('ただいま\u{1F44B}'),
               onPressed: () async {
                 await Navigator.push(
                   context,

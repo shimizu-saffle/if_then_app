@@ -44,6 +44,12 @@ class LoginPage extends StatelessWidget {
                     try {
                       await logInController.login();
                       _showDialog(context, 'ログインしました');
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TimeLinePage(),
+                        ),
+                      );
                     } catch (e) {
                       _showDialog(context, e.toString());
                     }

@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'If-Then',
-      home: TextInputField(),
+      home: EntrancePage(),
       // home: HomePage(),
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:if_then_app/controllers/pallete.dart';
 import 'package:if_then_app/widgets/rounded-button.dart';
-import 'package:if_then_app/widgets/text-input.dart';
+import 'package:if_then_app/widgets/mail-input.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -43,7 +43,7 @@ class ForgotPassword extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                TextInputField(
+                MailInputField(
                   icon: FontAwesomeIcons.envelope,
                   hint: 'メールアドレス',
                   inputType: TextInputType.emailAddress,

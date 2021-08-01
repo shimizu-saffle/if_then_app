@@ -20,10 +20,6 @@ class ForgotPassword extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios),
           color: kWhite,
         ),
-        title: Text(
-          'Forgot Password',
-          style: wBodyText,
-        ),
         centerTitle: true,
       ),
       body: Column(

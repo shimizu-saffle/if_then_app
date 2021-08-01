@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:if_then_app/views/timeline.dart';
 
-class LoginPage extends StatelessWidget {
+class OldLoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mailController = TextEditingController();

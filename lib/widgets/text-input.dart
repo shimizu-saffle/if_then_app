@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class TextInputField extends StatelessWidget {
-  const TextInputField({
-    Key? key,
-    required this.icon,
-    required this.hint,
-    this.inputType,
-    this.inputAction,
-  }) : super(key: key);
+  const TextInputField(
+      {Key? key,
+      required this.icon,
+      required this.hint,
+      this.inputType,
+      this.inputAction,
+      this.controller})
+      : super(key: key);
 
   final IconData? icon;
   final String? hint;
   final TextInputType? inputType;
   final TextInputAction? inputAction;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {

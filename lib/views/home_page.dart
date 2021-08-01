@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:if_then_app/views/account_page/login_page.dart';
+import 'package:if_then_app/views/account_page/old-login_page.dart';
 import 'package:if_then_app/views/account_page/signup_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  MaterialPageRoute(builder: (context) => OldLoginPage()),
                 );
               },
             ),

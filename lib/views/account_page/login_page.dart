@@ -37,27 +37,15 @@ class LoginPage extends StatelessWidget {
                 inputType: TextInputType.emailAddress,
                 inputAction: TextInputAction.done,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                child: GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, 'ForgotPassword'),
-                  child: Container(
-                    child: Text(
-                      'パスワードを忘れた方はこちら\u{1F481}',
-                      style: bBodyText,
-                    ),
-                    decoration: BoxDecoration(
-                        border:
-                            Border(bottom: BorderSide(width: 1, color: kBlue))),
-                  ),
-                ),
-              ),
               SizedBox(
-                height: 25,
+                height: 10,
               ),
               RoundedButton(buttonName: 'ログイン'),
               SizedBox(height: 25),
             ],
+          ),
+          SizedBox(
+            height: 20,
           ),
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, 'SignUpPage'),
@@ -71,8 +59,22 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 20,
-          )
+            height: 30,
+          ),
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, 'ForgotPassword'),
+            child: Container(
+              child: Text(
+                'パスワードを忘れた方はこちら\u{1F481}',
+                style: bBodyText,
+              ),
+              decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(width: 1, color: kBlue))),
+            ),
+          ),
+          SizedBox(
+            height: 70,
+          ),
         ],
       ),
     );

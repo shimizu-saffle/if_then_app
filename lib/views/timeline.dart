@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:if_then_app/views/add_edit_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/ifthen_controller.dart';
-import 'package:if_then_app/views/login_page.dart';
+import 'package:if_then_app/views/account_page/login_page.dart';
 
 class TimeLinePage extends StatelessWidget {
   @override

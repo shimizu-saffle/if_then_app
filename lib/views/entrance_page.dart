@@ -39,9 +39,12 @@ class EntrancePage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                child: Text(
-                  'パスワードを忘れた方はこちら',
-                  style: kBodyText,
+                child: GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, 'ForgotPassword'),
+                  child: Text(
+                    'パスワードを忘れた方はこちら',
+                    style: bBodyText,
+                  ),
                 ),
               ),
               SizedBox(
@@ -54,7 +57,7 @@ class EntrancePage extends StatelessWidget {
           Container(
             child: Text(
               '初めての方はこちら',
-              style: kBodyText,
+              style: bBodyText,
             ),
             decoration: BoxDecoration(
                 border: Border(bottom: BorderSide(width: 1, color: kBlue))),

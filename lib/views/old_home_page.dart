@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:if_then_app/views/account_page/old-login_page.dart';
 import 'package:if_then_app/views/account_page/signup_page.dart';
 
-class HomePage extends StatelessWidget {
+class OldHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

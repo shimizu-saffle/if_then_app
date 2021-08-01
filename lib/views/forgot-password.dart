@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:if_then_app/controllers/pallete.dart';
+import 'package:if_then_app/widgets/rounded-button.dart';
 import 'package:if_then_app/widgets/text-input.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -23,21 +24,39 @@ class ForgotPassword extends StatelessWidget {
           'Forgot Password',
           style: wBodyText,
         ),
-        centerTitle: false,
+        centerTitle: true,
       ),
       body: Column(
         children: [
           Center(
             child: Column(
               children: [
+                SizedBox(
+                  height: size.height * 0.1,
+                ),
                 Container(
                   width: size.width * 0.8,
-                  child: Text(
-                    'パスワード再設定の手順をご案内する\nメールをお送りします',
-                    style: bBodyText,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: Text(
+                      'パスワード再設定の手順をご案内する\nメールをお送りします',
+                      style: bBodyText,
+                    ),
                   ),
                 ),
-                TextInputField(icon: FontAwesomeIcons.envelope, hint: 'メールアドレス')
+                SizedBox(
+                  height: 20,
+                ),
+                TextInputField(
+                  icon: FontAwesomeIcons.envelope,
+                  hint: 'メールアドレス',
+                  inputType: TextInputType.emailAddress,
+                  inputAction: TextInputAction.done,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                RoundedButton(buttonName: 'Send'),
               ],
             ),
           ),

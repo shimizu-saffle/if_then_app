@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:if_then_app/controllers/pallete.dart';
+import 'package:if_then_app/widgets/login_button.dart';
 import 'package:if_then_app/widgets/password-input.dart';
-import 'package:if_then_app/widgets/rounded-button.dart';
 import 'package:if_then_app/widgets/mail-input.dart';
 
 class LoginPage extends StatelessWidget {
@@ -40,7 +40,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              RoundedButton(buttonName: 'ログイン'),
+              LoginButton(buttonName: 'ログイン'),
               SizedBox(height: 25),
             ],
           ),

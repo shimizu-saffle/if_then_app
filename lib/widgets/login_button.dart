@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:if_then_app/views/timeline.dart';
 
-class RoundedButton extends StatelessWidget {
-  const RoundedButton({Key? key, required this.buttonName}) : super(key: key);
+class LoginButton extends StatelessWidget {
+  const LoginButton({Key? key, required this.buttonName}) : super(key: key);
 
   final String? buttonName;
 

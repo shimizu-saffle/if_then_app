@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:if_then_app/controllers/pallete.dart';
-import 'package:if_then_app/widgets/rounded-button.dart';
+import 'package:if_then_app/widgets/login_button.dart';
 import 'package:if_then_app/widgets/mail-input.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -52,7 +52,7 @@ class ForgotPassword extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                RoundedButton(buttonName: 'Send'),
+                LoginButton(buttonName: 'Send'),
               ],
             ),
           ),

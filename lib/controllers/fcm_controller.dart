@@ -7,5 +7,20 @@ final FcmProvider = ChangeNotifierProvider<FcmController>(
 );
 
 class FcmController extends ChangeNotifier {
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  final FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings? settings;
+
+  allowNotifications() async {
+    final settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    return print('User granted permission: ${settings.authorizationStatus}');
+  }
 }

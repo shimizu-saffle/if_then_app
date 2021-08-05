@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/views/account_page/signup_page.dart';
 import 'package:if_then_app/views/account_page/login_page.dart';
+import 'package:if_then_app/views/fcm_test.dart';
 import 'package:if_then_app/views/forgot-password.dart';
 
 void main() async {
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => LoginPage(),
         'ForgotPassword': (context) => ForgotPassword(),
         'SignUpPage': (context) => SignUpPage(),
+        'FcmTestScreen': (context) => FcmTestScreen(),
       },
     );
   }

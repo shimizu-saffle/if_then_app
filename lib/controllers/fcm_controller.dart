@@ -23,4 +23,15 @@ class FcmController extends ChangeNotifier {
 
     return print('User granted permission: ${settings.authorizationStatus}');
   }
+
+  foregroundMessages() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('フォアグラウンドでメッセージを受信しました!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+  }
 }

@@ -10,7 +10,6 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	CFBundleURLTypes
 	<key>CFBundleName</key>
 	<string>if_then_app</string>
 	<key>CFBundlePackageType</key>
@@ -42,20 +41,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
-    <!-- Google Sign-in Section -->
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-                <string>com.googleusercontent.apps.521045637390-i7ir8uj08te67vcd260s2fst0et4dn8j</string>
-            </array>
-        </dict>
-    </array>
-    <!-- End of the Google Sign-in Section -->
 </dict>
 </plist>

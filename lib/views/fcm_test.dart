@@ -8,7 +8,7 @@ class FcmTestScreen extends StatelessWidget {
     FcmController fcm = FcmController();
     final fcmText = fcm.allowNotifications();
     return Consumer(builder: (context, watch, child) {
-      final fcmController = watch(FcmProvider);
+      // final fcmController = watch(FcmProvider);
       return Scaffold(
         appBar: AppBar(
           title: Text('テスト'),

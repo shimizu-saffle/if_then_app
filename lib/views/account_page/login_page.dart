@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:if_then_app/controllers/pallete.dart';
+import 'package:if_then_app/widgets/GoogleLoginButton.dart';
 import 'package:if_then_app/widgets/login_button.dart';
 import 'package:if_then_app/widgets/password-input.dart';
 import 'package:if_then_app/widgets/mail-input.dart';
@@ -41,6 +42,8 @@ class LoginPage extends StatelessWidget {
                 height: 10,
               ),
               LoginButton(buttonName: 'ログイン'),
+              SizedBox(height: 25),
+              GoogleLoginButton(buttonName: 'Googleアカウントでログイン'),
               SizedBox(height: 25),
             ],
           ),

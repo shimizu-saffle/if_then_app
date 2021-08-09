@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
-import 'package:if_then_app/views/timeline.dart';
+import 'package:if_then_app/views/timelinepage.dart';
 
 class OldLoginPage extends StatelessWidget {
   @override

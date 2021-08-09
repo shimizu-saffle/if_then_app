@@ -23,6 +23,7 @@ class GoogleLoginButton extends StatelessWidget {
         child: TextButton(
           onPressed: () async {
             await logInController.signInWithGoogle();
+            Navigator.pushNamed(context, 'TimeLinePage');
           },
           child: Text(
             buttonName!,

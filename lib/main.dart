@@ -5,6 +5,7 @@ import 'package:if_then_app/views/account_page/signup_page.dart';
 import 'package:if_then_app/views/account_page/login_page.dart';
 import 'package:if_then_app/views/fcm_test.dart';
 import 'package:if_then_app/views/forgot-password.dart';
+import 'package:if_then_app/views/timelinepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         'ForgotPassword': (context) => ForgotPassword(),
         'SignUpPage': (context) => SignUpPage(),
         'FcmTestScreen': (context) => FcmTestScreen(),
+        'TimeLinePage': (context) => TimeLinePage(),
       },
     );
   }

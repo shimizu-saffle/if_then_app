@@ -3,10 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 
 class GoogleLoginButton extends StatelessWidget {
-  const GoogleLoginButton({Key? key, required this.buttonName})
-      : super(key: key);
+  const GoogleLoginButton({
+    Key? key,
+    required this.buttonName,
+    this.icon,
+  }) : super(key: key);
 
   final String? buttonName;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +24,27 @@ class GoogleLoginButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           color: Colors.blue,
         ),
-        child: TextButton(
-          onPressed: () async {
-            await logInController.signInWithGoogle();
-            Navigator.pushNamed(context, 'TimeLinePage');
-          },
-          child: Text(
-            buttonName!,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: TextButton.icon(
+            onPressed: () async {
+              await logInController.signInWithGoogle();
+              Navigator.pushNamed(context, 'TimeLinePage');
+            },
+            icon: Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Icon(
+                icon,
+                size: 28,
+                color: Colors.white,
+              ),
+            ),
+            label: Text(
+              buttonName!,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

@@ -43,7 +43,10 @@ class LoginPage extends StatelessWidget {
               ),
               LoginButton(buttonName: 'ログイン'),
               SizedBox(height: 25),
-              GoogleLoginButton(buttonName: 'Googleアカウントでログイン'),
+              GoogleLoginButton(
+                buttonName: 'Googleアカウントでログイン',
+                icon: FontAwesomeIcons.google,
+              ),
               SizedBox(height: 25),
             ],
           ),

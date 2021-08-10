@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:if_then_app/views/add_edit_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/ifthen_controller.dart';
@@ -27,22 +28,28 @@ class TimeLinePage extends StatelessWidget {
                             await showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('ログアウトしますか？'),
-                                  actions: <Widget>[
-                                    ElevatedButton(
-                                      child: Text('OK'),
-                                      onPressed: () async {
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => LoginPage(),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                );
+                                return Consumer(
+                                    builder: (context, watch, child) {
+                                  final logOutController = watch(LogInProvider);
+                                  return AlertDialog(
+                                    title: Text('ログアウトしますか？'),
+                                    actions: <Widget>[
+                                      ElevatedButton(
+                                        child: Text('OK'),
+                                        onPressed: () async {
+                                          //Googleアカウントのログアウトができた。メールログインの状態でこのメソッド呼んだらエラー出ちゃうかも
+                                          logOutController.logout();
+                                          await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => LoginPage(),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
                               },
                             );
                             Navigator.of(context).pop();

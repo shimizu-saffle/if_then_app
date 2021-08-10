@@ -33,6 +33,12 @@ class LogInController extends ChangeNotifier {
     );
     final uid = result.user!.uid;
   }
+
+  //Googleアカウントのログアウトができた。メールログインの状態でこのメソッド呼んだらエラー出ちゃうかも
+  Future logout() async {
+    await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
+  }
 }
 
 class GoogleSignInController with ChangeNotifier {

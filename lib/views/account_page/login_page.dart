@@ -12,6 +12,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
+          SizedBox(height: 40),
           Flexible(
             child: Center(
               child: Text(
@@ -79,7 +80,7 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 70,
+            height: 45,
           ),
         ],
       ),

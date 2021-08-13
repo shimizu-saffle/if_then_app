@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.shimizu-saffle.ifThenApp">
+    package="com.shimizu_saffle.ifThenApp">
    <application
         android:label="if_then_app"
         android:icon="@mipmap/ic_launcher">

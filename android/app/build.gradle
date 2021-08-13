@@ -34,7 +34,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.shimizu-saffle.ifThenApp"
+        applicationId "com.shimizu_saffle.ifThenApp"
         minSdkVersion 16
         targetSdkVersion 30
         multiDexEnabled true

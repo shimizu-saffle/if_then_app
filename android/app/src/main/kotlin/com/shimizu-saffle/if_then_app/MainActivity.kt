@@ -1,4 +1,4 @@
-package com.shimizu-saffle.ifThenApp
+package com.shimizu_saffle.ifThenApp
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "521045637390",
+    "project_id": "if-then-app-36eb1",
+    "storage_bucket": "if-then-app-36eb1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521045637390:android:2e9cf63c697dd4f81f3f5f",
+        "android_client_info": {
+          "package_name": "com.example.if_then_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521045637390-vagetd7igbrf618mfiefj793gn9628sf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.if_then_app",
+            "certificate_hash": "177a12907d36294b309cbeb94c54c1e37f447125"
+          }
+        },
+        {
+          "client_id": "521045637390-kbesev8qmh4i86fj3mibv5gtp5165b54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKdSdj3dI1ch9SsbsbcmPhBOs5qc7bnEs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521045637390-kbesev8qmh4i86fj3mibv5gtp5165b54.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "521045637390-7tpsl7khlqjh36u3g0bpiomck7ubtf46.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shimizu-saffle.ifThenApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521045637390:android:2c309272348425b31f3f5f",
+        "android_client_info": {
+          "package_name": "com.shimizu_saffle.ifThenApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521045637390-3009u1mcc6bf3t9lgon1so13lmoeno3i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shimizu_saffle.ifThenApp",
+            "certificate_hash": "177a12907d36294b309cbeb94c54c1e37f447125"
+          }
+        },
+        {
+          "client_id": "521045637390-kbesev8qmh4i86fj3mibv5gtp5165b54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKdSdj3dI1ch9SsbsbcmPhBOs5qc7bnEs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521045637390-kbesev8qmh4i86fj3mibv5gtp5165b54.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "521045637390-7tpsl7khlqjh36u3g0bpiomck7ubtf46.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shimizu-saffle.ifThenApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

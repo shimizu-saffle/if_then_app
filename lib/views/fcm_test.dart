@@ -6,7 +6,7 @@ class FcmTestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FcmController fcm = FcmController();
-    final fcmText = fcm.allowNotifications();
+    final fcmText = fcm.setRequestPermission();
     return Consumer(builder: (context, watch, child) {
       // final fcmController = watch(FcmProvider);
       return Scaffold(

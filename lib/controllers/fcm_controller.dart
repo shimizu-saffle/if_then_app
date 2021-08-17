@@ -10,7 +10,7 @@ class FcmController extends ChangeNotifier {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings? settings;
 
-  allowNotifications() async {
+  setRequestPermission() async {
     final settings = await messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -24,14 +24,12 @@ class FcmController extends ChangeNotifier {
     return print('User granted permission: ${settings.authorizationStatus}');
   }
 
-  foregroundMessages() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('フォアグラウンドでメッセージを受信しました!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-    });
+  foregroundMessagesSettings() async {
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true, // Required to display a heads up notification
+      badge: true,
+      sound: true,
+    );
   }
 }

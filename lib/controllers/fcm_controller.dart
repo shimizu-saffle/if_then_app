@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:if_then_app/main.dart';
 
 final FcmProvider = ChangeNotifierProvider<FcmController>(
   (ref) => FcmController(),
@@ -34,15 +35,36 @@ class FcmController extends ChangeNotifier {
     );
   }
 
-  getToken() async {
+  printToken() async {
     String? token = await FirebaseMessaging.instance.getToken();
     print(token);
   }
 
-  final AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'high_importance_channel', // id
-    'High Importance Notifications', // title
-    'This channel is used for important notifications.', // description
-    importance: Importance.max,
-  );
+  initAndroidNotification() {
+    var initialzationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettings =
+        InitializationSettings(android: initialzationSettingsAndroid);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channel.description,
+                icon: android.smallIcon,
+              ),
+            ));
+      }
+    });
+    notifyListeners();
+  }
 }

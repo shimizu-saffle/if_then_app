@@ -14,6 +14,7 @@ void main() async {
   FcmController fcmSettings = FcmController();
   fcmSettings.setRequestPermission();
   fcmSettings.foregroundMessagesSettings();
+  fcmSettings.getToken();
   runApp(
     ProviderScope(
       child: MyApp(),

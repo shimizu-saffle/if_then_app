@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final FcmProvider = ChangeNotifierProvider<FcmController>(
@@ -32,4 +33,16 @@ class FcmController extends ChangeNotifier {
       sound: true,
     );
   }
+
+  getToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    print(token);
+  }
+
+  final AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    'This channel is used for important notifications.', // description
+    importance: Importance.max,
+  );
 }

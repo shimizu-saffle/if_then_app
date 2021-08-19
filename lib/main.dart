@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -42,15 +44,18 @@ void main() async {
   await Firebase.initializeApp();
   FcmController fcmSettings = FcmController();
   fcmSettings.setRequestPermission();
-  fcmSettings.foregroundMessagesSettings();
+  fcmSettings.iOSForegroundMessagesSettings();
   fcmSettings.printToken();
-  await fcmSettings.initAndroidNotification();
+  if (Platform.isAndroid) {
+    // local_notifications の処理
+    await fcmSettings.foregroundAndroidNotification();
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+  }
 
   runApp(
     ProviderScope(

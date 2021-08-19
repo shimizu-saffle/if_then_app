@@ -26,7 +26,7 @@ class FcmController extends ChangeNotifier {
     return print('User granted permission: ${settings.authorizationStatus}');
   }
 
-  foregroundMessagesSettings() async {
+  iOSForegroundMessagesSettings() async {
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
@@ -40,7 +40,7 @@ class FcmController extends ChangeNotifier {
     print(token);
   }
 
-  initAndroidNotification() {
+  foregroundAndroidNotification() {
     var initialzationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettings =

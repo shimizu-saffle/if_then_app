@@ -51,7 +51,7 @@ class FcmController extends ChangeNotifier {
 
       await FirebaseFirestore.instance
           .collection('users')
-          .doc('rbU18SEfFDoWpjce224S') //直接ドキュメント名を入れてみた(pokopoko@gmail.com)
+          .doc(userId) //直接ドキュメント名を入れてみた(pokopoko@gmail.com)
           .update({
         'tokens': FieldValue.arrayUnion([token]),
       });

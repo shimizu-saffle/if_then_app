@@ -10,6 +10,7 @@ final SignUpProvider = ChangeNotifierProvider<SignUpController>(
 class SignUpController extends ChangeNotifier {
   String mail = '';
   String password = '';
+  String userId = FirebaseAuth.instance.currentUser!.uid;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -30,8 +31,9 @@ class SignUpController extends ChangeNotifier {
         .user;
     final email = user!.email;
 
-    FirebaseFirestore.instance.collection('users').add(
+    FirebaseFirestore.instance.collection('users').doc(userId).set(
       {
+        'userId': userId,
         'email': email,
         'createdAt': Timestamp.now(),
       },

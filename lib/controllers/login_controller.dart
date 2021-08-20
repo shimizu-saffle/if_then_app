@@ -99,15 +99,9 @@ class GoogleSignInController with ChangeNotifier {
 
   Future<String> loginUserWithGoogle() async {
     String retVal = "error";
-    GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: [
-        'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
-      ],
-    );
 
     try {
-      GoogleSignInAccount? _googleUser = await _googleSignIn.signIn();
+      final _googleUser = await GoogleSignIn().signIn();
       GoogleSignInAuthentication _googleAuth =
           await _googleUser!.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(

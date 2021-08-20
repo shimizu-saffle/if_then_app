@@ -45,8 +45,6 @@ class SignUpController extends ChangeNotifier {
     String? token = await FirebaseMessaging.instance.getToken();
 
     Future<void> saveTokenToDatabase(String token) async {
-      // この例では、ユーザーがログインしていると仮定します。
-
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
         'tokens': FieldValue.arrayUnion([token]),
       });

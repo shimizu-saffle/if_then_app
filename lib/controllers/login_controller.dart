@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -31,7 +33,21 @@ class LogInController extends ChangeNotifier {
       email: mail,
       password: password,
     );
-    final uid = result.user!.uid;
+    final userId = result.user!.uid;
+
+    String? token = await FirebaseMessaging.instance.getToken();
+
+    Future<void> saveTokenToDatabase(String token) async {
+      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+        'tokens': FieldValue.arrayUnion([token]),
+      });
+    }
+
+    // 初期トークンのデータベースへの保存
+    await saveTokenToDatabase(token!);
+
+    // トークンが更新されるたびに、これもデータベースに保存します。
+    FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   }
 
   //Googleアカウントのログアウトができた。メールログインの状態でこのメソッド呼んだらエラー出ちゃうかも

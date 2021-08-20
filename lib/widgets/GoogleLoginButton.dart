@@ -28,7 +28,7 @@ class GoogleLoginButton extends StatelessWidget {
           padding: const EdgeInsets.only(right: 8.0),
           child: TextButton.icon(
             onPressed: () async {
-              await logInController.signInWithGoogle();
+              await logInController.loginUserWithGoogle();
               Navigator.pushNamed(context, 'TimeLinePage');
             },
             icon: Padding(

@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:if_then_app/models/userModel.dart';
 
 final LogInProvider = ChangeNotifierProvider<LogInController>(
   (ref) => LogInController(),
@@ -58,6 +60,9 @@ class LogInController extends ChangeNotifier {
 }
 
 class GoogleSignInController with ChangeNotifier {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseMessaging _fcm = FirebaseMessaging.instance;
+
   Future<UserCredential> signInWithGoogle() async {
     // 認証フローのトリガー
     final googleUser = await GoogleSignIn().signIn();
@@ -74,5 +79,58 @@ class GoogleSignInController with ChangeNotifier {
 
     // サインインしたら、UserCredentialを返します。
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<String> createUser(UserModel user) async {
+    String retVal = "error";
+
+    try {
+      await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
+        'accountCreated': Timestamp.now(),
+        'notifToken': user.notifToken,
+      });
+      retVal = "success";
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+  }
+
+  Future<String> loginUserWithGoogle() async {
+    String retVal = "error";
+    GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    );
+
+    try {
+      GoogleSignInAccount? _googleUser = await _googleSignIn.signIn();
+      GoogleSignInAuthentication _googleAuth =
+          await _googleUser!.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+          idToken: _googleAuth.idToken, accessToken: _googleAuth.accessToken);
+      UserCredential _authResult = await _auth.signInWithCredential(credential);
+      if (_authResult.additionalUserInfo!.isNewUser) {
+        UserModel _user = UserModel(
+          uid: _authResult.user!.uid,
+          accountCreated: Timestamp.now(),
+          notifToken: await _fcm.getToken(),
+        );
+        String _returnString = await createUser(_user);
+        if (_returnString == "success") {
+          retVal = "success";
+        }
+      }
+      retVal = "success";
+    } on PlatformException catch (e) {
+      retVal = e.message!;
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
   }
 }

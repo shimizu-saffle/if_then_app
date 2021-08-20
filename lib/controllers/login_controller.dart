@@ -109,9 +109,14 @@ class GoogleSignInController with ChangeNotifier {
       final _googleUser = await GoogleSignIn().signIn();
       GoogleSignInAuthentication _googleAuth =
           await _googleUser!.authentication;
+
       final AuthCredential credential = GoogleAuthProvider.credential(
           idToken: _googleAuth.idToken, accessToken: _googleAuth.accessToken);
+
       UserCredential _authResult = await _auth.signInWithCredential(credential);
+
+      String? token = await _fcm.getToken();
+
       if (_authResult.additionalUserInfo!.isNewUser) {
         UserModel _user = UserModel(
           userId: _authResult.user!.uid,
@@ -123,6 +128,24 @@ class GoogleSignInController with ChangeNotifier {
         if (_returnString == "success") {
           retVal = "success";
         }
+      } else {
+        // 取得してないトークンを取得して保存する処理
+        // 最初にこのif,else文のifの処理でログインした状態で別デバイスでログインすると
+        // 最初に取得したデバイスのトークンが上書きされてしまう
+        Future<void> saveTokenToDatabase(String token) async {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(_authResult.user!.uid)
+              .update({
+            'tokens': FieldValue.arrayUnion([token]),
+          });
+        }
+
+        // 初期トークンのデータベースへの保存
+        await saveTokenToDatabase(token!);
+
+        // トークンが更新されるたびに、これもデータベースに保存します。
+        FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
       }
       retVal = "success";
     } on PlatformException catch (e) {

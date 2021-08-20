@@ -85,9 +85,14 @@ class GoogleSignInController with ChangeNotifier {
     String retVal = "error";
 
     try {
-      await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
-        'accountCreated': Timestamp.now(),
-        'notifToken': user.notifToken,
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(user.userId)
+          .set({
+        'createdAt': Timestamp.now(),
+        'email': user.email,
+        'tokens': user.tokens,
+        'userId': user.userId,
       });
       retVal = "success";
     } catch (e) {
@@ -109,9 +114,10 @@ class GoogleSignInController with ChangeNotifier {
       UserCredential _authResult = await _auth.signInWithCredential(credential);
       if (_authResult.additionalUserInfo!.isNewUser) {
         UserModel _user = UserModel(
-          uid: _authResult.user!.uid,
-          accountCreated: Timestamp.now(),
-          notifToken: await _fcm.getToken(),
+          userId: _authResult.user!.uid,
+          email: _authResult.user!.email,
+          createdAt: Timestamp.now(),
+          tokens: await _fcm.getToken(),
         );
         String _returnString = await createUser(_user);
         if (_returnString == "success") {

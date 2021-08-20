@@ -49,10 +49,7 @@ class FcmController extends ChangeNotifier {
       // この例では、ユーザーがログインしていると仮定します。
       String userId = FirebaseAuth.instance.currentUser!.uid;
 
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId) //直接ドキュメント名を入れてみた(pokopoko@gmail.com)
-          .update({
+      await FirebaseFirestore.instance.collection('users').doc(userId).update({
         'tokens': FieldValue.arrayUnion([token]),
       });
     }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/controllers/fcm_controller.dart';
 import 'package:if_then_app/models/ifthen.dart';
 import 'package:if_then_app/controllers/ifthen_controller.dart';
 
@@ -49,21 +48,17 @@ class AddPage extends StatelessWidget {
                 SizedBox(
                   height: 16,
                 ),
-                Consumer(builder: (context, watch, child) {
-                  final GetTokenController = watch(FcmProvider);
-                  return ElevatedButton(
-                    onPressed: () async {
-                      if (isUpdate) {
-                        await addController.ifThenUpdate(ifThen!);
-                      } else {
-                        await addController.ifThenAdd();
-                      }
-                      GetTokenController.getSetToken();
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(isUpdate ? '更新する' : '追加する'),
-                  );
-                })
+                ElevatedButton(
+                  onPressed: () async {
+                    if (isUpdate) {
+                      await addController.ifThenUpdate(ifThen!);
+                    } else {
+                      await addController.ifThenAdd();
+                    }
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(isUpdate ? '更新する' : '追加する'),
+                )
               ],
             ),
           );

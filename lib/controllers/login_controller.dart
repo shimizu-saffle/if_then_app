@@ -141,7 +141,7 @@ class GoogleSignInController with ChangeNotifier {
           });
         }
 
-        // 初期トークンのデータベースへの保存
+        // 初期トークンをデータベースへ保存
         await saveTokenToDatabase(token!);
 
         // トークンが更新されるたびに、これもデータベースに保存します。

@@ -8,8 +8,6 @@ final SignUpProvider = ChangeNotifierProvider<SignUpController>(
   (ref) => SignUpController(),
 );
 
-//ああああ
-
 class SignUpController extends ChangeNotifier {
   String mail = '';
   String password = '';

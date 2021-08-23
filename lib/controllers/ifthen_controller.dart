@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/models/ifthen.dart';
@@ -29,11 +30,13 @@ class IfThenListController extends ChangeNotifier {
   }
 
   Future ifThenAdd() async {
+    final String userId = FirebaseAuth.instance.currentUser!.uid;
     final collection = FirebaseFirestore.instance.collection('itList');
     await collection.add({
       'ifText': newIfText,
       'thenText': newThenText,
       'createdAt': Timestamp.now(),
+      'userId': userId
     });
   }
 

@@ -16,11 +16,11 @@ class LoginPage extends StatelessWidget {
           Flexible(
             child: Center(
               child: Text(
-                'If-Then',
+                'イフゼン',
                 style: TextStyle(
                     color: Colors.blue,
                     fontSize: 60,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.w900),
               ),
             ),
           ),

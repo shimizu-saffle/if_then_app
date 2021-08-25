@@ -8,8 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/fcm_controller.dart';
 import 'package:if_then_app/views/account_page/signup_page.dart';
 import 'package:if_then_app/views/account_page/login_page.dart';
-import 'package:if_then_app/views/fcm_test.dart';
-import 'package:if_then_app/views/forgot-password.dart';
+import 'package:if_then_app/views/account_page/forgot-password.dart';
 import 'package:if_then_app/views/timelinepage.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -74,9 +73,11 @@ class MyApp extends StatelessWidget {
         '/': (context) => LoginPage(),
         'ForgotPassword': (context) => ForgotPassword(),
         'SignUpPage': (context) => SignUpPage(),
-        'FcmTestScreen': (context) => FcmTestScreen(),
         'TimeLinePage': (context) => TimeLinePage(),
       },
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:if_then_app/views/add_edit_page.dart';
@@ -79,64 +80,74 @@ class TimeLinePage extends StatelessWidget {
                           '${ifthen.ifText!}\n${ifthen.thenText!}',
                           style: TextStyle(height: 2.0),
                         ),
-                        trailing: IconButton(
-                          icon: Icon(Icons.more_vert),
-                          onPressed: () async {
-                            await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SimpleDialog(
-                                  children: <Widget>[
-                                    Center(
-                                      child: SimpleDialogOption(
-                                        onPressed: () async {
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AddPage(ifThen: ifthen),
-                                              fullscreenDialog: true,
-                                            ),
+                        trailing:
+                            //ここに三項演算子で
+                            FirebaseAuth.instance.currentUser?.uid ==
+                                    ifthen.userId
+                                ? IconButton(
+                                    icon: Icon(Icons.more_vert),
+                                    onPressed: () async {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return SimpleDialog(
+                                            children: <Widget>[
+                                              Center(
+                                                child: SimpleDialogOption(
+                                                  onPressed: () async {
+                                                    await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            AddPage(
+                                                                ifThen: ifthen),
+                                                        fullscreenDialog: true,
+                                                      ),
+                                                    );
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text('編集'),
+                                                ),
+                                              ),
+                                              Center(
+                                                child: SimpleDialogOption(
+                                                  onPressed: () async {
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                              '「${ifthen.ifText!}${ifthen.thenText!}」を削除しますか？'),
+                                                          actions: <Widget>[
+                                                            ElevatedButton(
+                                                              child: Text('OK'),
+                                                              onPressed:
+                                                                  () async {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                                await deleteController
+                                                                    .ifThenDelete(
+                                                                        ifthen);
+                                                              },
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text('削除'),
+                                                ),
+                                              ),
+                                            ],
                                           );
-                                          Navigator.of(context).pop();
                                         },
-                                        child: const Text('編集'),
-                                      ),
-                                    ),
-                                    Center(
-                                      child: SimpleDialogOption(
-                                        onPressed: () async {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                    '「${ifthen.ifText!}${ifthen.thenText!}」を削除しますか？'),
-                                                actions: <Widget>[
-                                                  ElevatedButton(
-                                                    child: Text('OK'),
-                                                    onPressed: () async {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      await deleteController
-                                                          .ifThenDelete(ifthen);
-                                                    },
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('削除'),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                        ),
+                                      );
+                                    },
+                                  )
+                                : null,
                       ),
                     ),
                     elevation: 3,

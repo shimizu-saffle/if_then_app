@@ -2,18 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class IfThen {
-  IfThen(DocumentSnapshot doc) {
+  IfThen(DocumentSnapshot<Map<String, dynamic>> doc) {
     Firebase.initializeApp();
-    //　意味を理解できてない記述箇所①
-    final Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+    //Stringがキーでdynamicがバリュー
+    //FirestoreのdocumentスナップショットはMap型ではなくなった
+    //documentスナップショットに対してジェネリクスを使って型を動的に指定することができる
     this.documentID = doc.id;
-    this.ifText = data['ifText'];
-    this.thenText = data['thenText'];
-    this.createdAt = data['createdAt'];
+    this.ifText = doc.data()!['ifText'];
+    this.thenText = doc.data()!['thenText'];
+    this.userId = doc.data()!['userId'];
+    this.createdAt = doc.data()!['createdAt'];
   }
 
   String? documentID;
   String? ifText;
   String? thenText;
+  String? userId;
   Timestamp? createdAt;
 }

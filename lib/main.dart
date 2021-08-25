@@ -12,7 +12,6 @@ import 'package:if_then_app/views/fcm_test.dart';
 import 'package:if_then_app/views/forgot-password.dart';
 import 'package:if_then_app/views/timelinepage.dart';
 
-// itListドキュメントに作成userのuserIdを持たせる
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');

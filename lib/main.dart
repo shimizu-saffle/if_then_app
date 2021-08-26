@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:if_then_app/controllers/fcm_controller.dart';
 import 'package:if_then_app/views/account_page/signup_page.dart';
 import 'package:if_then_app/views/account_page/login_page.dart';
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
         'SignUpPage': (context) => SignUpPage(),
         'TimeLinePage': (context) => TimeLinePage(),
       },
-      theme: ThemeData.light(),
+      theme: ThemeData(textTheme: GoogleFonts.notoSansTextTheme()),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
     );

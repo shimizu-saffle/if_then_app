@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:if_then_app/controllers/pallete.dart';
 import 'package:if_then_app/widgets/GoogleLoginButton.dart';
 import 'package:if_then_app/widgets/login_button.dart';
@@ -17,10 +18,13 @@ class LoginPage extends StatelessWidget {
             child: Center(
               child: Text(
                 'イフゼン',
-                style: TextStyle(
+                style: GoogleFonts.pottaOne(
+                  textStyle: TextStyle(
                     color: Colors.blue,
                     fontSize: 60,
-                    fontWeight: FontWeight.w900),
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
               ),
             ),
           ),

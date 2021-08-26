@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:if_then_app/views/add_edit_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -156,6 +157,29 @@ class TimeLinePage extends StatelessWidget {
                 .toList(),
           );
         },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Colors.tealAccent,
+        selectedItemColor: Colors.blue,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.cottage,
+              ),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.globeAsia), label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.star_rate,
+              ),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.shuffle,
+              ),
+              label: ''),
+        ],
       ),
       floatingActionButton: Consumer(
         builder: (context, model, child) {

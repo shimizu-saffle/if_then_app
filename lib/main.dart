@@ -10,7 +10,8 @@ import 'package:if_then_app/controllers/fcm_controller.dart';
 import 'package:if_then_app/views/account_page/signup_page.dart';
 import 'package:if_then_app/views/account_page/login_page.dart';
 import 'package:if_then_app/views/account_page/forgot-password.dart';
-import 'package:if_then_app/views/favorite_itthen_list_page.dart';
+import 'package:if_then_app/views/my_ifthen_list_page.dart';
+
 import 'package:if_then_app/views/root_page.dart';
 import 'package:if_then_app/views/timelinepage.dart';
 

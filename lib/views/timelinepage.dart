@@ -81,7 +81,7 @@ class TimeLinePage extends StatelessWidget {
                           style: TextStyle(height: 2.0),
                         ),
                         trailing:
-                            //ここに三項演算子で
+                            //この三項演算子をifElse文に変換してifなら編集アイコン、elseならお気に入りアイコンじゃない！このままnullのとこにお気に入りや！
                             FirebaseAuth.instance.currentUser?.uid ==
                                     ifthen.userId
                                 ? IconButton(
@@ -147,7 +147,22 @@ class TimeLinePage extends StatelessWidget {
                                       );
                                     },
                                   )
-                                : null,
+                                : Consumer(builder: (context, watch, child) {
+                                    final favoriteIfThenController =
+                                        watch(favoriteIfThenProvider);
+                                    return IconButton(
+                                      onPressed: () {
+                                        favoriteIfThenController.changeColor();
+                                      },
+                                      icon: Icon(
+                                        Icons.star,
+                                        size: 18.0,
+                                        color: favoriteIfThenController.favorite
+                                            ? Colors.amberAccent
+                                            : Colors.white,
+                                      ),
+                                    );
+                                  }),
                       ),
                     ),
                     elevation: 3,

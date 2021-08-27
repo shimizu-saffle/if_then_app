@@ -11,7 +11,7 @@ class MyIfThenListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('自分のイフゼン'),
+        title: const Text('あなたのイフゼン'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(

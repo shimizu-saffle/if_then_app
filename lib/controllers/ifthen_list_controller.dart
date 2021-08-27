@@ -29,6 +29,20 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
+  void listenFavoriteIfThenRealtime() {
+    Stream<QuerySnapshot> querySnapshot = FirebaseFirestore.instance
+        .collection('{お気に入りのイフゼンのコレクション}')
+        .snapshots();
+
+    /// users/{userId}/favorite_recipes コレクションの変更を監視して実行
+    querySnapshot.listen((snapshot) async {
+      // ここに、お気に入りアイコン (ON/OFF) のリアルタイム反映
+      // お気に入りのレシピタブへのリアルタイムのコンテンツの追加・削除
+      // などの処理を記述する
+      notifyListeners();
+    });
+  }
+
   Future ifThenAdd() async {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
     final collection = FirebaseFirestore.instance.collection('itList');
@@ -76,5 +90,22 @@ class MyIfThenListController extends ChangeNotifier {
       this.myIfThenList = itList;
       notifyListeners();
     });
+  }
+}
+
+final favoriteIfThenProvider = ChangeNotifierProvider<FavoriteIfThenController>(
+  (ref) => FavoriteIfThenController(),
+);
+
+class FavoriteIfThenController extends ChangeNotifier {
+  bool favorite = false;
+
+  void changeColor() {
+    if (favorite) {
+      favorite = false;
+    } else {
+      favorite = true;
+    }
+    notifyListeners();
   }
 }

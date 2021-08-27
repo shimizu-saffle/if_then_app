@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:if_then_app/models/favorite_ifthen.dart';
 import 'package:if_then_app/models/ifthen.dart';
 
 final IfThenListProvider = ChangeNotifierProvider<IfThenListController>(
@@ -54,9 +55,9 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
-  Future ifThenUpdate(IfThen ifthen) async {
+  Future ifThenUpdate(IfThen ifThen) async {
     final document =
-        FirebaseFirestore.instance.collection('itList').doc(ifthen.documentID);
+        FirebaseFirestore.instance.collection('itList').doc(ifThen.documentID);
     await document.update({
       'ifText': newIfText,
       'thenText': newThenText,
@@ -98,6 +99,19 @@ final favoriteIfThenProvider = ChangeNotifierProvider<FavoriteIfThenController>(
 );
 
 class FavoriteIfThenController extends ChangeNotifier {
+  List<FavoriteIfThen> favoriteIfThenList = [];
+
+//itListドキュメントのサブコレクションFavoriteに追加するメソッド
+  Future favoriteIfThenAdd(IfThen ifThen) async {
+    final String userId = FirebaseAuth.instance.currentUser!.uid;
+    final collection = FirebaseFirestore.instance.collection('itList');
+    await collection
+        .doc(ifThen.documentID)
+        .collection('favorite')
+        .doc(userId)
+        .set({'createdAt': Timestamp.now(), 'userId': userId});
+  }
+
   bool favorite = false;
 
   void changeColor() {

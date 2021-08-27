@@ -72,18 +72,18 @@ class TimeLinePage extends StatelessWidget {
           return ListView(
             children: ifthenList
                 .map(
-                  (ifthen) => Card(
+                  (ifThen) => Card(
                     child: Padding(
                       padding: const EdgeInsets.all(10.5),
                       child: ListTile(
                         title: Text(
-                          '${ifthen.ifText!}\n${ifthen.thenText!}',
+                          '${ifThen.ifText!}\n${ifThen.thenText!}',
                           style: TextStyle(height: 2.0),
                         ),
                         trailing:
                             //この三項演算子をifElse文に変換してifなら編集アイコン、elseならお気に入りアイコンじゃない！このままnullのとこにお気に入りや！
                             FirebaseAuth.instance.currentUser?.uid ==
-                                    ifthen.userId
+                                    ifThen.userId
                                 ? IconButton(
                                     icon: Icon(Icons.more_vert),
                                     onPressed: () async {
@@ -100,7 +100,7 @@ class TimeLinePage extends StatelessWidget {
                                                       MaterialPageRoute(
                                                         builder: (context) =>
                                                             AddPage(
-                                                                ifThen: ifthen),
+                                                                ifThen: ifThen),
                                                         fullscreenDialog: true,
                                                       ),
                                                     );
@@ -118,7 +118,7 @@ class TimeLinePage extends StatelessWidget {
                                                           context) {
                                                         return AlertDialog(
                                                           title: Text(
-                                                              '「${ifthen.ifText!}${ifthen.thenText!}」を削除しますか？'),
+                                                              '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？'),
                                                           actions: <Widget>[
                                                             ElevatedButton(
                                                               child: Text('OK'),
@@ -129,7 +129,7 @@ class TimeLinePage extends StatelessWidget {
                                                                     .pop();
                                                                 await deleteController
                                                                     .ifThenDelete(
-                                                                        ifthen);
+                                                                        ifThen);
                                                               },
                                                             ),
                                                           ],
@@ -153,6 +153,9 @@ class TimeLinePage extends StatelessWidget {
                                     return IconButton(
                                       onPressed: () {
                                         favoriteIfThenController.changeColor();
+                                        //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを書きたい
+                                        favoriteIfThenController
+                                            .favoriteIfThenAdd(ifThen);
                                       },
                                       icon: Icon(
                                         Icons.star,

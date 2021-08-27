@@ -65,10 +65,10 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
-  Future ifThenDelete(IfThen ifthen) async {
+  Future ifThenDelete(IfThen ifThen) async {
     await FirebaseFirestore.instance
         .collection('itList')
-        .doc(ifthen.documentID)
+        .doc(ifThen.documentID)
         .delete();
   }
 }
@@ -110,6 +110,16 @@ class FavoriteIfThenController extends ChangeNotifier {
         .collection('favorite')
         .doc(userId)
         .set({'createdAt': Timestamp.now(), 'userId': userId});
+  }
+
+  Future deleteIfThen(IfThen ifThen) async {
+    final String userId = FirebaseAuth.instance.currentUser!.uid;
+    final collection = FirebaseFirestore.instance.collection('itList');
+    await collection
+        .doc(ifThen.documentID)
+        .collection('favorite')
+        .doc(userId)
+        .delete();
   }
 
   bool favorite = false;

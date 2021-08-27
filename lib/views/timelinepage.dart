@@ -67,10 +67,10 @@ class TimeLinePage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final ifthenList = watch(IfThenListProvider).ifThenList;
+          final ifThenList = watch(IfThenListProvider).ifThenList;
           final deleteController = watch(IfThenListProvider);
           return ListView(
-            children: ifthenList
+            children: ifThenList
                 .map(
                   (ifThen) => Card(
                     child: Padding(
@@ -153,9 +153,12 @@ class TimeLinePage extends StatelessWidget {
                                     return IconButton(
                                       onPressed: () {
                                         favoriteIfThenController.changeColor();
-                                        //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを書きたい
-                                        favoriteIfThenController
-                                            .favoriteIfThenAdd(ifThen);
+                                        //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを呼び分け
+                                        favoriteIfThenController.favorite
+                                            ? favoriteIfThenController
+                                                .favoriteIfThenAdd(ifThen)
+                                            : favoriteIfThenController
+                                                .deleteIfThen(ifThen);
                                       },
                                       icon: Icon(
                                         Icons.star,

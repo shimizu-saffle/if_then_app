@@ -11,7 +11,7 @@ class TimeLinePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('\u{1F30D}  みんなのイフゼン  \u{1F30F}'),
+        title: const Text('みんなのイフゼン'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(

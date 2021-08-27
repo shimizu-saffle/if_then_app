@@ -5,7 +5,7 @@ class FavoriteIfThenListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('マイイフゼン'),
+        title: const Text('お気に入りのイフゼン'),
       ),
       body: Container(),
     );

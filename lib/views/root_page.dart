@@ -3,18 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:if_then_app/controllers/bottomn_navigation_controller.dart';
 import 'package:if_then_app/views/favorite_ifthen_list_page.dart';
+import 'package:if_then_app/views/my_ifthen_list_page.dart';
 import 'package:if_then_app/views/random_ifthen_page.dart';
 import 'package:if_then_app/views/timelinepage.dart';
-
-import 'favorite_itthen_list_page.dart';
 
 class RootPage extends StatelessWidget {
   // 表示するページをリスト形式で宣言します
   List<Widget> _pageList = <Widget>[
     MyIfThenListPage(),
     TimeLinePage(),
-    IfThenMixerPage(),
     FavoriteIfThenListPage(),
+    IfThenMixerPage(),
   ];
 
   @override

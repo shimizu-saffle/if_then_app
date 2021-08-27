@@ -62,7 +62,7 @@ class LoginPage extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, 'SignUpPage'),
             child: Container(
               child: Text(
-                '初めての方はこちら\u{1F481}',
+                '初めての方はこちら',
                 style: bBodyText,
               ),
               decoration: BoxDecoration(
@@ -76,7 +76,7 @@ class LoginPage extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, 'ForgotPassword'),
             child: Container(
               child: Text(
-                'パスワードを忘れた方はこちら\u{1F481}',
+                'パスワードを忘れた方はこちら',
                 style: bBodyText,
               ),
               decoration: BoxDecoration(

@@ -57,3 +57,24 @@ class IfThenListController extends ChangeNotifier {
         .delete();
   }
 }
+
+final myIfThenListProvider = ChangeNotifierProvider<MyIfThenListController>(
+  (ref) => MyIfThenListController()..getMyItListRealtime(),
+);
+
+class MyIfThenListController extends ChangeNotifier {
+  List<IfThen> myIfThenList = [];
+  void getMyItListRealtime() async {
+    final snapshots = FirebaseFirestore.instance
+        .collection('itList')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .snapshots();
+    snapshots.listen((snapshot) {
+      final docs = snapshot.docs;
+      final itList = docs.map((doc) => IfThen(doc)).toList();
+      itList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      this.myIfThenList = itList;
+      notifyListeners();
+    });
+  }
+}

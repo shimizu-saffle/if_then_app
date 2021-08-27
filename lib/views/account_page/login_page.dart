@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:if_then_app/controllers/pallete.dart';
+import 'package:if_then_app/models/pallete.dart';
 import 'package:if_then_app/widgets/GoogleLoginButton.dart';
 import 'package:if_then_app/widgets/login_button.dart';
 import 'package:if_then_app/widgets/password-input.dart';
@@ -33,13 +33,13 @@ class LoginPage extends StatelessWidget {
             children: [
               MailInputField(
                 icon: FontAwesomeIcons.envelope,
-                hint: 'メールアドレス',
+                hint: '',
                 inputType: TextInputType.emailAddress,
                 inputAction: TextInputAction.next,
               ),
               PasswordInputField(
                 icon: FontAwesomeIcons.lock,
-                hint: 'パスワード',
+                hint: '',
                 inputType: TextInputType.emailAddress,
                 inputAction: TextInputAction.done,
               ),

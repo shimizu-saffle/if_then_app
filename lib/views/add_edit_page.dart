@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/models/ifthen.dart';
-import 'package:if_then_app/controllers/ifthen_controller.dart';
+import 'package:if_then_app/controllers/ifthen_list_controller.dart';
 
 class AddPage extends StatelessWidget {
   AddPage({this.ifThen});

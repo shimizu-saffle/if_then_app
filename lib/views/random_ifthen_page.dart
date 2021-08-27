@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class MyIfThenList extends StatelessWidget {
+class IfThenMixerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('マイイフゼン'),
+        title: const Text('イフゼンガチャ'),
       ),
       body: Container(),
     );

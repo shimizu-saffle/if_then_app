@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MyIfThenList extends StatelessWidget {
+class FavoriteIfThenListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

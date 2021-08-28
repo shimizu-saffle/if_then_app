@@ -152,7 +152,8 @@ class TimeLinePage extends StatelessWidget {
                                         watch(favoriteIfThenProvider);
                                     return IconButton(
                                       onPressed: () {
-                                        favoriteIfThenController.changeColor();
+                                        favoriteIfThenController
+                                            .changeColor(ifThen);
                                         //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを呼び分け
                                         favoriteIfThenController.favorite
                                             ? favoriteIfThenController
@@ -163,9 +164,10 @@ class TimeLinePage extends StatelessWidget {
                                       icon: Icon(
                                         Icons.star,
                                         size: 18.0,
+                                        //変数favoriteが共通してしまってるのが原因だと考えています
                                         color: favoriteIfThenController.favorite
                                             ? Colors.amberAccent
-                                            : Colors.white,
+                                            : Colors.grey,
                                       ),
                                     );
                                   }),

@@ -23,7 +23,7 @@ class RootPage extends StatelessWidget {
       return Scaffold(
         body: _pageList[bottomNavigationController.currentIndex],
         bottomNavigationBar: BottomNavigationBar(
-          unselectedItemColor: Colors.tealAccent,
+          unselectedItemColor: Colors.grey,
           selectedItemColor: Colors.blue,
           currentIndex: bottomNavigationController.currentIndex,
           onTap: (index) {

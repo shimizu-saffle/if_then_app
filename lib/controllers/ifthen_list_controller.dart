@@ -99,7 +99,25 @@ final favoriteIfThenProvider = ChangeNotifierProvider<FavoriteIfThenController>(
 );
 
 class FavoriteIfThenController extends ChangeNotifier {
-  List<FavoriteIfThen> favoriteIfThenList = [];
+  List<IfThen> favoriteIfThenList = [];
+
+  //お気に入り一覧を取得するメソッド
+  void getFavoriteIfThenRealtime() async {
+    final snapshots = FirebaseFirestore.instance
+        .collectionGroup('favorite')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .snapshots();
+    snapshots.listen((snapshot) async {
+      favoriteIfThenList.clear();
+      //inの右側にある配列を一つずつ取り出して処理をする
+      for (final doc in snapshot.docs) {
+        doc.reference.parent.parent!.get();
+        final ifThenDoc = await doc.reference.parent.parent!.get();
+        favoriteIfThenList.add(IfThen(ifThenDoc));
+      }
+      notifyListeners();
+    });
+  }
 
 //itListドキュメントのサブコレクションFavoriteに追加するメソッド
   Future favoriteIfThenAdd(IfThen ifThen) async {
@@ -124,7 +142,8 @@ class FavoriteIfThenController extends ChangeNotifier {
 
   bool favorite = false;
 
-  void changeColor() {
+  //お気に入りアイコンの色を変える
+  void changeColor(IfThen ifThen) {
     if (favorite) {
       favorite = false;
     } else {

@@ -30,7 +30,6 @@ class LogInController extends ChangeNotifier {
       throw ('パスワードを入力してください');
     }
 
-    // todo
     final result = await _auth.signInWithEmailAndPassword(
       email: mail,
       password: password,

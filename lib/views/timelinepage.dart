@@ -81,9 +81,10 @@ class TimeLinePage extends StatelessWidget {
                           style: TextStyle(height: 2.0),
                         ),
                         trailing:
-                            //この三項演算子をifElse文に変換してifなら編集アイコン、elseならお気に入りアイコンじゃない！このままnullのとこにお気に入りや！
+                            //三項演算子で表示するアイコンボタンを分けている
                             FirebaseAuth.instance.currentUser?.uid ==
                                     ifThen.userId
+                                //currentUserに表示されるアイコンボタン
                                 ? IconButton(
                                     icon: Icon(Icons.more_vert),
                                     onPressed: () async {
@@ -150,17 +151,23 @@ class TimeLinePage extends StatelessWidget {
                                 : Consumer(builder: (context, watch, child) {
                                     final favoriteIfThenController =
                                         watch(favoriteIfThenProvider);
+                                    final saveFavoriteController =
+                                        watch(IfThenListProvider);
                                     return IconButton(
                                       onPressed: () {
                                         favoriteIfThenController
                                             .changeColor(ifThen);
                                         //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを呼び分け
                                         favoriteIfThenController.favorite
-                                            ? favoriteIfThenController
-                                                .favoriteIfThenAdd(ifThen)
+                                            ?
+                                            //itListドキュメントにfavoriteUserという配列型のフィールドを持たせて
+                                            //フィールドの値にはFirebaseAuth.instance.currentUser!.uidを入れるメソッド
+                                            saveFavoriteController
+                                                .saveFavoriteUserId(ifThen)
                                             : favoriteIfThenController
-                                                .deleteIfThen(ifThen);
+                                                .deleteFavoriteIfThen(ifThen);
                                       },
+                                      //currentUser以外のユーザーに表示されるアイコンボタン
                                       icon: Icon(
                                         Icons.star,
                                         size: 18.0,

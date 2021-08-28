@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/models/favorite_ifthen.dart';
 import 'package:if_then_app/models/ifthen.dart';
 
 final IfThenListProvider = ChangeNotifierProvider<IfThenListController>(
@@ -30,20 +29,6 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
-  void listenFavoriteIfThenRealtime() {
-    Stream<QuerySnapshot> querySnapshot = FirebaseFirestore.instance
-        .collection('{お気に入りのイフゼンのコレクション}')
-        .snapshots();
-
-    /// users/{userId}/favorite_recipes コレクションの変更を監視して実行
-    querySnapshot.listen((snapshot) async {
-      // ここに、お気に入りアイコン (ON/OFF) のリアルタイム反映
-      // お気に入りのレシピタブへのリアルタイムのコンテンツの追加・削除
-      // などの処理を記述する
-      notifyListeners();
-    });
-  }
-
   Future ifThenAdd() async {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
     final collection = FirebaseFirestore.instance.collection('itList');
@@ -52,6 +37,22 @@ class IfThenListController extends ChangeNotifier {
       'thenText': newThenText,
       'createdAt': Timestamp.now(),
       'userId': userId
+    });
+  }
+
+  //itListドキュメントにfavoriteUserという配列型のフィールドを持たせて
+  //フィールドの値にはFirebaseAuth.instance.currentUser!.uidを入れる
+  //FCMトークン取得のメソッドを参考にする
+  //itList更新メソッドを参考にする
+  //タイムラインページのお気に入りアイコンボタンでこのメソッドを呼び出す。
+  Future<void> saveFavoriteUserId(IfThen ifThen) async {
+    final favoriteUserId = FirebaseAuth.instance.currentUser!.uid;
+
+    await FirebaseFirestore.instance
+        .collection('itList')
+        .doc(ifThen.documentID)
+        .update({
+      'favoriteUserId': FieldValue.arrayUnion([favoriteUserId]),
     });
   }
 
@@ -95,14 +96,15 @@ class MyIfThenListController extends ChangeNotifier {
 }
 
 final favoriteIfThenProvider = ChangeNotifierProvider<FavoriteIfThenController>(
-  (ref) => FavoriteIfThenController(),
+  (ref) => FavoriteIfThenController()..getMyFavoriteIfThenRealtime(),
 );
 
 class FavoriteIfThenController extends ChangeNotifier {
   List<IfThen> favoriteIfThenList = [];
 
-  //お気に入り一覧を取得するメソッド
-  void getFavoriteIfThenRealtime() async {
+  //イフゼンプランドキュメントのサブコレクションfavoriteからお気に入り一覧を取得するメソッド
+  //だけどfavoriteIfThenListの中身は空になってしまう
+  void getMyFavoriteIfThenRealtime() async {
     final snapshots = FirebaseFirestore.instance
         .collectionGroup('favorite')
         .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
@@ -130,7 +132,7 @@ class FavoriteIfThenController extends ChangeNotifier {
         .set({'createdAt': Timestamp.now(), 'userId': userId});
   }
 
-  Future deleteIfThen(IfThen ifThen) async {
+  Future deleteFavoriteIfThen(IfThen ifThen) async {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
     final collection = FirebaseFirestore.instance.collection('itList');
     await collection

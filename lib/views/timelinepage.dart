@@ -74,150 +74,161 @@ class TimeLinePage extends StatelessWidget {
             children: ifThenList
                 .map(
                   (ifThen) => Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.5),
-                      child: Column(
-                        children: [
-                          Text(
-                            'if',
-                            style: GoogleFonts.pottaOne(
-                              textStyle: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w300,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Spacer(
+                                    flex: 5,
+                                  ),
+                                  Text(
+                                    'if',
+                                    style: GoogleFonts.pottaOne(
+                                      textStyle: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    '${ifThen.ifText!}',
+                                    style: TextStyle(height: 2.0),
+                                  ),
+                                  Spacer(
+                                    flex: 100,
+                                  ),
+                                ],
                               ),
-                            ),
+                              Row(
+                                children: [
+                                  Spacer(
+                                    flex: 5,
+                                  ),
+                                  Text(
+                                    'Then',
+                                    style: GoogleFonts.pottaOne(
+                                      textStyle: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    '${ifThen.thenText!}',
+                                    style: TextStyle(height: 2.0),
+                                  ),
+                                  Spacer(
+                                    flex: 100,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          ListTile(
-                            title: Text(
-                              '${ifThen.ifText!}',
-                              style: TextStyle(height: 2.0),
-                            ),
-                            trailing:
-                                //三項演算子で表示するアイコンボタンを分けている
-                                FirebaseAuth.instance.currentUser?.uid ==
-                                        ifThen.userId
-                                    //currentUserに表示されるアイコンボタン
-                                    ? IconButton(
-                                        icon: Icon(Icons.more_vert),
-                                        onPressed: () async {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return SimpleDialog(
-                                                children: <Widget>[
-                                                  Center(
-                                                    child: SimpleDialogOption(
-                                                      onPressed: () async {
-                                                        await Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                AddPage(
-                                                                    ifThen:
-                                                                        ifThen),
-                                                            fullscreenDialog:
-                                                                true,
+                        ),
+                        Container(
+                          child: FirebaseAuth.instance.currentUser?.uid ==
+                                  ifThen.userId
+                              //currentUserに表示されるアイコンボタン
+                              ? IconButton(
+                                  icon: Icon(Icons.more_vert),
+                                  onPressed: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return SimpleDialog(
+                                          children: <Widget>[
+                                            Center(
+                                              child: SimpleDialogOption(
+                                                onPressed: () async {
+                                                  await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AddPage(
+                                                              ifThen: ifThen),
+                                                      fullscreenDialog: true,
+                                                    ),
+                                                  );
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('編集'),
+                                              ),
+                                            ),
+                                            Center(
+                                              child: SimpleDialogOption(
+                                                onPressed: () async {
+                                                  await showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                            '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？'),
+                                                        actions: <Widget>[
+                                                          ElevatedButton(
+                                                            child: Text('OK'),
+                                                            onPressed:
+                                                                () async {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                              await deleteController
+                                                                  .ifThenDelete(
+                                                                      ifThen);
+                                                            },
                                                           ),
-                                                        );
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: const Text('編集'),
-                                                    ),
-                                                  ),
-                                                  Center(
-                                                    child: SimpleDialogOption(
-                                                      onPressed: () async {
-                                                        await showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return AlertDialog(
-                                                              title: Text(
-                                                                  '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？'),
-                                                              actions: <Widget>[
-                                                                ElevatedButton(
-                                                                  child: Text(
-                                                                      'OK'),
-                                                                  onPressed:
-                                                                      () async {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                    await deleteController
-                                                                        .ifThenDelete(
-                                                                            ifThen);
-                                                                  },
-                                                                ),
-                                                              ],
-                                                            );
-                                                          },
-                                                        );
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: const Text('削除'),
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                      )
-                                    : Consumer(
-                                        builder: (context, watch, child) {
-                                        final favoriteIfThenController =
-                                            watch(favoriteIfThenProvider);
-                                        final saveFavoriteController =
-                                            watch(IfThenListProvider);
-                                        return IconButton(
-                                          onPressed: () {
-                                            favoriteIfThenController
-                                                .changeColor(ifThen);
-                                            //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを呼び分け
-                                            favoriteIfThenController.favorite
-                                                ?
-                                                //itListドキュメントにfavoriteUserという配列型のフィールドを持たせて
-                                                //フィールドの値にはFirebaseAuth.instance.currentUser!.uidを入れるメソッド
-                                                saveFavoriteController
-                                                    .saveFavoriteUserId(ifThen)
-                                                : favoriteIfThenController
-                                                    .deleteFavoriteIfThen(
-                                                        ifThen);
-                                          },
-                                          //currentUser以外のユーザーに表示されるアイコンボタン
-                                          icon: Icon(
-                                            Icons.star,
-                                            size: 18.0,
-                                            //変数favoriteが共通してしまってるのが原因だと考えています
-                                            color: favoriteIfThenController
-                                                    .favorite
-                                                ? Colors.amberAccent
-                                                : Colors.grey,
-                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('削除'),
+                                              ),
+                                            ),
+                                          ],
                                         );
-                                      }),
-                          ),
-                          Text(
-                            'Then',
-                            style: GoogleFonts.pottaOne(
-                              textStyle: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            title: Text(
-                              '${ifThen.thenText!}',
-                              style: TextStyle(height: 2.0),
-                            ),
-                          ),
-                        ],
-                      ),
+                                      },
+                                    );
+                                  },
+                                )
+                              : Consumer(builder: (context, watch, child) {
+                                  final favoriteIfThenController =
+                                      watch(favoriteIfThenProvider);
+                                  final saveFavoriteController =
+                                      watch(IfThenListProvider);
+                                  return IconButton(
+                                    onPressed: () {
+                                      favoriteIfThenController
+                                          .changeColor(ifThen);
+                                      //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを呼び分け
+                                      favoriteIfThenController.favorite
+                                          ?
+                                          //itListドキュメントにfavoriteUserという配列型のフィールドを持たせて
+                                          //フィールドの値にはFirebaseAuth.instance.currentUser!.uidを入れるメソッド
+                                          saveFavoriteController
+                                              .saveFavoriteUserId(ifThen)
+                                          : favoriteIfThenController
+                                              .deleteFavoriteIfThen(ifThen);
+                                    },
+                                    //currentUser以外のユーザーに表示されるアイコンボタン
+                                    icon: Icon(
+                                      Icons.star,
+                                      size: 18.0,
+                                      //変数favoriteが共通してしまってるのが原因だと考えています
+                                      color: favoriteIfThenController.favorite
+                                          ? Colors.amberAccent
+                                          : Colors.grey,
+                                    ),
+                                  );
+                                }),
+                        ),
+                      ],
                     ),
                     elevation: 3,
                   ),

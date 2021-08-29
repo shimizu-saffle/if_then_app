@@ -89,8 +89,15 @@ final myIfThenListProvider = ChangeNotifierProvider<MyIfThenListController>(
   (ref) => MyIfThenListController()..getMyItListRealtime(),
 );
 
+final myFavoriteIfThenListProvider =
+    ChangeNotifierProvider<MyIfThenListController>(
+  (ref) => MyIfThenListController()..getMyFavoriteItListRealtime(),
+);
+
 class MyIfThenListController extends ChangeNotifier {
   List<IfThen> myIfThenList = [];
+  List<IfThen> myFavoriteIfThenList = [];
+
   void getMyItListRealtime() async {
     final snapshots = FirebaseFirestore.instance
         .collection('itList')
@@ -101,6 +108,21 @@ class MyIfThenListController extends ChangeNotifier {
       final itList = docs.map((doc) => IfThen(doc)).toList();
       itList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       this.myIfThenList = itList;
+      notifyListeners();
+    });
+  }
+
+  void getMyFavoriteItListRealtime() async {
+    final snapshots = FirebaseFirestore.instance
+        .collection('itList')
+        .where('favoriteUserId',
+            arrayContains: FirebaseAuth.instance.currentUser?.uid)
+        .snapshots();
+    snapshots.listen((snapshot) {
+      final docs = snapshot.docs;
+      final itList = docs.map((doc) => IfThen(doc)).toList();
+      itList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      this.myFavoriteIfThenList = itList;
       notifyListeners();
     });
   }

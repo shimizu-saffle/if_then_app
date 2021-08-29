@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +13,7 @@ class TimeLinePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('\u{1F4E3}  みんなのイフゼン  \u{1F4E3}'),
+        title: const Text('\u{1F4AB}  みんなのイフゼン  \u{1F4AB}'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -66,14 +67,55 @@ class TimeLinePage extends StatelessWidget {
           )
         ],
       ),
-      body: Consumer(
-        builder: (context, watch, child) {
-          final ifThenList = watch(IfThenListProvider).ifThenList;
-          final deleteController = watch(IfThenListProvider);
-          return ListView(
-            children: ifThenList
-                .map(
-                  (ifThen) => Card(
+      body: MyFavoriteIfThenListCard(),
+      floatingActionButton: Consumer(
+        builder: (context, model, child) {
+          return FloatingActionButton(
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddPage(),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+            child: Icon(Icons.add),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class MyFavoriteIfThenListCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, watch, child) {
+        final deleteController = watch(IfThenListProvider);
+        return StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('itList')
+                .orderBy('createdAt', descending: true)
+                // .where('favoriteUserId',
+                //     arrayContains: FirebaseAuth.instance.currentUser?.uid)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: const CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
+              }
+              // snapshotからデータを取り出して使う
+              // 取得したドキュメントから必要なデータを取り出す
+              return ListView(
+                children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                  final data = document.data()! as Map<String, dynamic>;
+                  return Card(
                     child: Row(
                       children: [
                         Expanded(
@@ -100,7 +142,7 @@ class TimeLinePage extends StatelessWidget {
                                       width: 24,
                                     ),
                                     Text(
-                                      '${ifThen.ifText!}',
+                                      '${data['ifText']}',
                                       style: TextStyle(height: 2.0),
                                     ),
                                   ],
@@ -121,7 +163,7 @@ class TimeLinePage extends StatelessWidget {
                                       width: 10,
                                     ),
                                     Text(
-                                      '${ifThen.thenText!}',
+                                      '${data['thenText']}',
                                       style: TextStyle(height: 2.0),
                                     ),
                                   ],
@@ -132,7 +174,7 @@ class TimeLinePage extends StatelessWidget {
                         ),
                         Container(
                           child: FirebaseAuth.instance.currentUser?.uid ==
-                                  ifThen.userId
+                                  data['userId']
                               //currentUserに表示されるアイコンボタン
                               ? IconButton(
                                   icon: Icon(Icons.more_vert),
@@ -150,7 +192,8 @@ class TimeLinePage extends StatelessWidget {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           AddPage(
-                                                              ifThen: ifThen),
+                                                              ifThen:
+                                                                  data['id']),
                                                       fullscreenDialog: true,
                                                     ),
                                                   );
@@ -168,18 +211,18 @@ class TimeLinePage extends StatelessWidget {
                                                         (BuildContext context) {
                                                       return AlertDialog(
                                                         title: Text(
-                                                            '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？'),
+                                                            '「${data['ifText']}${data['thenText']}」を削除しますか？'),
                                                         actions: <Widget>[
                                                           ElevatedButton(
                                                             child: Text('OK'),
                                                             onPressed:
                                                                 () async {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                              await deleteController
-                                                                  .ifThenDelete(
-                                                                      ifThen);
+                                                              // Navigator.of(
+                                                              //         context)
+                                                              //     .pop();
+                                                              // await deleteController
+                                                              //     .ifThenDelete(
+                                                              //         ifThen);
                                                             },
                                                           ),
                                                         ],
@@ -204,25 +247,28 @@ class TimeLinePage extends StatelessWidget {
                                       watch(IfThenListProvider);
                                   return IconButton(
                                     onPressed: () {
-                                      favoriteIfThenController.changeColor();
-                                      //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを呼び分け
-                                      favoriteIfThenController.favorite
-                                          ?
-                                          //itListドキュメントにfavoriteUserという配列型のフィールドを持たせて
-                                          //フィールドの値にはFirebaseAuth.instance.currentUser!.uidを入れるメソッド
-                                          ifThenListController
-                                              .saveFavoriteUserId(ifThen)
-                                          : ifThenListController
-                                              .deleteFavoriteUserId(ifThen);
+                                      // favoriteIfThenController
+                                      //     .changeColor();
+                                      // //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを呼び分け
+                                      // favoriteIfThenController.favorite
+                                      //     ?
+                                      //     //itListドキュメントにfavoriteUserという配列型のフィールドを持たせて
+                                      //     //フィールドの値にはFirebaseAuth.instance.currentUser!.uidを入れるメソッド
+                                      //     ifThenListController
+                                      //         .saveFavoriteUserId(ifThen)
+                                      //     : ifThenListController
+                                      //         .deleteFavoriteUserId(ifThen);
                                     },
                                     //currentUser以外のユーザーに表示されるアイコンボタン
                                     icon: Icon(
                                       Icons.star,
                                       size: 18.0,
-                                      //変数favoriteが共通してしまってるのが原因だと考えています
-                                      color: favoriteIfThenController.favorite
-                                          ? Colors.amberAccent
-                                          : Colors.grey,
+                                      color: //配列の中にユーザーIDがあれば trueで黄色、なければ Falseでグレーを表示
+                                          data['favoriteUserId'].contains(
+                                                  FirebaseAuth.instance
+                                                      .currentUser?.uid)
+                                              ? Colors.amberAccent
+                                              : Colors.grey,
                                     ),
                                   );
                                 }),
@@ -233,28 +279,11 @@ class TimeLinePage extends StatelessWidget {
                       ],
                     ),
                     elevation: 3,
-                  ),
-                )
-                .toList(),
-          );
-        },
-      ),
-      floatingActionButton: Consumer(
-        builder: (context, model, child) {
-          return FloatingActionButton(
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddPage(),
-                  fullscreenDialog: true,
-                ),
+                  );
+                }).toList(),
               );
-            },
-            child: Icon(Icons.add),
-          );
-        },
-      ),
+            });
+      },
     );
   }
 }

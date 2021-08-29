@@ -12,7 +12,7 @@ class TimeLinePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('みんなのイフゼン'),
+        title: const Text('\u{1F4E3}  みんなのイフゼン  \u{1F4E3}'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -77,57 +77,57 @@ class TimeLinePage extends StatelessWidget {
                     child: Row(
                       children: [
                         Expanded(
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Spacer(
-                                    flex: 5,
-                                  ),
-                                  Text(
-                                    'if',
-                                    style: GoogleFonts.pottaOne(
-                                      textStyle: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w300,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 13,
+                                    ),
+                                    Text(
+                                      'if',
+                                      style: GoogleFonts.pottaOne(
+                                        textStyle: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w300,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    '${ifThen.ifText!}',
-                                    style: TextStyle(height: 2.0),
-                                  ),
-                                  Spacer(
-                                    flex: 100,
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Spacer(
-                                    flex: 5,
-                                  ),
-                                  Text(
-                                    'Then',
-                                    style: GoogleFonts.pottaOne(
-                                      textStyle: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w300,
+                                    SizedBox(
+                                      width: 24,
+                                    ),
+                                    Text(
+                                      '${ifThen.ifText!}',
+                                      style: TextStyle(height: 2.0),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Then',
+                                      style: GoogleFonts.pottaOne(
+                                        textStyle: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w300,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    '${ifThen.thenText!}',
-                                    style: TextStyle(height: 2.0),
-                                  ),
-                                  Spacer(
-                                    flex: 100,
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      '${ifThen.thenText!}',
+                                      style: TextStyle(height: 2.0),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Container(
@@ -228,6 +228,9 @@ class TimeLinePage extends StatelessWidget {
                                   );
                                 }),
                         ),
+                        SizedBox(
+                          width: 15,
+                        )
                       ],
                     ),
                     elevation: 3,

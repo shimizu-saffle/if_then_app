@@ -56,6 +56,17 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
+  Future<void> deleteFavoriteUserId(IfThen ifThen) async {
+    final favoriteUserId = FirebaseAuth.instance.currentUser!.uid;
+
+    await FirebaseFirestore.instance
+        .collection('itList')
+        .doc(ifThen.documentID)
+        .update({
+      'favoriteUserId': FieldValue.arrayRemove([favoriteUserId]),
+    });
+  }
+
   Future ifThenUpdate(IfThen ifThen) async {
     final document =
         FirebaseFirestore.instance.collection('itList').doc(ifThen.documentID);

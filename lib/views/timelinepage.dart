@@ -200,7 +200,7 @@ class TimeLinePage extends StatelessWidget {
                               : Consumer(builder: (context, watch, child) {
                                   final favoriteIfThenController =
                                       watch(favoriteIfThenProvider);
-                                  final saveFavoriteController =
+                                  final ifThenListController =
                                       watch(IfThenListProvider);
                                   return IconButton(
                                     onPressed: () {
@@ -211,10 +211,10 @@ class TimeLinePage extends StatelessWidget {
                                           ?
                                           //itListドキュメントにfavoriteUserという配列型のフィールドを持たせて
                                           //フィールドの値にはFirebaseAuth.instance.currentUser!.uidを入れるメソッド
-                                          saveFavoriteController
+                                          ifThenListController
                                               .saveFavoriteUserId(ifThen)
-                                          : favoriteIfThenController
-                                              .deleteFavoriteIfThen(ifThen);
+                                          : ifThenListController
+                                              .deleteFavoriteUserId(ifThen);
                                     },
                                     //currentUser以外のユーザーに表示されるアイコンボタン
                                     icon: Icon(

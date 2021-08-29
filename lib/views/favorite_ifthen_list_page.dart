@@ -93,7 +93,6 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, watch, child) {
-        final ifThenList = watch(IfThenListProvider).ifThenList;
         final deleteController = watch(IfThenListProvider);
         return StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
@@ -259,15 +258,20 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                                       //         .saveFavoriteUserId(ifThen)
                                       //     : ifThenListController
                                       //         .deleteFavoriteUserId(ifThen);
+                                      print(data['favoriteUserId']);
+                                      print(FirebaseAuth
+                                          .instance.currentUser?.uid);
                                     },
                                     //currentUser以外のユーザーに表示されるアイコンボタン
                                     icon: Icon(
                                       Icons.star,
                                       size: 18.0,
-                                      //変数favoriteが共通してしまってるのが原因だと考えています
-                                      color: favoriteIfThenController.favorite
-                                          ? Colors.amberAccent
-                                          : Colors.grey,
+                                      color: //配列の中にユーザーIDがあれば trueで黄色、なければ Falseでグレーを表示
+                                          data['favoriteUserId'].contains(
+                                                  FirebaseAuth.instance
+                                                      .currentUser?.uid)
+                                              ? Colors.amberAccent
+                                              : Colors.grey,
                                     ),
                                   );
                                 }),

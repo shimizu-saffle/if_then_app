@@ -121,7 +121,7 @@ class FavoriteIfThenController extends ChangeNotifier {
     });
   }
 
-//itListドキュメントのサブコレクションFavoriteに追加するメソッド
+//itListドキュメントのサブコレクションFavoriteに追加
   Future favoriteIfThenAdd(IfThen ifThen) async {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
     final collection = FirebaseFirestore.instance.collection('itList');
@@ -132,6 +132,7 @@ class FavoriteIfThenController extends ChangeNotifier {
         .set({'createdAt': Timestamp.now(), 'userId': userId});
   }
 
+//itListドキュメントのサブコレクションFavoriteから削除
   Future deleteFavoriteIfThen(IfThen ifThen) async {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
     final collection = FirebaseFirestore.instance.collection('itList');

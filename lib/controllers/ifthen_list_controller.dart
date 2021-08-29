@@ -157,7 +157,7 @@ class FavoriteIfThenController extends ChangeNotifier {
   bool favorite = false;
 
   //お気に入りアイコンの色を変える
-  void changeColor(IfThen ifThen) {
+  void changeColor() {
     if (favorite) {
       favorite = false;
     } else {

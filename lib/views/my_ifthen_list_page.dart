@@ -204,8 +204,7 @@ class MyIfThenListPage extends StatelessWidget {
                                       watch(IfThenListProvider);
                                   return IconButton(
                                     onPressed: () {
-                                      favoriteIfThenController
-                                          .changeColor(ifThen);
+                                      favoriteIfThenController.changeColor();
                                       //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを呼び分け
                                       favoriteIfThenController.favorite
                                           ?

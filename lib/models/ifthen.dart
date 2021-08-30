@@ -12,7 +12,7 @@ class IfThen {
     this.thenText = doc.data()!['thenText'];
     this.userId = doc.data()!['userId'];
     this.createdAt = doc.data()!['createdAt'];
-    this.favoriteUserId = doc.data()?['favoriteUserId'];
+    this.favoriteUserId = doc.data()!['favoriteUserId'];
   }
 
   String? documentID;

@@ -94,7 +94,6 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, watch, child) {
-        final ifThenList = watch(IfThenListProvider).ifThenList;
         final deleteController = watch(IfThenListProvider);
         return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: FirebaseFirestore.instance
@@ -243,8 +242,6 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                                   },
                                 )
                               : Consumer(builder: (context, watch, child) {
-                                  final favoriteIfThenController =
-                                      watch(favoriteIfThenProvider);
                                   final ifThenListController =
                                       watch(IfThenListProvider);
                                   return IconButton(

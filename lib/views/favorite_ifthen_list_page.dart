@@ -199,29 +199,26 @@ class FavoriteIfThenListPage extends StatelessWidget {
                                   },
                                 )
                               : Consumer(builder: (context, watch, child) {
-                                  final favoriteIfThenController =
-                                      watch(favoriteIfThenProvider);
                                   final ifThenListController =
                                       watch(IfThenListProvider);
                                   return IconButton(
                                     onPressed: () {
-                                      favoriteIfThenController.changeColor();
-                                      //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを呼び分け
-                                      favoriteIfThenController.favorite
-                                          ?
-                                          //itListドキュメントにfavoriteUserという配列型のフィールドを持たせて
-                                          //フィールドの値にはFirebaseAuth.instance.currentUser!.uidを入れるメソッド
-                                          ifThenListController
-                                              .saveFavoriteUserId(ifThen)
+                                      ifThen.favoriteUserId!.contains(
+                                              FirebaseAuth
+                                                  .instance.currentUser?.uid)
+                                          ? ifThenListController
+                                              .deleteFavoriteUserId(ifThen)
                                           : ifThenListController
-                                              .deleteFavoriteUserId(ifThen);
+                                              .saveFavoriteUserId(ifThen);
                                     },
                                     //currentUser以外のユーザーに表示されるアイコンボタン
                                     icon: Icon(
                                       Icons.star,
                                       size: 18.0,
                                       //変数favoriteが共通してしまってるのが原因だと考えています
-                                      color: favoriteIfThenController.favorite
+                                      color: ifThen.favoriteUserId!.contains(
+                                              FirebaseAuth
+                                                  .instance.currentUser?.uid)
                                           ? Colors.amberAccent
                                           : Colors.grey,
                                     ),

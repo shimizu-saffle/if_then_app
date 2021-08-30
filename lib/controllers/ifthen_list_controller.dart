@@ -30,7 +30,6 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
-  //ドキュメント作成時に配列型のfavoriteUserIdフィールドを持たせる
   Future ifThenAdd() async {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
     final collection = FirebaseFirestore.instance.collection('itList');

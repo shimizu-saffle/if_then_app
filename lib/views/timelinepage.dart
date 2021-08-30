@@ -73,14 +73,13 @@ class TimeLinePage extends StatelessWidget {
         builder: (context, model, child) {
           return FloatingActionButton(
             onPressed: () async {
-              // await Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => AddPage(),
-              //     fullscreenDialog: true,
-              //   ),
-              // );
-              print('kkk');
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddPage(),
+                  fullscreenDialog: true,
+                ),
+              );
             },
             child: Icon(Icons.add),
           );
@@ -220,12 +219,12 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                                                             child: Text('OK'),
                                                             onPressed:
                                                                 () async {
-                                                              // Navigator.of(
-                                                              //         context)
-                                                              //     .pop();
-                                                              // await deleteController
-                                                              //     .ifThenDelete(
-                                                              //         ifThen);
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                              await deleteController
+                                                                  .ifThenDelete(
+                                                                      ifThen);
                                                             },
                                                           ),
                                                         ],
@@ -250,15 +249,13 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                                       watch(IfThenListProvider);
                                   return IconButton(
                                     onPressed: () {
-                                      // data['favoriteUserId'].contains(
-                                      //         FirebaseAuth
-                                      //             .instance.currentUser?.uid)
-                                      //     ? ifThenListController
-                                      //         .deleteFavoriteUserId(ifThen)
-                                      //     : ifThenListController
-                                      //         .saveFavoriteUserId(ifThen);
-                                      print(data['favoriteUserId']);
-                                      print(ifThen.documentID);
+                                      data['favoriteUserId'].contains(
+                                              FirebaseAuth
+                                                  .instance.currentUser?.uid)
+                                          ? ifThenListController
+                                              .deleteFavoriteUserId(ifThen)
+                                          : ifThenListController
+                                              .saveFavoriteUserId(ifThen);
                                     },
                                     //currentUser以外のユーザーに表示されるアイコンボタン
                                     icon: Icon(

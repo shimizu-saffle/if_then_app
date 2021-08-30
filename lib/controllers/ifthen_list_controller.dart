@@ -14,6 +14,7 @@ final AddProvider = ChangeNotifierProvider<IfThenListController>(
 
 class IfThenListController extends ChangeNotifier {
   List<IfThen> ifThenList = [];
+  List<String> initFavoriteUserId = [];
   String newIfText = '';
   String newThenText = '';
 
@@ -29,6 +30,7 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
+  //ドキュメント作成時に配列型のfavoriteUserIdフィールドを持たせる
   Future ifThenAdd() async {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
     final collection = FirebaseFirestore.instance.collection('itList');
@@ -36,7 +38,8 @@ class IfThenListController extends ChangeNotifier {
       'ifText': newIfText,
       'thenText': newThenText,
       'createdAt': Timestamp.now(),
-      'userId': userId
+      'userId': userId,
+      'favoriteUserId': initFavoriteUserId
     });
   }
 

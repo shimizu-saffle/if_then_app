@@ -114,10 +114,6 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
               }
               // snapshotからデータを取り出して使う
               // 取得したドキュメントから必要なデータを取り出す
-              List? StreamList;
-              List actualizedStreamList = snapshot.data!.docs
-                  .map((DocumentSnapshot document) => StreamList)
-                  .toList();
               return ListView(
                 children: snapshot.data!.docs
                     .map((DocumentSnapshot<Map<String, dynamic>> document) {

@@ -121,7 +121,7 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
               return ListView(
                 children: snapshot.data!.docs
                     .map((DocumentSnapshot<Map<String, dynamic>> document) {
-                  final data = document.data()! as Map<String, dynamic>;
+                  final data = document.data()!;
                   final ifThen = IfThen(document);
                   return Card(
                     child: Row(
@@ -182,8 +182,7 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                         ),
                         Container(
                           child: FirebaseAuth.instance.currentUser?.uid ==
-                                  ifThen.documentID
-                              //currentUserに表示されるアイコンボタン
+                                  ifThen.userId
                               ? IconButton(
                                   icon: Icon(Icons.more_vert),
                                   onPressed: () async {
@@ -263,18 +262,19 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                                       //     : ifThenListController
                                       //         .saveFavoriteUserId(ifThen);
                                       print(data['favoriteUserId']);
+                                      print(ifThen.documentID);
                                     },
                                     //currentUser以外のユーザーに表示されるアイコンボタン
-                                    icon: Icon(Icons.star,
-                                        size: 18.0,
-                                        color: Colors
-                                            .grey //配列の中にユーザーIDがあれば trueで黄色、なければ Falseでグレーを表示
-                                        // data['favoriteUserId'].contains(
-                                        //         FirebaseAuth.instance
-                                        //             .currentUser?.uid)
-                                        //     ? Colors.amberAccent
-                                        //     : Colors.grey,
-                                        ),
+                                    icon: Icon(
+                                      Icons.star,
+                                      size: 18.0,
+                                      color: //配列の中にユーザーIDがあれば trueで黄色、なければ Falseでグレーを表示
+                                          data['favoriteUserId'].contains(
+                                                  FirebaseAuth.instance
+                                                      .currentUser?.uid)
+                                              ? Colors.amberAccent
+                                              : Colors.grey,
+                                    ),
                                   );
                                 }),
                         ),

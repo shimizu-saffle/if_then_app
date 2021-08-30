@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
+import 'package:if_then_app/models/ifthen.dart';
 import 'package:if_then_app/views/add_edit_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/ifthen_list_controller.dart';
@@ -13,7 +14,7 @@ class TimeLinePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('\u{1F4AB}  みんなのイフゼン  \u{1F4AB}'),
+        title: const Text('\u{1F4E3}  みんなのイフゼン  \u{1F4E3}'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -72,13 +73,14 @@ class TimeLinePage extends StatelessWidget {
         builder: (context, model, child) {
           return FloatingActionButton(
             onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddPage(),
-                  fullscreenDialog: true,
-                ),
-              );
+              // await Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => AddPage(),
+              //     fullscreenDialog: true,
+              //   ),
+              // );
+              print('kkk');
             },
             child: Icon(Icons.add),
           );
@@ -93,15 +95,15 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, watch, child) {
+        final ifThenList = watch(IfThenListProvider).ifThenList;
         final deleteController = watch(IfThenListProvider);
-        return StreamBuilder<QuerySnapshot>(
+        return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: FirebaseFirestore.instance
                 .collection('itList')
                 .orderBy('createdAt', descending: true)
-                // .where('favoriteUserId',
-                //     arrayContains: FirebaseAuth.instance.currentUser?.uid)
                 .snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            builder: (context,
+                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (!snapshot.hasData) {
                 return const Center(
                   child: const CircularProgressIndicator(),
@@ -112,9 +114,15 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
               }
               // snapshotからデータを取り出して使う
               // 取得したドキュメントから必要なデータを取り出す
+              List? StreamList;
+              List actualizedStreamList = snapshot.data!.docs
+                  .map((DocumentSnapshot document) => StreamList)
+                  .toList();
               return ListView(
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                children: snapshot.data!.docs
+                    .map((DocumentSnapshot<Map<String, dynamic>> document) {
                   final data = document.data()! as Map<String, dynamic>;
+                  final ifThen = IfThen(document);
                   return Card(
                     child: Row(
                       children: [
@@ -142,7 +150,7 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                                       width: 24,
                                     ),
                                     Text(
-                                      '${data['ifText']}',
+                                      '${ifThen.ifText}',
                                       style: TextStyle(height: 2.0),
                                     ),
                                   ],
@@ -163,7 +171,7 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                                       width: 10,
                                     ),
                                     Text(
-                                      '${data['thenText']}',
+                                      '${ifThen.thenText}',
                                       style: TextStyle(height: 2.0),
                                     ),
                                   ],
@@ -174,7 +182,7 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                         ),
                         Container(
                           child: FirebaseAuth.instance.currentUser?.uid ==
-                                  data['userId']
+                                  ifThen.documentID
                               //currentUserに表示されるアイコンボタン
                               ? IconButton(
                                   icon: Icon(Icons.more_vert),
@@ -192,8 +200,8 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           AddPage(
-                                                              ifThen:
-                                                                  data['id']),
+                                                        ifThen: ifThen,
+                                                      ),
                                                       fullscreenDialog: true,
                                                     ),
                                                   );
@@ -211,7 +219,7 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                                                         (BuildContext context) {
                                                       return AlertDialog(
                                                         title: Text(
-                                                            '「${data['ifText']}${data['thenText']}」を削除しますか？'),
+                                                            '「${ifThen.ifText}${ifThen.thenText}」を削除しますか？'),
                                                         actions: <Widget>[
                                                           ElevatedButton(
                                                             child: Text('OK'),
@@ -247,29 +255,26 @@ class MyFavoriteIfThenListCard extends StatelessWidget {
                                       watch(IfThenListProvider);
                                   return IconButton(
                                     onPressed: () {
-                                      // favoriteIfThenController
-                                      //     .changeColor();
-                                      // //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを呼び分け
-                                      // favoriteIfThenController.favorite
-                                      //     ?
-                                      //     //itListドキュメントにfavoriteUserという配列型のフィールドを持たせて
-                                      //     //フィールドの値にはFirebaseAuth.instance.currentUser!.uidを入れるメソッド
-                                      //     ifThenListController
-                                      //         .saveFavoriteUserId(ifThen)
+                                      // data['favoriteUserId'].contains(
+                                      //         FirebaseAuth
+                                      //             .instance.currentUser?.uid)
+                                      //     ? ifThenListController
+                                      //         .deleteFavoriteUserId(ifThen)
                                       //     : ifThenListController
-                                      //         .deleteFavoriteUserId(ifThen);
+                                      //         .saveFavoriteUserId(ifThen);
+                                      print(data['favoriteUserId']);
                                     },
                                     //currentUser以外のユーザーに表示されるアイコンボタン
-                                    icon: Icon(
-                                      Icons.star,
-                                      size: 18.0,
-                                      color: //配列の中にユーザーIDがあれば trueで黄色、なければ Falseでグレーを表示
-                                          data['favoriteUserId'].contains(
-                                                  FirebaseAuth.instance
-                                                      .currentUser?.uid)
-                                              ? Colors.amberAccent
-                                              : Colors.grey,
-                                    ),
+                                    icon: Icon(Icons.star,
+                                        size: 18.0,
+                                        color: Colors
+                                            .grey //配列の中にユーザーIDがあれば trueで黄色、なければ Falseでグレーを表示
+                                        // data['favoriteUserId'].contains(
+                                        //         FirebaseAuth.instance
+                                        //             .currentUser?.uid)
+                                        //     ? Colors.amberAccent
+                                        //     : Colors.grey,
+                                        ),
                                   );
                                 }),
                         ),

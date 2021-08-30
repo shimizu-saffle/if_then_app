@@ -12,6 +12,7 @@ class IfThen {
     this.thenText = doc.data()!['thenText'];
     this.userId = doc.data()!['userId'];
     this.createdAt = doc.data()!['createdAt'];
+    this.favoriteUserId = doc.data()?['favoriteUserId'];
   }
 
   String? documentID;
@@ -19,4 +20,5 @@ class IfThen {
   String? thenText;
   String? userId;
   Timestamp? createdAt;
+  List? favoriteUserId;
 }

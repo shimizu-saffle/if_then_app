@@ -13,7 +13,7 @@ class IfThenMixerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('\u{1F4E3}  みんなのイフゼン  \u{1F4E3}'),
+        title: const Text('\u{1F4E3}  イフゼンガチャ  \u{1F4E3}'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(

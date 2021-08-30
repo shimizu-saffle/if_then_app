@@ -40,11 +40,6 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
-  //itListドキュメントにfavoriteUserという配列型のフィールドを持たせて
-  //フィールドの値にはFirebaseAuth.instance.currentUser!.uidを入れる
-  //FCMトークン取得のメソッドを参考にする
-  //itList更新メソッドを参考にする
-  //タイムラインページのお気に入りアイコンボタンでこのメソッドを呼び出す。
   Future<void> saveFavoriteUserId(IfThen ifThen) async {
     final favoriteUserId = FirebaseAuth.instance.currentUser!.uid;
 
@@ -55,6 +50,27 @@ class IfThenListController extends ChangeNotifier {
       'favoriteUserId': FieldValue.arrayUnion([favoriteUserId]),
     });
   }
+
+  // void listenSavingFavoriteIfThen() {
+  //   Stream<QuerySnapshot> querySnapshot =
+  //       FirebaseFirestore.instance.collection('itList').snapshots();
+  //
+  //   Stream<DocumentSnapshot> documentSnapshot =
+  //       FirebaseFirestore.instance.collection('itList').;
+  //
+  //   final data = document.data()! as Map<String, dynamic>;
+  //
+  //   ///コレクションの変更を監視して実行
+  //   querySnapshot.listen((snapshot) async {
+  //     await FirebaseFirestore.instance
+  //         .collection('itList')
+  //         .doc(querySnapshot.docs.id)
+  //         .update({
+  //       'favoriteUserId': FieldValue.arrayUnion([favoriteUserId]),
+  //     });
+  //     notifyListeners();
+  //   });
+  // }
 
   Future<void> deleteFavoriteUserId(IfThen ifThen) async {
     final favoriteUserId = FirebaseAuth.instance.currentUser!.uid;
@@ -136,7 +152,6 @@ class FavoriteIfThenController extends ChangeNotifier {
   List<IfThen> favoriteIfThenList = [];
 
   //イフゼンプランドキュメントのサブコレクションfavoriteからお気に入り一覧を取得するメソッド
-  //だけどfavoriteIfThenListの中身は空になってしまう
   void getMyFavoriteIfThenRealtime() async {
     final snapshots = FirebaseFirestore.instance
         .collectionGroup('favorite')

@@ -32,13 +32,20 @@ class IfThenListController extends ChangeNotifier {
 
   Future ifThenAdd() async {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
-    final collection = FirebaseFirestore.instance.collection('itList');
-    await collection.add({
+    final itList = FirebaseFirestore.instance.collection('itList');
+    final count =
+        FirebaseFirestore.instance.collection('settings').doc('count');
+
+    await itList.add({
       'ifText': newIfText,
       'thenText': newThenText,
       'createdAt': Timestamp.now(),
       'userId': userId,
       'favoriteUserId': initFavoriteUserId
+    });
+
+    count.update({
+      'total': FieldValue.increment(1),
     });
   }
 
@@ -52,27 +59,6 @@ class IfThenListController extends ChangeNotifier {
       'favoriteUserId': FieldValue.arrayUnion([favoriteUserId]),
     });
   }
-
-  // void listenSavingFavoriteIfThen() {
-  //   Stream<QuerySnapshot> querySnapshot =
-  //       FirebaseFirestore.instance.collection('itList').snapshots();
-  //
-  //   Stream<DocumentSnapshot> documentSnapshot =
-  //       FirebaseFirestore.instance.collection('itList').;
-  //
-  //   final data = document.data()! as Map<String, dynamic>;
-  //
-  //   ///コレクションの変更を監視して実行
-  //   querySnapshot.listen((snapshot) async {
-  //     await FirebaseFirestore.instance
-  //         .collection('itList')
-  //         .doc(querySnapshot.docs.id)
-  //         .update({
-  //       'favoriteUserId': FieldValue.arrayUnion([favoriteUserId]),
-  //     });
-  //     notifyListeners();
-  //   });
-  // }
 
   Future<void> deleteFavoriteUserId(IfThen ifThen) async {
     final favoriteUserId = FirebaseAuth.instance.currentUser!.uid;
@@ -96,10 +82,17 @@ class IfThenListController extends ChangeNotifier {
   }
 
   Future ifThenDelete(IfThen ifThen) async {
+    final count =
+        FirebaseFirestore.instance.collection('settings').doc('count');
+
     await FirebaseFirestore.instance
         .collection('itList')
         .doc(ifThen.documentID)
         .delete();
+
+    count.update({
+      'total': FieldValue.increment(-1),
+    });
   }
 }
 

@@ -237,22 +237,6 @@ class FavoriteIfThenListPage extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: Consumer(
-        builder: (context, model, child) {
-          return FloatingActionButton(
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddPage(),
-                  fullscreenDialog: true,
-                ),
-              );
-            },
-            child: Icon(Icons.add),
-          );
-        },
-      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:if_then_app/models/count.dart';
 import 'package:if_then_app/models/ifthen.dart';
 
 final IfThenListProvider = ChangeNotifierProvider<IfThenListController>(
@@ -33,19 +34,26 @@ class IfThenListController extends ChangeNotifier {
   Future ifThenAdd() async {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
     final itList = FirebaseFirestore.instance.collection('itList');
-    final count =
+    final DocumentReference<Map<String, dynamic>> countRef =
         FirebaseFirestore.instance.collection('settings').doc('count');
+
+    countRef.update({
+      'total': FieldValue.increment(1),
+    });
+
+    final countSnapshot = await countRef.get();
+    final count = Count(countSnapshot);
+    final total = count.total;
+
+    //totalの値を取得してserialNumberに代入
 
     await itList.add({
       'ifText': newIfText,
       'thenText': newThenText,
       'createdAt': Timestamp.now(),
       'userId': userId,
-      'favoriteUserId': initFavoriteUserId
-    });
-
-    count.update({
-      'total': FieldValue.increment(1),
+      'favoriteUserId': initFavoriteUserId,
+      'serialNumber': total
     });
   }
 

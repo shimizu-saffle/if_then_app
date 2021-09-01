@@ -10,6 +10,7 @@ import 'package:if_then_app/controllers/fcm_controller.dart';
 import 'package:if_then_app/views/account_page/signup_page.dart';
 import 'package:if_then_app/views/account_page/login_page.dart';
 import 'package:if_then_app/views/account_page/forgot-password.dart';
+import 'package:if_then_app/views/gacha_page/present_page.dart';
 import 'package:if_then_app/views/my_ifthen_list_page.dart';
 
 import 'package:if_then_app/views/root_page.dart';
@@ -80,6 +81,7 @@ class MyApp extends StatelessWidget {
         'SignUpPage': (context) => SignUpPage(),
         'TimeLinePage': (context) => TimeLinePage(),
         'MyIfThenListPage': (context) => MyIfThenListPage(),
+        'PresentPage': (context) => PresentPage(),
       },
       theme: ThemeData(textTheme: GoogleFonts.notoSansTextTheme()),
       darkTheme: ThemeData.dark(),

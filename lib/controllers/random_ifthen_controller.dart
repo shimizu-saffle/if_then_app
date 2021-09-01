@@ -5,14 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/models/count.dart';
 
 final randomProvider = ChangeNotifierProvider<RandomIfThenController>(
-  (ref) => RandomIfThenController(),
+  (ref) => RandomIfThenController()..getRandomIfThen(),
 );
 
 class RandomIfThenController extends ChangeNotifier {
-  String randomIfText = '';
-  String randomThenText = '';
+  String? randomIfText;
+  String? randomThenText;
 
-  Future getRandomIfThen() async {
+  void getRandomIfThen() async {
     final DocumentReference<Map<String, dynamic>> countRef =
         FirebaseFirestore.instance.collection('settings').doc('count');
     final countSnapshot = await countRef.get();
@@ -34,9 +34,9 @@ class RandomIfThenController extends ChangeNotifier {
         .where('serialNumber', isEqualTo: randomSerialNumber2)
         .get();
 
-    final randomIfText = ifSnapshots.docs[0].data()['ifText'];
-    final randomThenText = thenSnapshots.docs[0].data()['thenText'];
+    randomIfText = ifSnapshots.docs[0].data()['ifText'];
+    randomThenText = thenSnapshots.docs[0].data()['thenText'];
 
-    print(randomIfText + randomThenText);
+    print(randomIfText! + randomThenText!);
   }
 }

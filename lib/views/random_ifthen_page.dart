@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:if_then_app/controllers/random_ifthen_controller.dart';
 import 'package:if_then_app/views/account_page/login_page.dart';
 
 class IfThenMixerPage extends StatelessWidget {
@@ -62,6 +63,14 @@ class IfThenMixerPage extends StatelessWidget {
           )
         ],
       ),
+      floatingActionButton: Consumer(builder: (context, watch, child) {
+        final randomController = watch(randomProvider);
+        return FloatingActionButton(
+          onPressed: () {
+            randomController.getRandomIfThen();
+          },
+        );
+      }),
     );
   }
 }

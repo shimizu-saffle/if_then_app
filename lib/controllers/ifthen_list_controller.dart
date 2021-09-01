@@ -45,8 +45,6 @@ class IfThenListController extends ChangeNotifier {
     final count = Count(countSnapshot);
     final total = count.total;
 
-    //totalの値を取得してserialNumberに代入
-
     await itList.add({
       'ifText': newIfText,
       'thenText': newThenText,

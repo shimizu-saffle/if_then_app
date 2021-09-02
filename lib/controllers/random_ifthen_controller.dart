@@ -61,4 +61,12 @@ class RandomIfThenController extends ChangeNotifier {
       'serialNumber': total
     });
   }
+
+  Future<void> countTurningGacha() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'turnGacha': FieldValue.arrayUnion([Timestamp.now()]),
+    });
+  }
 }

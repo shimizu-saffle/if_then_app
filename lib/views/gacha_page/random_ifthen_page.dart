@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:if_then_app/controllers/random_ifthen_controller.dart';
 import 'package:if_then_app/views/account_page/login_page.dart';
 import 'package:if_then_app/views/gacha_page/present_page.dart';
 
@@ -70,18 +71,22 @@ class IfThenMixerPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset('images/gachagacha.png'),
-            ElevatedButton(
-              child: Text('回す'),
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PresentPage(),
-                    fullscreenDialog: true,
-                  ),
-                );
-              },
-            )
+            Consumer(builder: (context, watch, child) {
+              final randomController = watch(randomProvider);
+              return ElevatedButton(
+                child: Text('回す'),
+                onPressed: () async {
+                  randomController.countTurningGacha();
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PresentPage(),
+                      fullscreenDialog: true,
+                    ),
+                  );
+                },
+              );
+            })
           ],
         ),
       ),

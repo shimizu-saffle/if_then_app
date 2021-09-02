@@ -72,16 +72,16 @@ class IfThenMixerPage extends StatelessWidget {
           children: [
             Image.asset('images/gachagacha.png'),
             Consumer(builder: (context, watch, child) {
-              final canTurn = watch(randomProvider).canTurn;
-              // final turnGacha = watch(randomProvider).turnGacha;
               final randomController = watch(randomProvider);
               return ElevatedButton(
                 child: Text('回す'),
                 onPressed: () async {
+                  await randomController.checkTodayTurnGachaTimes();
+                  final canTurn = watch(randomProvider).canTurn;
                   if (canTurn) {
                     print('まだ回せるよ');
-                    await randomController.countTurningGacha();
-                    await Navigator.push(
+                    randomController.countTurningGacha();
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => PresentPage(),
@@ -98,14 +98,14 @@ class IfThenMixerPage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: Consumer(builder: (context, watch, child) {
-        final randomController = watch(randomProvider);
-        return FloatingActionButton(
-          onPressed: () {
-            randomController.countTurningGacha();
-          },
-        );
-      }),
+      // floatingActionButton: Consumer(builder: (context, watch, child) {
+      //   final testGachaCheck = watch(randomProvider);
+      //   return FloatingActionButton(
+      //     onPressed: () {
+      //       print(testGachaCheck.checkTodayTurnGachaTimes());
+      //     },
+      //   );
+      // }),
     );
   }
 }

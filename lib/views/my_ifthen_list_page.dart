@@ -198,32 +198,13 @@ class MyIfThenListPage extends StatelessWidget {
                                   },
                                 )
                               : Consumer(builder: (context, watch, child) {
-                                  final favoriteIfThenController =
-                                      watch(favoriteIfThenProvider);
-                                  final ifThenListController =
-                                      watch(IfThenListProvider);
                                   return IconButton(
-                                    onPressed: () {
-                                      favoriteIfThenController.changeColor();
-                                      //  三項演算子を使ってFavoriteコレクションに追加するメソッドと削除するメソッドを呼び分け
-                                      favoriteIfThenController.favorite
-                                          ?
-                                          //itListドキュメントにfavoriteUserという配列型のフィールドを持たせて
-                                          //フィールドの値にはFirebaseAuth.instance.currentUser!.uidを入れるメソッド
-                                          ifThenListController
-                                              .saveFavoriteUserId(ifThen)
-                                          : ifThenListController
-                                              .deleteFavoriteUserId(ifThen);
-                                    },
+                                    onPressed: () {},
                                     //currentUser以外のユーザーに表示されるアイコンボタン
-                                    icon: Icon(
-                                      Icons.star,
-                                      size: 18.0,
-                                      //変数favoriteが共通してしまってるのが原因だと考えています
-                                      color: favoriteIfThenController.favorite
-                                          ? Colors.amberAccent
-                                          : Colors.grey,
-                                    ),
+                                    icon: Icon(Icons.star,
+                                        size: 18.0,
+                                        //変数favoriteが共通してしまってるのが原因だと考えています
+                                        color: Colors.amberAccent),
                                   );
                                 }),
                         ),

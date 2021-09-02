@@ -1,16 +1,17 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/models/count.dart';
 
 final randomProvider = ChangeNotifierProvider<RandomIfThenController>(
-  (ref) => RandomIfThenController()..getRandomIfThen(),
-);
+    (ref) => RandomIfThenController());
 
 class RandomIfThenController extends ChangeNotifier {
   String? randomIfText;
   String? randomThenText;
+  List<String> initFavoriteUserId = [];
 
   void getRandomIfThen() async {
     final DocumentReference<Map<String, dynamic>> countRef =
@@ -20,9 +21,6 @@ class RandomIfThenController extends ChangeNotifier {
     final randomRange = count.total;
     int randomSerialNumber1 = Random().nextInt(randomRange!) + 1;
     int randomSerialNumber2 = Random().nextInt(randomRange) + 1;
-
-    print('イフ${randomSerialNumber1}');
-    print('ゼン${randomSerialNumber2}');
 
     final ifSnapshots = await FirebaseFirestore.instance
         .collection('itList')
@@ -38,5 +36,29 @@ class RandomIfThenController extends ChangeNotifier {
     randomThenText = thenSnapshots.docs[0].data()['thenText'];
 
     print(randomIfText! + randomThenText!);
+  }
+
+  Future addRandomToMyIfThen() async {
+    final String userId = FirebaseAuth.instance.currentUser!.uid;
+    final itList = FirebaseFirestore.instance.collection('itList');
+    final DocumentReference<Map<String, dynamic>> countRef =
+        FirebaseFirestore.instance.collection('settings').doc('count');
+
+    countRef.update({
+      'total': FieldValue.increment(1),
+    });
+
+    final countSnapshot = await countRef.get();
+    final count = Count(countSnapshot);
+    final total = count.total;
+
+    await itList.add({
+      'ifText': randomIfText,
+      'thenText': randomThenText,
+      'createdAt': Timestamp.now(),
+      'userId': userId,
+      'favoriteUserId': initFavoriteUserId,
+      'serialNumber': total
+    });
   }
 }

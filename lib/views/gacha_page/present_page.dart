@@ -100,7 +100,13 @@ class PresentPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ElevatedButton(onPressed: () {}, child: Text('はい')),
+                  ElevatedButton(
+                      onPressed: () async {
+                        randomController.addRandomToMyIfThen();
+                        randomController.getRandomIfThen();
+                        await Navigator.pushNamed(context, 'RootPage');
+                      },
+                      child: Text('はい')),
                   SizedBox(
                     width: 40,
                   ),

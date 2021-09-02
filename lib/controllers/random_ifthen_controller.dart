@@ -6,19 +6,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/models/count.dart';
 
 final randomProvider = ChangeNotifierProvider<RandomIfThenController>(
-    (ref) => RandomIfThenController());
+    (ref) => RandomIfThenController()..checkTodayTurnGachaTimes());
 
 class RandomIfThenController extends ChangeNotifier {
   String? randomIfText;
   String? randomThenText;
   List<String> initFavoriteUserId = [];
+  bool canTurn = true;
 
   void getRandomIfThen() async {
     final DocumentReference<Map<String, dynamic>> countRef =
         FirebaseFirestore.instance.collection('settings').doc('count');
+
     final countSnapshot = await countRef.get();
     final count = Count(countSnapshot);
     final randomRange = count.total;
+
     int randomSerialNumber1 = Random().nextInt(randomRange!) + 1;
     int randomSerialNumber2 = Random().nextInt(randomRange) + 1;
 
@@ -68,5 +71,26 @@ class RandomIfThenController extends ChangeNotifier {
     await FirebaseFirestore.instance.collection('users').doc(userId).update({
       'turnGacha': FieldValue.arrayUnion([Timestamp.now()]),
     });
+  }
+
+  Future checkTodayTurnGachaTimes() async {
+    final String userId = FirebaseAuth.instance.currentUser!.uid;
+    final DocumentSnapshot<Map<String, dynamic>> userDocument =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+
+    // ??は左がnullだったら右にしよう
+    final List<dynamic> list = userDocument.data()!['turnGacha'] ?? [];
+
+    //一足飛びのキャストができないのでまずはList<dynamic>だとわからせてから
+    //Listの中の要素がTimestamp型だとわからせて、DateTime型に変換している
+    final turnGacha = list.map((e) => (e as Timestamp).toDate()).toList();
+    //lengthが5未満だったらtureが返る
+    canTurn = turnGacha
+            .where((e) =>
+                e.day == DateTime.now().day &&
+                e.year == DateTime.now().year &&
+                e.month == DateTime.now().month)
+            .length <
+        5;
   }
 }

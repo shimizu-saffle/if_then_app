@@ -72,24 +72,40 @@ class IfThenMixerPage extends StatelessWidget {
           children: [
             Image.asset('images/gachagacha.png'),
             Consumer(builder: (context, watch, child) {
+              final canTurn = watch(randomProvider).canTurn;
+              // final turnGacha = watch(randomProvider).turnGacha;
               final randomController = watch(randomProvider);
               return ElevatedButton(
                 child: Text('回す'),
                 onPressed: () async {
-                  randomController.countTurningGacha();
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PresentPage(),
-                      fullscreenDialog: true,
-                    ),
-                  );
+                  if (canTurn) {
+                    print('まだ回せるよ');
+                    await randomController.countTurningGacha();
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PresentPage(),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  } else {
+                    print('もう回せないよ');
+                    print(canTurn);
+                  }
                 },
               );
             })
           ],
         ),
       ),
+      floatingActionButton: Consumer(builder: (context, watch, child) {
+        final randomController = watch(randomProvider);
+        return FloatingActionButton(
+          onPressed: () {
+            randomController.countTurningGacha();
+          },
+        );
+      }),
     );
   }
 }

@@ -5,11 +5,13 @@ class UserModel {
   Timestamp? createdAt;
   String? tokens;
   String? email;
+  List<Timestamp>? turnGacha;
 
   UserModel({
     this.userId,
     this.createdAt,
     this.tokens,
     this.email,
+    this.turnGacha,
   });
 }

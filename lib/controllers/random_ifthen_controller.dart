@@ -81,6 +81,7 @@ class RandomIfThenController extends ChangeNotifier {
     // ??は左がnullだったら右にしよう
     final List<dynamic> list = await userDocument.data()!['turnGacha'] ?? [];
 
+    //List<dynamic>型のリストに入ってるTimestamp型の要素をDateTime型に変換する記述
     //一足飛びのキャストができないのでまずはList<dynamic>だとわからせてから
     //Listの中の要素がTimestamp型だとわからせて、DateTime型に変換している
     final turnGacha = list.map((e) => (e as Timestamp).toDate()).toList();
@@ -88,7 +89,7 @@ class RandomIfThenController extends ChangeNotifier {
     //turnGachaの要素が6以上あればFirestoreのフィールドバリューを削除したいけどそれはできてない
     if (turnGacha.length > 6) {
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'turnGacha': FieldValue.arrayRemove([]),
+        'turnGacha': FieldValue.arrayRemove([]), //←この中括弧の中の
       });
     }
 

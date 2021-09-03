@@ -68,12 +68,12 @@ class TimeLinePage extends StatelessWidget {
           )
         ],
       ),
-      body: MyFavoriteIfThenListCard(),
+      body: TimeLineCard(),
     );
   }
 }
 
-class MyFavoriteIfThenListCard extends StatelessWidget {
+class TimeLineCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(

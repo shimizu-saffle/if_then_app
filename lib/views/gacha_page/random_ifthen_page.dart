@@ -91,6 +91,23 @@ class IfThenMixerPage extends StatelessWidget {
                   } else {
                     print('もう回せないよ');
                     print(canTurn);
+                    await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(
+                              'ガチャを回せるのは\n1日5回までだよ\u{1F60C}\nまた明日回してね\u{1F365}'),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              child: Text('うん'),
+                              onPressed: () async {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   }
                 },
               );

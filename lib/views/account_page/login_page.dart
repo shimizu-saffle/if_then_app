@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:if_then_app/models/pallete.dart';
-import 'package:if_then_app/widgets/GoogleLoginButton.dart';
-import 'package:if_then_app/widgets/login_button.dart';
-import 'package:if_then_app/widgets/password-input.dart';
-import 'package:if_then_app/widgets/mail-input.dart';
+import 'package:if_then_app/controllers/login_controller.dart';
+import 'package:sign_button/sign_button.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -13,7 +10,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 40),
+          SizedBox(height: 70),
           Flexible(
             child: Center(
               child: Text(
@@ -28,64 +25,32 @@ class LoginPage extends StatelessWidget {
               ),
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              MailInputField(
-                icon: FontAwesomeIcons.envelope,
-                hint: '',
-                inputType: TextInputType.emailAddress,
-                inputAction: TextInputAction.next,
-              ),
-              PasswordInputField(
-                icon: FontAwesomeIcons.lock,
-                hint: '',
-                inputType: TextInputType.emailAddress,
-                inputAction: TextInputAction.done,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              LoginButton(buttonName: 'ログイン'),
-              SizedBox(height: 25),
-              GoogleLoginButton(
-                buttonName: 'Googleアカウントでログイン',
-                icon: FontAwesomeIcons.google,
-              ),
-              SizedBox(height: 25),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          GestureDetector(
-            onTap: () => Navigator.pushNamed(context, 'SignUpPage'),
-            child: Container(
-              child: Text(
-                '初めての方はこちら',
-                style: bBodyText,
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(width: 1, color: kBlue))),
-            ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          GestureDetector(
-            onTap: () => Navigator.pushNamed(context, 'ForgotPassword'),
-            child: Container(
-              child: Text(
-                'パスワードを忘れた方はこちら',
-                style: bBodyText,
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(width: 1, color: kBlue))),
-            ),
-          ),
-          SizedBox(
-            height: 45,
-          ),
+          Consumer(builder: (context, watch, child) {
+            final logInController = watch(GoogleLogInProvider);
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 25),
+                SignInButton(
+                  buttonType: ButtonType.apple,
+                  buttonSize: ButtonSize.medium,
+                  onPressed: () {},
+                ),
+                SizedBox(height: 25),
+                SignInButton(
+                  buttonType: ButtonType.google,
+                  buttonSize: ButtonSize.medium,
+                  onPressed: () async {
+                    await logInController.loginUserWithGoogle();
+                    Navigator.pushNamed(context, 'RootPage');
+                  },
+                ),
+                SizedBox(
+                  height: 150,
+                ),
+              ],
+            );
+          }),
         ],
       ),
     );

@@ -26,7 +26,8 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           Consumer(builder: (context, watch, child) {
-            final logInController = watch(GoogleLogInProvider);
+            final googleLogInController = watch(GoogleLogInProvider);
+            final appleLogInController = watch(AppleLogInProvider);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -34,14 +35,17 @@ class LoginPage extends StatelessWidget {
                 SignInButton(
                   buttonType: ButtonType.apple,
                   buttonSize: ButtonSize.medium,
-                  onPressed: () {},
+                  onPressed: () async {
+                    await appleLogInController.signInWithApple();
+                    Navigator.pushNamed(context, 'RootPage');
+                  },
                 ),
                 SizedBox(height: 25),
                 SignInButton(
                   buttonType: ButtonType.google,
                   buttonSize: ButtonSize.medium,
                   onPressed: () async {
-                    await logInController.loginUserWithGoogle();
+                    await googleLogInController.loginUserWithGoogle();
                     Navigator.pushNamed(context, 'RootPage');
                   },
                 ),

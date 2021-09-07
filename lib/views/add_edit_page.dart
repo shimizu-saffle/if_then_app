@@ -20,7 +20,7 @@ class AddPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(isUpdate ? 'edit' : 'add'),
+        title: Text('イフゼン'),
       ),
       body: Consumer(
         builder: (context, watch, child) {
@@ -30,7 +30,8 @@ class AddPage extends StatelessWidget {
             child: Column(
               children: [
                 TextField(
-                  maxLength: 20,
+                  maxLength: 17,
+                  maxLines: 1,
                   controller: ifTextEditingController,
                   decoration:
                       InputDecoration(labelText: "IF", hintText: "〇〇な時"),
@@ -39,7 +40,8 @@ class AddPage extends StatelessWidget {
                   },
                 ),
                 TextField(
-                  maxLength: 20,
+                  maxLength: 17,
+                  maxLines: 1,
                   controller: thenTextEditingController,
                   decoration:
                       InputDecoration(labelText: "THEN", hintText: "〇〇する"),
@@ -53,8 +55,78 @@ class AddPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     if (isUpdate) {
+                      if (addController.newIfText.isEmpty) {
+                        throw (showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('IFを入力してね\u{1F64F}'),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  child: Text('わかった'),
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ));
+                      } else if (addController.newThenText.isEmpty) {
+                        throw (showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('THENを入力してね\u{1F64F}'),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  child: Text('わかった'),
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ));
+                      }
                       await addController.ifThenUpdate(ifThen!);
                     } else {
+                      if (addController.newIfText.isEmpty) {
+                        throw (showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('IFを入力してね\u{1F64F}'),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  child: Text('わかった'),
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ));
+                      } else if (addController.newThenText.isEmpty) {
+                        throw (showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('THENを入力してね\u{1F64F}'),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  child: Text('わかった'),
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ));
+                      }
                       await addController.ifThenAdd();
                     }
                     Navigator.of(context).pop();

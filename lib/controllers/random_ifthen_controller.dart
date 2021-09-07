@@ -6,7 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/models/count.dart';
 
 final randomProvider = ChangeNotifierProvider<RandomIfThenController>(
-    (ref) => RandomIfThenController()..checkTodayTurnGachaTimes());
+    (ref) => RandomIfThenController()
+      ..checkTodayTurnGachaTimes()
+      ..getRandomIfThen());
 
 class RandomIfThenController extends ChangeNotifier {
   String? randomIfText;
@@ -35,8 +37,8 @@ class RandomIfThenController extends ChangeNotifier {
         .where('serialNumber', isEqualTo: randomSerialNumber2)
         .get();
 
-    randomIfText = ifSnapshots.docs[0].data()['ifText'];
-    randomThenText = thenSnapshots.docs[0].data()['thenText'];
+    randomIfText = await ifSnapshots.docs[0].data()['ifText'];
+    randomThenText = await thenSnapshots.docs[0].data()['thenText'];
 
     print(randomIfText! + randomThenText!);
   }

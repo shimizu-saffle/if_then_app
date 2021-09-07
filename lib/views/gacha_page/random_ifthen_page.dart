@@ -81,7 +81,7 @@ class IfThenMixerPage extends StatelessWidget {
                   if (canTurn) {
                     print('まだ回せるよ');
                     randomController.countTurningGacha();
-                    Navigator.push(
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => PresentPage(),

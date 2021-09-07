@@ -10,7 +10,7 @@ final IfThenListProvider = ChangeNotifierProvider<IfThenListController>(
 );
 
 final AddProvider = ChangeNotifierProvider<IfThenListController>(
-  (ref) => IfThenListController()..ifThenAdd(),
+  (ref) => IfThenListController(),
 );
 
 class IfThenListController extends ChangeNotifier {

@@ -36,7 +36,7 @@ class LoginPage extends StatelessWidget {
               children: [
                 SizedBox(height: 25),
                 Platform.isAndroid
-                    ? SizedBox(height: 25)
+                    ? SizedBox(height: 0)
                     : SignInButton(
                         buttonType: ButtonType.apple,
                         buttonSize: ButtonSize.medium,

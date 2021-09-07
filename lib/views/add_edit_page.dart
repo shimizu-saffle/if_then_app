@@ -30,6 +30,7 @@ class AddPage extends StatelessWidget {
             child: Column(
               children: [
                 TextField(
+                  maxLength: 20,
                   controller: ifTextEditingController,
                   decoration:
                       InputDecoration(labelText: "IF", hintText: "〇〇な時"),
@@ -38,6 +39,7 @@ class AddPage extends StatelessWidget {
                   },
                 ),
                 TextField(
+                  maxLength: 20,
                   controller: thenTextEditingController,
                   decoration:
                       InputDecoration(labelText: "THEN", hintText: "〇〇する"),

@@ -78,7 +78,7 @@ class MyIfThenListPage extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.fromLTRB(10, 20, 0, 20),
                             child: Column(
                               children: [
                                 Row(

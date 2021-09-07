@@ -36,7 +36,7 @@ class LoginPage extends StatelessWidget {
                   buttonType: ButtonType.apple,
                   buttonSize: ButtonSize.medium,
                   onPressed: () async {
-                    await appleLogInController.signInWithApple();
+                    await appleLogInController.loginUserWithApple();
                     Navigator.pushNamed(context, 'RootPage');
                   },
                 ),

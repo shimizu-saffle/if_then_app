@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,14 +35,17 @@ class LoginPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 25),
-                SignInButton(
-                  buttonType: ButtonType.apple,
-                  buttonSize: ButtonSize.medium,
-                  onPressed: () async {
-                    await appleLogInController.loginUserWithApple();
-                    Navigator.pushNamed(context, 'RootPage');
-                  },
-                ),
+                Platform.isAndroid
+                    ? SizedBox(height: 25)
+                    : SignInButton(
+                        buttonType: ButtonType.apple,
+                        buttonSize: ButtonSize.medium,
+                        onPressed: () async {
+                          await appleLogInController.loginUserWithApple();
+                          Navigator.pushNamed(context, 'RootPage');
+                          print(FirebaseAuth.instance.currentUser?.uid);
+                        },
+                      ),
                 SizedBox(height: 25),
                 SignInButton(
                   buttonType: ButtonType.google,
@@ -47,6 +53,7 @@ class LoginPage extends StatelessWidget {
                   onPressed: () async {
                     await googleLogInController.loginUserWithGoogle();
                     Navigator.pushNamed(context, 'RootPage');
+                    print(FirebaseAuth.instance.currentUser?.uid);
                   },
                 ),
                 SizedBox(

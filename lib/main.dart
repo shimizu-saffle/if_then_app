@@ -83,8 +83,15 @@ class MyApp extends StatelessWidget {
         'MyIfThenListPage': (context) => MyIfThenListPage(),
         'PresentPage': (context) => PresentPage(),
       },
-      theme: ThemeData(textTheme: GoogleFonts.notoSansTextTheme()),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData(
+        textTheme: GoogleFonts.notoSansTextTheme(),
+        primaryColor: Colors.deepOrange,
+        primarySwatch: Colors.deepOrange,
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.deepOrange,
+      ),
       themeMode: ThemeMode.system,
     );
   }

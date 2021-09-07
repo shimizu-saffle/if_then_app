@@ -24,7 +24,7 @@ class RootPage extends StatelessWidget {
         body: _pageList[bottomNavigationController.currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           unselectedItemColor: Colors.grey,
-          selectedItemColor: Colors.blue,
+          selectedItemColor: Colors.deepOrange,
           currentIndex: bottomNavigationController.currentIndex,
           onTap: (index) {
             // indexで今タップしたアイコンの番号にアクセスできます。

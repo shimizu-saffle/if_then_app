@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:if_then_app/models/ifthen.dart';
 import 'package:if_then_app/controllers/ifthen_list_controller.dart';
 
@@ -20,7 +21,7 @@ class AddPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('イフゼン'),
+        title: Text('イフゼン', style: GoogleFonts.yuseiMagic()),
       ),
       body: Consumer(
         builder: (context, watch, child) {
@@ -33,8 +34,10 @@ class AddPage extends StatelessWidget {
                   maxLength: 17,
                   maxLines: 1,
                   controller: ifTextEditingController,
-                  decoration:
-                      InputDecoration(labelText: "IF", hintText: "〇〇な時"),
+                  decoration: InputDecoration(
+                    labelText: "IF",
+                    hintText: "〇〇な時",
+                  ),
                   onChanged: (text) {
                     addController.newIfText = text;
                   },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/random_ifthen_controller.dart';
@@ -10,7 +11,8 @@ class IfThenMixerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('\u{1F973}  イフゼンガチャ  \u{1F973}'),
+        title: Text('\u{1F973}  イフゼンガチャ  \u{1F973}',
+            style: GoogleFonts.yuseiMagic()),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(

@@ -8,6 +8,8 @@ class PresentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('\u{1F973}  イフゼンガチャ  \u{1F973}',
+            style: GoogleFonts.yuseiMagic()),
         leading: Container(),
       ),
       body: Container(
@@ -40,9 +42,9 @@ class PresentPage extends StatelessWidget {
                                 ),
                                 Text(
                                   'if',
-                                  style: GoogleFonts.pottaOne(
+                                  style: GoogleFonts.yuseiMagic(
                                     textStyle: TextStyle(
-                                      color: Colors.blue,
+                                      color: Colors.deepOrange,
                                       fontSize: 15,
                                       fontWeight: FontWeight.w300,
                                     ),
@@ -61,9 +63,9 @@ class PresentPage extends StatelessWidget {
                               children: [
                                 Text(
                                   'Then',
-                                  style: GoogleFonts.pottaOne(
+                                  style: GoogleFonts.yuseiMagic(
                                     textStyle: TextStyle(
-                                      color: Colors.blue,
+                                      color: Colors.deepOrange,
                                       fontSize: 15,
                                       fontWeight: FontWeight.w300,
                                     ),

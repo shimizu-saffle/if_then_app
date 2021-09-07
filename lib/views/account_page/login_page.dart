@@ -18,9 +18,9 @@ class LoginPage extends StatelessWidget {
             child: Center(
               child: Text(
                 'イフゼン',
-                style: GoogleFonts.pottaOne(
+                style: GoogleFonts.yuseiMagic(
                   textStyle: TextStyle(
-                    color: Colors.blue,
+                    color: Colors.deepOrange,
                     fontSize: 60,
                     fontWeight: FontWeight.w900,
                   ),

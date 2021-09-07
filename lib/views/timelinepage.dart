@@ -14,7 +14,8 @@ class TimeLinePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('\u{1F4E3}  みんなのイフゼン  \u{1F4E3}'),
+        title: Text('\u{1F4E3}  みんなのイフゼン  \u{1F4E3}',
+            style: GoogleFonts.yuseiMagic()),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -116,9 +117,9 @@ class TimeLineCard extends StatelessWidget {
                                     ),
                                     Text(
                                       'if',
-                                      style: GoogleFonts.pottaOne(
+                                      style: GoogleFonts.yuseiMagic(
                                         textStyle: TextStyle(
-                                          color: Colors.blue,
+                                          color: Colors.deepOrange,
                                           fontSize: 15,
                                           fontWeight: FontWeight.w300,
                                         ),
@@ -137,9 +138,9 @@ class TimeLineCard extends StatelessWidget {
                                   children: [
                                     Text(
                                       'Then',
-                                      style: GoogleFonts.pottaOne(
+                                      style: GoogleFonts.yuseiMagic(
                                         textStyle: TextStyle(
-                                          color: Colors.blue,
+                                          color: Colors.deepOrange,
                                           fontSize: 15,
                                           fontWeight: FontWeight.w300,
                                         ),

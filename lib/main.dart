@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,6 +46,9 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, //縦固定
+  ]);
   await Firebase.initializeApp();
   FcmController fcmSettings = FcmController();
   fcmSettings.setRequestPermission();
@@ -84,10 +88,15 @@ class MyApp extends StatelessWidget {
         'PresentPage': (context) => PresentPage(),
       },
       theme: ThemeData(
-        textTheme: GoogleFonts.notoSansTextTheme(),
-        primaryColor: Colors.deepOrange,
-        primarySwatch: Colors.deepOrange,
-      ),
+          textTheme: GoogleFonts.notoSansTextTheme(),
+          primaryColor: Colors.deepOrange,
+          primarySwatch: Colors.deepOrange,
+          pageTransitionsTheme: const PageTransitionsTheme(
+            builders: <TargetPlatform, PageTransitionsBuilder>{
+              //Androidのようにスワイプで前の画面に戻るのをオフにしてる
+              TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
+            },
+          )),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.deepOrange,

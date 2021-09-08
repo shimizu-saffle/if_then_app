@@ -11,7 +11,7 @@ import 'package:if_then_app/views/timelinepage.dart';
 class RootPage extends StatelessWidget {
   PageController pageController = PageController(
     initialPage: 0,
-    keepPage: true,
+    keepPage: false,
   );
 
   Widget buildPageView() {

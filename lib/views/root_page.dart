@@ -7,21 +7,37 @@ import 'package:if_then_app/views/my_ifthen_list_page.dart';
 import 'package:if_then_app/views/gacha_page/random_ifthen_page.dart';
 import 'package:if_then_app/views/timelinepage.dart';
 
+// ignore: must_be_immutable
 class RootPage extends StatelessWidget {
-  // 表示するページをリスト形式で宣言します
-  List<Widget> _pageList = <Widget>[
-    MyIfThenListPage(),
-    TimeLinePage(),
-    FavoriteIfThenListPage(),
-    IfThenMixerPage(),
-  ];
+  PageController pageController = PageController(
+    initialPage: 0,
+    keepPage: true,
+  );
+
+  Widget buildPageView() {
+    return Consumer(builder: (context, watch, child) {
+      final bottomNavigationController = watch(bottomNavigationProvider);
+      return PageView(
+        controller: pageController,
+        onPageChanged: (index) {
+          bottomNavigationController.pageChanged(index);
+        },
+        children: <Widget>[
+          MyIfThenListPage(),
+          TimeLinePage(),
+          FavoriteIfThenListPage(),
+          IfThenMixerPage(),
+        ],
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, child) {
       final bottomNavigationController = watch(bottomNavigationProvider);
       return Scaffold(
-        body: _pageList[bottomNavigationController.currentIndex],
+        body: buildPageView(),
         bottomNavigationBar: BottomNavigationBar(
           unselectedItemColor: Colors.grey,
           selectedItemColor: Colors.deepOrange,
@@ -30,6 +46,8 @@ class RootPage extends StatelessWidget {
             // indexで今タップしたアイコンの番号にアクセスできます。
             bottomNavigationController.currentIndex =
                 index; // indexをモデルに渡したときに notifyListeners(); を呼んでいます。
+            pageController.animateToPage(index,
+                duration: Duration(milliseconds: 500), curve: Curves.ease);
           },
           items: [
             BottomNavigationBarItem(

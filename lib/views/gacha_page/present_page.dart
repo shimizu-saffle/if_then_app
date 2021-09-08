@@ -18,12 +18,15 @@ class PresentPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(
+              height: 10,
+            ),
             Text(
               'みんなのイフゼンの中からランダムに\nIfとThenを組み合わせたイフゼンだよ\u{1F450}',
               style: TextStyle(fontSize: 17),
             ),
             SizedBox(
-              height: 10,
+              height: 30,
             ),
             Consumer(builder: (context, watch, child) {
               final randomController = watch(randomProvider);
@@ -90,7 +93,7 @@ class PresentPage extends StatelessWidget {
               );
             }),
             SizedBox(
-              height: 30,
+              height: 40,
             ),
             Text('このイフゼンをあなたのイフゼンに保存する？', style: TextStyle(fontSize: 17)),
             SizedBox(
@@ -122,7 +125,7 @@ class PresentPage extends StatelessWidget {
               );
             }),
             SizedBox(
-              height: 170,
+              height: 100,
             )
           ],
         ),

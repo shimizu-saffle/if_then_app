@@ -62,10 +62,10 @@ class FcmController extends ChangeNotifier {
   }
 
   foregroundAndroidNotification() {
-    var initialzationSettingsAndroid =
+    var initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettings =
-        InitializationSettings(android: initialzationSettingsAndroid);
+        InitializationSettings(android: initializationSettingsAndroid);
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {

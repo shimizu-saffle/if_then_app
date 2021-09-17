@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0E9D262E26C7F56A00B373D6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D262D26C7F56A00B373D6 /* GoogleService-Info.plist */; };
+		0E9D262E26C7F56A00B373D6 /* GoogleService-Info-Release.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D262D26C7F56A00B373D6 /* GoogleService-Info-Release.plist */; };
+		0ECDBA4826F457D500B4B1F2 /* GoogleService-Info-Debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0ECDBA4726F457D500B4B1F2 /* GoogleService-Info-Debug.plist */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		61AF51EE6A3B20C053697A60 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA986C6F00BEC5B4CEF9C73 /* Pods_Runner.framework */; };
@@ -42,8 +43,9 @@
 
 /* Begin PBXFileReference section */
 		0E4719A126E6281800A73422 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
-		0E9D262D26C7F56A00B373D6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0E9D262D26C7F56A00B373D6 /* GoogleService-Info-Release.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Release.plist"; sourceTree = "<group>"; };
 		0E9D262F26C7FBEA00B373D6 /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
+		0ECDBA4726F457D500B4B1F2 /* GoogleService-Info-Debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Debug.plist"; sourceTree = "<group>"; };
 		0ED5450126C5503B00F63E5F /* RunnerProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerProfile.entitlements; sourceTree = "<group>"; };
 		0EF5565B26C96625001CA779 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
 		0EF5565C26C96625001CA779 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
@@ -80,6 +82,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0ECDBA4426F44A9900B4B1F2 /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				0ECDBA4726F457D500B4B1F2 /* GoogleService-Info-Debug.plist */,
+				0E9D262D26C7F56A00B373D6 /* GoogleService-Info-Release.plist */,
+			);
+			path = Configs;
+			sourceTree = "<group>";
+		};
 		0EF5565A26C96625001CA779 /* If Then App */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,9 +136,9 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				0ECDBA4426F44A9900B4B1F2 /* Configs */,
 				0E4719A126E6281800A73422 /* Runner.entitlements */,
 				0E9D262F26C7FBEA00B373D6 /* RunnerDebug.entitlements */,
-				0E9D262D26C7F56A00B373D6 /* GoogleService-Info.plist */,
 				0ED5450126C5503B00F63E5F /* RunnerProfile.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -226,9 +237,10 @@
 			files = (
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
-				0E9D262E26C7F56A00B373D6 /* GoogleService-Info.plist in Resources */,
+				0E9D262E26C7F56A00B373D6 /* GoogleService-Info-Release.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				0ECDBA4826F457D500B4B1F2 /* GoogleService-Info-Debug.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,7 +312,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\nif [ \"${CONFIGURATION}\" == \"Release\" ]; then\n  cp \"${PROJECT_DIR}/${PROJECT_NAME}/Configs/GoogleService-Info-release.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\nelse\n  cp \"${PROJECT_DIR}/${PROJECT_NAME}/Configs/GoogleService-Info-debug.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\nfi\n";
 		};
 		A170AE863CB6DB0CF5594D23 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -398,6 +410,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME_PREFIX = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -422,7 +435,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shimizusaffle.ifThenApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shimizusaffle.ifThenApp${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -435,7 +448,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_ID_SUFFIX = "";
+				BUNDLE_ID_SUFFIX = .debug;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -483,6 +496,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME_PREFIX = "(d)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -533,6 +547,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME_PREFIX = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -559,7 +574,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shimizusaffle.ifThenApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shimizusaffle.ifThenApp${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -586,7 +601,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shimizusaffle.ifThenApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shimizusaffle.ifThenApp${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

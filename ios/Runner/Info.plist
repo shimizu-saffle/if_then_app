@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>イフゼン</string>
+	<string>${PRODUCT_NAME_PREFIX}イフゼン</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -28,6 +28,14 @@
 				<string>com.googleusercontent.apps.521045637390-ouphf06kjo5fov3olkvg86npcjg0ls1n</string>
 			</array>
 		</dict>
+		<dict>
+        	<key>CFBundleTypeRole</key>
+        	<string>Editor</string>
+       		<key>CFBundleURLSchemes</key>
+       		<array>
+  				<string>com.googleusercontent.apps.834334414221-fcr60kqs7kr77mmrq2uu4pdbmsebag1j</string>
+       		</array>
+        </dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>

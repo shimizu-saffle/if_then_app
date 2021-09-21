@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "834334414221",
+    "project_id": "if-then-app-dev",
+    "storage_bucket": "if-then-app-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834334414221:android:d31d37e5cd93d0d730d9c4",
+        "android_client_info": {
+          "package_name": "com.shimizu_saffle.ifThenApp.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "834334414221-u64aj024tj31so0p8n9p2giij9ck8po7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2xQNxy8zwy6zYXluENOM9Lc3D6NOS7pc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "834334414221-u64aj024tj31so0p8n9p2giij9ck8po7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "834334414221-fcr60kqs7kr77mmrq2uu4pdbmsebag1j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shimizusaffle.ifThenApp.debug"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

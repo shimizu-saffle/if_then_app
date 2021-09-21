@@ -55,6 +55,12 @@ android {
             keyPassword keystoreProperties['keyPassword']
             storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
             storePassword keystoreProperties['storePassword']
+//            以下を追加してもapkをインストールできなかった。
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    output.outputFileName = "app-release.apk"
+                }
+            }
         }
     }
     buildTypes {

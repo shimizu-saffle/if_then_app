@@ -9,7 +9,6 @@ class AddPage extends StatelessWidget {
   final IfThen? ifThen;
   @override
   Widget build(BuildContext context) {
-    //ifThen　が　null　じゃなければ　true
     final bool isUpdate = ifThen != null;
     final ifTextEditingController = TextEditingController();
     final thenTextEditingController = TextEditingController();

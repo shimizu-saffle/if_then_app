@@ -52,14 +52,11 @@ class LogInController extends ChangeNotifier {
       });
     }
 
-    // 初期トークンのデータベースへの保存
     await saveTokenToDatabase(token!);
 
-    // トークンが更新されるたびに、これもデータベースに保存します。
     FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   }
 
-  //Googleアカウントのログアウトができた。メールログインの状態でこのメソッド呼んだらエラー出ちゃうかも
   Future logout() async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
@@ -118,9 +115,6 @@ class GoogleSignInController with ChangeNotifier {
           retVal = "success";
         }
       } else {
-        // 取得してないトークンを取得して保存する処理
-        // 最初にこのif,else文のifの処理でログインした状態で別デバイスでログインすると
-        // 最初に取得したデバイスのトークンが上書きされてしまう
         Future<void> saveTokenToDatabase(String token) async {
           await FirebaseFirestore.instance
               .collection('users')
@@ -130,10 +124,8 @@ class GoogleSignInController with ChangeNotifier {
           });
         }
 
-        // 初期トークンをデータベースへ保存
         await saveTokenToDatabase(token!);
 
-        // トークンが更新されるたびに、これもデータベースに保存します。
         FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
       }
       retVal = "success";
@@ -223,9 +215,6 @@ class AppleSignInController with ChangeNotifier {
           retVal = "success";
         }
       } else {
-        // 取得してないトークンを取得して保存する処理
-        // 最初にこのif,else文のifの処理でログインした状態で別デバイスでログインすると
-        // 最初に取得したデバイスのトークンが上書きされてしまう
         Future<void> saveTokenToDatabase(String token) async {
           await FirebaseFirestore.instance
               .collection('users')
@@ -235,10 +224,8 @@ class AppleSignInController with ChangeNotifier {
           });
         }
 
-        // 初期トークンをデータベースへ保存
         await saveTokenToDatabase(token!);
 
-        // トークンが更新されるたびに、これもデータベースに保存します。
         FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
       }
       retVal = "success";

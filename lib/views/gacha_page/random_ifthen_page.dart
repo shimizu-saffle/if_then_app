@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/random_ifthen_controller.dart';
-import 'package:if_then_app/views/account_page/login_page.dart';
+import 'package:if_then_app/views/login_page.dart';
 import 'package:if_then_app/views/gacha_page/present_page.dart';
 
 class IfThenMixerPage extends StatelessWidget {
@@ -39,7 +39,6 @@ class IfThenMixerPage extends StatelessWidget {
                                       ElevatedButton(
                                         child: Text('OK'),
                                         onPressed: () async {
-                                          //Googleアカウントのログアウトができた。メールログインの状態でこのメソッド呼んだらエラー出ちゃうかも
                                           logOutController.logout();
                                           await Navigator.push(
                                             context,
@@ -81,7 +80,6 @@ class IfThenMixerPage extends StatelessWidget {
                   await randomController.checkTodayTurnGachaTimes();
                   final canTurn = watch(randomProvider).canTurn;
                   if (canTurn) {
-                    print('まだ回せるよ');
                     randomController.countTurningGacha();
                     await Navigator.push(
                       context,
@@ -91,8 +89,6 @@ class IfThenMixerPage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    print('もう回せないよ');
-                    print(canTurn);
                     await showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -117,14 +113,6 @@ class IfThenMixerPage extends StatelessWidget {
           ],
         ),
       ),
-      // floatingActionButton: Consumer(builder: (context, watch, child) {
-      //   final testGachaCheck = watch(randomProvider);
-      //   return FloatingActionButton(
-      //     onPressed: () {
-      //       print(testGachaCheck.checkTodayTurnGachaTimes());
-      //     },
-      //   );
-      // }),
     );
   }
 }

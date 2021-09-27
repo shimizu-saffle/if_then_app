@@ -5,7 +5,7 @@ import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:if_then_app/views/add_edit_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/ifthen_list_controller.dart';
-import 'package:if_then_app/views/account_page/login_page.dart';
+import 'package:if_then_app/views/login_page.dart';
 
 class MyIfThenListPage extends StatelessWidget {
   @override
@@ -42,7 +42,6 @@ class MyIfThenListPage extends StatelessWidget {
                                       ElevatedButton(
                                         child: Text('OK'),
                                         onPressed: () async {
-                                          //Googleアカウントのログアウトができた。メールログインの状態でこのメソッド呼んだらエラー出ちゃうかも
                                           logOutController.logout();
                                           await Navigator.push(
                                             context,
@@ -136,7 +135,6 @@ class MyIfThenListPage extends StatelessWidget {
                         Container(
                           child: FirebaseAuth.instance.currentUser?.uid ==
                                   ifThen.userId
-                              //currentUserに表示されるアイコンボタン
                               ? IconButton(
                                   icon: Icon(Icons.more_vert),
                                   onPressed: () async {
@@ -203,11 +201,8 @@ class MyIfThenListPage extends StatelessWidget {
                               : Consumer(builder: (context, watch, child) {
                                   return IconButton(
                                     onPressed: () {},
-                                    //currentUser以外のユーザーに表示されるアイコンボタン
                                     icon: Icon(Icons.star,
-                                        size: 18.0,
-                                        //変数favoriteが共通してしまってるのが原因だと考えています
-                                        color: Colors.amberAccent),
+                                        size: 18.0, color: Colors.amberAccent),
                                   );
                                 }),
                         ),

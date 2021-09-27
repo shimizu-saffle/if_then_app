@@ -4,9 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 class IfThen {
   IfThen(DocumentSnapshot<Map<String, dynamic>> doc) {
     Firebase.initializeApp();
-    //Stringがキーでdynamicがバリュー
-    //FirestoreのdocumentスナップショットはMap型ではなくなった
-    //documentスナップショットに対してジェネリクスを使って型を動的に指定することができる
     this.documentID = doc.id;
     this.ifText = doc.data()!['ifText'];
     this.thenText = doc.data()!['thenText'];

@@ -39,8 +39,6 @@ class RandomIfThenController extends ChangeNotifier {
 
     randomIfText = await ifSnapshots.docs[0].data()['ifText'];
     randomThenText = await thenSnapshots.docs[0].data()['thenText'];
-
-    print(randomIfText! + randomThenText!);
   }
 
   Future addRandomToMyIfThen() async {
@@ -80,22 +78,16 @@ class RandomIfThenController extends ChangeNotifier {
     final DocumentSnapshot<Map<String, dynamic>> userDocument =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
-    // ??は左がnullだったら右にしよう
     final List<dynamic> list = await userDocument.data()!['turnGacha'] ?? [];
 
-    //List<dynamic>型のリストに入ってるTimestamp型の要素をDateTime型に変換する記述
-    //一足飛びのキャストができないのでまずはList<dynamic>だとわからせてから
-    //Listの中の要素がTimestamp型だとわからせて、DateTime型に変換している
     final turnGacha = list.map((e) => (e as Timestamp).toDate()).toList();
 
-    //turnGachaの要素が6以上あればFirestoreのフィールドバリューを削除したいけどそれはできてない
     if (turnGacha.length > 6) {
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'turnGacha': FieldValue.arrayRemove([]), //←この中括弧の中の
+        'turnGacha': FieldValue.arrayRemove([]),
       });
     }
 
-    //lengthが5未満だったらtureが返る
     canTurn = turnGacha
             .where((e) =>
                 e.day == DateTime.now().day &&
@@ -103,15 +95,6 @@ class RandomIfThenController extends ChangeNotifier {
                 e.month == DateTime.now().month)
             .length <
         5;
-    print(turnGacha);
-    print(turnGacha
-        .where((e) =>
-            e.day == DateTime.now().day &&
-            e.year == DateTime.now().year &&
-            e.month == DateTime.now().month)
-        .length);
-    print(canTurn);
     notifyListeners();
-    //  turnGachaフィールドの昨日以前の値を削除する処理を書きたい
   }
 }

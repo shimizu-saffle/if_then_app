@@ -46,7 +46,6 @@ class FcmController extends ChangeNotifier {
     String? token = await FirebaseMessaging.instance.getToken();
 
     Future<void> saveTokenToDatabase(String token) async {
-      // この例では、ユーザーがログインしていると仮定します。
       String userId = FirebaseAuth.instance.currentUser!.uid;
 
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
@@ -54,10 +53,8 @@ class FcmController extends ChangeNotifier {
       });
     }
 
-    // 初期トークンのデータベースへの保存
     await saveTokenToDatabase(token!);
 
-    // トークンが更新されるたびに、これもデータベースに保存します。
     FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   }
 

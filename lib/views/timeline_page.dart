@@ -7,7 +7,7 @@ import 'package:if_then_app/models/ifthen.dart';
 import 'package:if_then_app/views/add_edit_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/ifthen_list_controller.dart';
-import 'package:if_then_app/views/account_page/login_page.dart';
+import 'package:if_then_app/views/login_page.dart';
 
 class TimeLinePage extends StatelessWidget {
   @override
@@ -42,7 +42,6 @@ class TimeLinePage extends StatelessWidget {
                                       ElevatedButton(
                                         child: Text('OK'),
                                         onPressed: () async {
-                                          //Googleアカウントのログアウトができた。メールログインの状態でこのメソッド呼んだらエラー出ちゃうかも
                                           logOutController.logout();
                                           await Navigator.push(
                                             context,
@@ -95,8 +94,6 @@ class TimeLineCard extends StatelessWidget {
               if (snapshot.hasError) {
                 return const Text('Something went wrong');
               }
-              // snapshotからデータを取り出して使う
-              // 取得したドキュメントから必要なデータを取り出す
               return ListView(
                 children: snapshot.data!.docs
                     .map((DocumentSnapshot<Map<String, dynamic>> document) {

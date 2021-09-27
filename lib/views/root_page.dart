@@ -5,7 +5,7 @@ import 'package:if_then_app/controllers/bottom_navigation_controller.dart';
 import 'package:if_then_app/views/favorite_ifthen_list_page.dart';
 import 'package:if_then_app/views/my_ifthen_list_page.dart';
 import 'package:if_then_app/views/gacha_page/random_ifthen_page.dart';
-import 'package:if_then_app/views/timelinepage.dart';
+import 'package:if_then_app/views/timeline_page.dart';
 
 // ignore: must_be_immutable
 class RootPage extends StatelessWidget {
@@ -43,9 +43,7 @@ class RootPage extends StatelessWidget {
           selectedItemColor: Colors.deepOrange,
           currentIndex: bottomNavigationController.currentIndex,
           onTap: (index) {
-            // indexで今タップしたアイコンの番号にアクセスできます。
-            bottomNavigationController.currentIndex =
-                index; // indexをモデルに渡したときに notifyListeners(); を呼んでいます。
+            bottomNavigationController.currentIndex = index;
             pageController.animateToPage(index,
                 duration: Duration(milliseconds: 500), curve: Curves.ease);
           },

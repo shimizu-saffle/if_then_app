@@ -8,19 +8,15 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:if_then_app/controllers/fcm_controller.dart';
-import 'package:if_then_app/views/account_page/signup_page.dart';
-import 'package:if_then_app/views/account_page/login_page.dart';
-import 'package:if_then_app/views/account_page/forgot-password.dart';
+import 'package:if_then_app/views/login_page.dart';
 import 'package:if_then_app/views/gacha_page/present_page.dart';
 import 'package:if_then_app/views/my_ifthen_list_page.dart';
 
 import 'package:if_then_app/views/root_page.dart';
-import 'package:if_then_app/views/timelinepage.dart';
+import 'package:if_then_app/views/timeline_page.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
-  print(message.data);
   flutterLocalNotificationsPlugin.show(
       message.data.hashCode,
       message.data['title'],
@@ -47,15 +43,13 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp, //縦固定
+    DeviceOrientation.portraitUp,
   ]);
   await Firebase.initializeApp();
   FcmController fcmSettings = FcmController();
   fcmSettings.setRequestPermission();
   fcmSettings.iOSForegroundMessagesSettings();
-  fcmSettings.printToken();
   if (Platform.isAndroid) {
-    // local_notifications の処理
     await fcmSettings.foregroundAndroidNotification();
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -82,8 +76,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginPage(),
         'RootPage': (context) => RootPage(),
-        'ForgotPassword': (context) => ForgotPassword(),
-        'SignUpPage': (context) => SignUpPage(),
         'TimeLinePage': (context) => TimeLinePage(),
         'MyIfThenListPage': (context) => MyIfThenListPage(),
         'PresentPage': (context) => PresentPage(),
@@ -94,7 +86,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.deepOrange,
           pageTransitionsTheme: const PageTransitionsTheme(
             builders: <TargetPlatform, PageTransitionsBuilder>{
-              //Androidのようにスワイプで前の画面に戻るのをオフにしてる
               TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
             },
           )),

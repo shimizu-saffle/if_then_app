@@ -73,18 +73,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: true,
       title: 'イフゼン',
-      // initialRoute: '/',
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // Splash 画面へ
-            // return SplashPage();
-            return const Text('ロード中');
+            return const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                Colors.deepOrange,
+              ),
+            );
           }
           if (snapshot.hasData) {
             // ログイン済みの画面へ
-            return TimeLinePage();
+            return RootPage();
           }
           return LoginPage();
         },

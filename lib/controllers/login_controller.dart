@@ -11,8 +11,8 @@ import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-final LogInProvider = ChangeNotifierProvider<LogInController>(
-  (ref) => LogInController(),
+final LogOutProvider = ChangeNotifierProvider<LogOutController>(
+  (ref) => LogOutController(),
 );
 
 final GoogleLogInProvider = ChangeNotifierProvider<GoogleSignInController>(
@@ -23,40 +23,7 @@ final AppleLogInProvider = ChangeNotifierProvider<AppleSignInController>(
   (ref) => AppleSignInController(),
 );
 
-class LogInController extends ChangeNotifier {
-  String mail = '';
-  String password = '';
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  Future login() async {
-    if (mail.isEmpty) {
-      throw ('メールアドレスを入力してください');
-    }
-
-    if (password.isEmpty) {
-      throw ('パスワードを入力してください');
-    }
-
-    final result = await _auth.signInWithEmailAndPassword(
-      email: mail,
-      password: password,
-    );
-    final userId = result.user!.uid;
-
-    String? token = await FirebaseMessaging.instance.getToken();
-
-    Future<void> saveTokenToDatabase(String token) async {
-      await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'tokens': FieldValue.arrayUnion([token]),
-      });
-    }
-
-    await saveTokenToDatabase(token!);
-
-    FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
-  }
-
+class LogOutController extends ChangeNotifier {
   Future logout() async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();

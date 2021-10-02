@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -72,9 +73,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: true,
       title: 'イフゼン',
-      initialRoute: '/',
+      // initialRoute: '/',
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Splash 画面へ
+            // return SplashPage();
+            return const Text('ロード中');
+          }
+          if (snapshot.hasData) {
+            // ログイン済みの画面へ
+            return TimeLinePage();
+          }
+          return LoginPage();
+        },
+      ),
       routes: {
-        '/': (context) => LoginPage(),
+        'LoginPage': (context) => LoginPage(),
         'RootPage': (context) => RootPage(),
         'TimeLinePage': (context) => TimeLinePage(),
         'MyIfThenListPage': (context) => MyIfThenListPage(),

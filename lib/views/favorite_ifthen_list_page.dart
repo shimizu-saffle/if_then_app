@@ -33,7 +33,8 @@ class FavoriteIfThenListPage extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return Consumer(
                                     builder: (context, watch, child) {
-                                  final logOutController = watch(LogInProvider);
+                                  final logOutController =
+                                      watch(LogOutProvider);
                                   return AlertDialog(
                                     title: Text('ログアウトしますか？'),
                                     actions: <Widget>[

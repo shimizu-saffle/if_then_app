@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
@@ -41,12 +42,14 @@ class LoginPage extends StatelessWidget {
                         buttonType: ButtonType.apple,
                         buttonSize: ButtonSize.small,
                         onPressed: () async {
+                          EasyLoading.show(status: 'ようこそ \u{1F450}');
                           try {
                             await appleLogInController.loginUserWithApple();
                             Navigator.pushNamed(context, 'RootPage');
                           } catch (e) {
                             debugPrint('error');
                           }
+                          await EasyLoading.dismiss();
                         },
                       ),
                 SizedBox(height: 25),
@@ -54,10 +57,12 @@ class LoginPage extends StatelessWidget {
                   buttonType: ButtonType.google,
                   buttonSize: ButtonSize.small,
                   onPressed: () async {
+                    EasyLoading.show(status: 'ようこそ \u{1F450}');
                     await googleLogInController.loginUserWithGoogle();
                     if (FirebaseAuth.instance.currentUser?.uid != null) {
                       Navigator.pushNamed(context, 'RootPage');
                     }
+                    await EasyLoading.dismiss();
                   },
                 ),
                 SizedBox(

@@ -40,8 +40,10 @@ class LoginPage extends StatelessWidget {
                         buttonType: ButtonType.apple,
                         buttonSize: ButtonSize.small,
                         onPressed: () async {
-                          await appleLogInController.loginUserWithApple();
-                          Navigator.pushNamed(context, 'RootPage');
+                          try {
+                            await appleLogInController.loginUserWithApple();
+                            Navigator.pushNamed(context, 'RootPage');
+                          } catch (e) {}
                         },
                       ),
                 SizedBox(height: 25),
@@ -49,8 +51,12 @@ class LoginPage extends StatelessWidget {
                   buttonType: ButtonType.google,
                   buttonSize: ButtonSize.small,
                   onPressed: () async {
-                    await googleLogInController.loginUserWithGoogle();
-                    Navigator.pushNamed(context, 'RootPage');
+                    try {
+                      await googleLogInController.loginUserWithGoogle();
+                      Navigator.pushNamed(context, 'RootPage');
+                    } catch (e) {
+                      Navigator.pushNamed(context, 'LoginPage');
+                    }
                   },
                 ),
                 SizedBox(

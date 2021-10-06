@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,7 +44,9 @@ class LoginPage extends StatelessWidget {
                           try {
                             await appleLogInController.loginUserWithApple();
                             Navigator.pushNamed(context, 'RootPage');
-                          } catch (e) {}
+                          } catch (e) {
+                            debugPrint('error');
+                          }
                         },
                       ),
                 SizedBox(height: 25),
@@ -51,11 +54,9 @@ class LoginPage extends StatelessWidget {
                   buttonType: ButtonType.google,
                   buttonSize: ButtonSize.small,
                   onPressed: () async {
-                    try {
-                      await googleLogInController.loginUserWithGoogle();
+                    await googleLogInController.loginUserWithGoogle();
+                    if (FirebaseAuth.instance.currentUser?.uid != null) {
                       Navigator.pushNamed(context, 'RootPage');
-                    } catch (e) {
-                      Navigator.pushNamed(context, 'LoginPage');
                     }
                   },
                 ),

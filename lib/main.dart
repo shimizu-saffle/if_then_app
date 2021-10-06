@@ -84,7 +84,6 @@ class MyApp extends StatelessWidget {
             );
           }
           if (snapshot.hasData) {
-            // ログイン済みの画面へ
             return RootPage();
           }
           return LoginPage();

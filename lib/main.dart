@@ -115,4 +115,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-// gitテストgui2

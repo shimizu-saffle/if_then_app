@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:if_then_app/controllers/ifthen_list_controller.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:if_then_app/models/ifthen.dart';
 import 'package:if_then_app/views/add_edit_page.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/controllers/ifthen_list_controller.dart';
 import 'package:if_then_app/views/login_page.dart';
 
 class TimeLinePage extends StatelessWidget {
@@ -81,23 +81,23 @@ class TimeLineCard extends StatelessWidget {
       builder: (context, watch, child) {
         final deleteController = watch(IfThenListProvider);
         return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance
-                .collection('itList')
-                .orderBy('createdAt', descending: true)
-                .snapshots(),
-            builder: (context,
-                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: const CircularProgressIndicator(),
-                );
-              }
-              if (snapshot.hasError) {
-                return const Text('Something went wrong');
-              }
-              return ListView(
-                children: snapshot.data!.docs
-                    .map((DocumentSnapshot<Map<String, dynamic>> document) {
+          stream: FirebaseFirestore.instance
+              .collection('itList')
+              .orderBy('createdAt', descending: true)
+              .snapshots(),
+          builder: (context,
+              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: const CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            }
+            return ListView(
+              children: snapshot.data!.docs.map(
+                (DocumentSnapshot<Map<String, dynamic>> document) {
                   final data = document.data()!;
                   final ifThen = IfThen(document);
                   return Card(
@@ -224,32 +224,34 @@ class TimeLineCard extends StatelessWidget {
                                     );
                                   },
                                 )
-                              : Consumer(builder: (context, watch, child) {
-                                  final ifThenListController =
-                                      watch(IfThenListProvider);
-                                  return IconButton(
-                                    onPressed: () {
-                                      data['favoriteUserId'].contains(
-                                              FirebaseAuth
-                                                  .instance.currentUser?.uid)
-                                          ? ifThenListController
-                                              .deleteFavoriteUserId(ifThen)
-                                          : ifThenListController
-                                              .saveFavoriteUserId(ifThen);
-                                    },
-                                    //currentUser以外のユーザーに表示されるアイコンボタン
-                                    icon: Icon(
-                                      Icons.star,
-                                      size: 18.0,
-                                      color: //配列の中にユーザーIDがあれば trueで黄色、なければ Falseでグレーを表示
-                                          data['favoriteUserId'].contains(
-                                                  FirebaseAuth.instance
-                                                      .currentUser?.uid)
-                                              ? Colors.amberAccent
-                                              : Colors.grey,
-                                    ),
-                                  );
-                                }),
+                              : Consumer(
+                                  builder: (context, watch, child) {
+                                    final ifThenListController =
+                                        watch(IfThenListProvider);
+                                    return IconButton(
+                                      onPressed: () {
+                                        data['favoriteUserId'].contains(
+                                                FirebaseAuth
+                                                    .instance.currentUser?.uid)
+                                            ? ifThenListController
+                                                .deleteFavoriteUserId(ifThen)
+                                            : ifThenListController
+                                                .saveFavoriteUserId(ifThen);
+                                      },
+                                      //currentUser以外のユーザーに表示されるアイコンボタン
+                                      icon: Icon(
+                                        Icons.star,
+                                        size: 18.0,
+                                        color: //配列の中にユーザーIDがあれば trueで黄色、なければ Falseでグレーを表示
+                                            data['favoriteUserId'].contains(
+                                                    FirebaseAuth.instance
+                                                        .currentUser?.uid)
+                                                ? Colors.amberAccent
+                                                : Colors.grey,
+                                      ),
+                                    );
+                                  },
+                                ),
                         ),
                         SizedBox(
                           width: 15,
@@ -258,9 +260,11 @@ class TimeLineCard extends StatelessWidget {
                     ),
                     elevation: 3,
                   );
-                }).toList(),
-              );
-            });
+                },
+              ).toList(),
+            );
+          },
+        );
       },
     );
   }

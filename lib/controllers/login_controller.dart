@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:if_then_app/models/userModel.dart';
-import 'dart:convert';
-import 'dart:math';
-import 'package:crypto/crypto.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 final LogOutProvider = ChangeNotifierProvider<LogOutController>(
@@ -35,8 +36,7 @@ class GoogleSignInController with ChangeNotifier {
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   Future<String> createUser(UserModel user) async {
-    String retVal = "error";
-
+    String result = "error";
     try {
       await FirebaseFirestore.instance
           .collection("users")
@@ -47,27 +47,24 @@ class GoogleSignInController with ChangeNotifier {
         'tokens': user.tokens,
         'userId': user.userId,
       });
-      retVal = "success";
+      result = "success";
     } catch (e) {
       print(e);
     }
-
-    return retVal;
+    return result;
   }
 
   Future<String> loginUserWithGoogle() async {
-    String retVal = "error";
-
+    String result = "error";
     try {
       final _googleUser = await GoogleSignIn().signIn();
       GoogleSignInAuthentication _googleAuth =
           await _googleUser!.authentication;
-
       final AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: _googleAuth.idToken, accessToken: _googleAuth.accessToken);
-
+        idToken: _googleAuth.idToken,
+        accessToken: _googleAuth.accessToken,
+      );
       UserCredential _authResult = await _auth.signInWithCredential(credential);
-
       String? token = await _fcm.getToken();
 
       if (_authResult.additionalUserInfo!.isNewUser) {
@@ -79,7 +76,7 @@ class GoogleSignInController with ChangeNotifier {
         );
         String _returnString = await createUser(_user);
         if (_returnString == "success") {
-          retVal = "success";
+          result = "success";
         }
       } else {
         Future<void> saveTokenToDatabase(String token) async {
@@ -95,14 +92,14 @@ class GoogleSignInController with ChangeNotifier {
 
         FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
       }
-      retVal = "success";
+      result = "success";
     } on PlatformException catch (e) {
-      retVal = e.message!;
+      result = e.message!;
     } catch (e) {
       print(e);
     }
 
-    return retVal;
+    return result;
   }
 }
 

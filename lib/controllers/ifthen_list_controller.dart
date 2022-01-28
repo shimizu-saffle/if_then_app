@@ -45,14 +45,16 @@ class IfThenListController extends ChangeNotifier {
     final count = Count(countSnapshot);
     final total = count.total;
 
-    await itList.add({
-      'ifText': newIfText,
-      'thenText': newThenText,
-      'createdAt': Timestamp.now(),
-      'userId': userId,
-      'favoriteUserId': initFavoriteUserId,
-      'serialNumber': total
-    });
+    await itList.add(
+      {
+        'ifText': newIfText,
+        'thenText': newThenText,
+        'createdAt': Timestamp.now(),
+        'userId': userId,
+        'favoriteUserId': initFavoriteUserId,
+        'serialNumber': total
+      },
+    );
   }
 
   Future<void> saveFavoriteUserId(IfThen ifThen) async {
@@ -132,8 +134,10 @@ class MyIfThenListController extends ChangeNotifier {
   void getMyFavoriteItListRealtime() async {
     final snapshots = FirebaseFirestore.instance
         .collection('itList')
-        .where('favoriteUserId',
-            arrayContains: FirebaseAuth.instance.currentUser?.uid)
+        .where(
+          'favoriteUserId',
+          arrayContains: FirebaseAuth.instance.currentUser?.uid,
+        )
         .snapshots();
     snapshots.listen((snapshot) {
       final docs = snapshot.docs;

@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -77,11 +78,8 @@ class RandomIfThenController extends ChangeNotifier {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
     final DocumentSnapshot<Map<String, dynamic>> userDocument =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
-
     final List<dynamic> list = await userDocument.data()!['turnGacha'] ?? [];
-
     final turnGacha = list.map((e) => (e as Timestamp).toDate()).toList();
-
     if (turnGacha.length > 6) {
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
         'turnGacha': FieldValue.arrayRemove([]),

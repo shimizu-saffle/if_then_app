@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:sign_button/sign_button.dart';
+
+import '../controllers/login_controller.dart';
 
 class LoginPage extends HookConsumerWidget {
   @override

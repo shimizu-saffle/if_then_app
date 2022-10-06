@@ -3,8 +3,9 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/models/count.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../models/count.dart';
 
 final randomProvider = ChangeNotifierProvider<RandomIfThenController>(
     (ref) => RandomIfThenController()

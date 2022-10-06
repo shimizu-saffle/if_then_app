@@ -7,14 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:if_then_app/controllers/fcm_controller.dart';
-import 'package:if_then_app/views/gacha_page/present_page.dart';
-import 'package:if_then_app/views/login_page.dart';
-import 'package:if_then_app/views/my_ifthen_list_page.dart';
-import 'package:if_then_app/views/root_page.dart';
-import 'package:if_then_app/views/timeline_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'controllers/fcm_controller.dart';
+import 'views/gacha_page/present_page.dart';
+import 'views/login_page.dart';
+import 'views/my_ifthen_list_page.dart';
+import 'views/root_page.dart';
+import 'views/timeline_page.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();

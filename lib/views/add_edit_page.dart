@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:if_then_app/controllers/ifthen_list_controller.dart';
-import 'package:if_then_app/models/ifthen.dart';
+
+import '../controllers/ifthen_list_controller.dart';
+import '../models/ifthen.dart';
 
 class AddPage extends HookConsumerWidget {
   AddPage({this.ifThen});

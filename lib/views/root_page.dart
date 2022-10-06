@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:if_then_app/controllers/bottom_navigation_controller.dart';
-import 'package:if_then_app/views/favorite_ifthen_list_page.dart';
-import 'package:if_then_app/views/gacha_page/random_ifthen_page.dart';
-import 'package:if_then_app/views/my_ifthen_list_page.dart';
-import 'package:if_then_app/views/timeline_page.dart';
+
+import '../controllers/bottom_navigation_controller.dart';
+import 'favorite_ifthen_list_page.dart';
+import 'gacha_page/random_ifthen_page.dart';
+import 'my_ifthen_list_page.dart';
+import 'timeline_page.dart';
 
 // ignore: must_be_immutable
 class RootPage extends HookConsumerWidget {

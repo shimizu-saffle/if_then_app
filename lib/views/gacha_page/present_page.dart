@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:if_then_app/controllers/random_ifthen_controller.dart';
 
+import '../../controllers/random_ifthen_controller.dart';
 class PresentPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context,WidgetRef ref) {

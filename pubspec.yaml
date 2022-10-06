@@ -16,7 +16,7 @@ dependencies:
   google_fonts: ^2.1.0
   firebase_messaging: ^10.0.4
   flutter_local_notifications: ^8.1.1+1
-  google_sign_in: ^5.1.0
+  google_sign_in: ^5.4.2
   cloud_functions: ^3.0.1
   sign_in_with_apple: ^3.0.0
   crypto: ^3.0.1

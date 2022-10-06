@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:if_then_app/controllers/bottom_navigation_controller.dart';
 import 'package:if_then_app/views/favorite_ifthen_list_page.dart';
-import 'package:if_then_app/views/my_ifthen_list_page.dart';
 import 'package:if_then_app/views/gacha_page/random_ifthen_page.dart';
+import 'package:if_then_app/views/my_ifthen_list_page.dart';
 import 'package:if_then_app/views/timeline_page.dart';
 
 // ignore: must_be_immutable
-class RootPage extends StatelessWidget {
+class RootPage extends HookConsumerWidget {
   PageController pageController = PageController(
     initialPage: 0,
     keepPage: false,
   );
 
-  Widget buildPageView() {
-    return Consumer(builder: (context, watch, child) {
-      final bottomNavigationController = watch(bottomNavigationProvider);
+  Widget buildPageView(WidgetRef ref) {
+    return Consumer(builder: (context, watch, child,) {
+      final bottomNavigationController = ref.watch(bottomNavigationProvider);
       return PageView(
         controller: pageController,
         onPageChanged: (index) {
@@ -33,11 +33,11 @@ class RootPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Consumer(builder: (context, watch, child) {
-      final bottomNavigationController = watch(bottomNavigationProvider);
+      final bottomNavigationController = ref.watch(bottomNavigationProvider);
       return Scaffold(
-        body: buildPageView(),
+        body: buildPageView(ref),
         bottomNavigationBar: BottomNavigationBar(
           unselectedItemColor: Colors.grey,
           selectedItemColor: Colors.deepOrange,

@@ -1,15 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:if_then_app/controllers/ifthen_list_controller.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:if_then_app/views/add_edit_page.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/controllers/ifthen_list_controller.dart';
 import 'package:if_then_app/views/login_page.dart';
 
-class MyIfThenListPage extends StatelessWidget {
+class MyIfThenListPage extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -36,7 +36,7 @@ class MyIfThenListPage extends StatelessWidget {
                                 return Consumer(
                                     builder: (context, watch, child) {
                                   final logOutController =
-                                      watch(LogOutProvider);
+                                      ref.watch(LogOutProvider);
                                   return AlertDialog(
                                     title: Text('ログアウトしますか？'),
                                     actions: <Widget>[
@@ -71,8 +71,8 @@ class MyIfThenListPage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final ifThenList = watch(myIfThenListProvider).myIfThenList;
-          final deleteController = watch(IfThenListProvider);
+          final ifThenList = ref.watch(myIfThenListProvider).myIfThenList;
+          final deleteController = ref.watch(IfThenListProvider);
           return ListView(
             children: ifThenList
                 .map(

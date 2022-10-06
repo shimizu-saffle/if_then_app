@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:if_then_app/controllers/random_ifthen_controller.dart';
-import 'package:if_then_app/views/login_page.dart';
 import 'package:if_then_app/views/gacha_page/present_page.dart';
+import 'package:if_then_app/views/login_page.dart';
 
-class IfThenMixerPage extends StatelessWidget {
+class IfThenMixerPage extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text('\u{1F973}  イフゼンガチャ  \u{1F973}',
@@ -33,7 +33,7 @@ class IfThenMixerPage extends StatelessWidget {
                                 return Consumer(
                                     builder: (context, watch, child) {
                                   final logOutController =
-                                      watch(LogOutProvider);
+                                      ref.watch(LogOutProvider);
                                   return AlertDialog(
                                     title: Text('ログアウトしますか？'),
                                     actions: <Widget>[
@@ -74,12 +74,12 @@ class IfThenMixerPage extends StatelessWidget {
           children: [
             Image.asset('images/gachagacha.png'),
             Consumer(builder: (context, watch, child) {
-              final randomController = watch(randomProvider);
+              final randomController = ref.watch(randomProvider);
               return ElevatedButton(
                 child: Text('回す'),
                 onPressed: () async {
                   await randomController.checkTodayTurnGachaTimes();
-                  final canTurn = watch(randomProvider).canTurn;
+                  final canTurn = ref.watch(randomProvider).canTurn;
                   if (canTurn) {
                     randomController.countTurningGacha();
                     await Navigator.push(

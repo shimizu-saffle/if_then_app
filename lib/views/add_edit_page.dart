@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:if_then_app/models/ifthen.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:if_then_app/controllers/ifthen_list_controller.dart';
+import 'package:if_then_app/models/ifthen.dart';
 
-class AddPage extends StatelessWidget {
+class AddPage extends HookConsumerWidget {
   AddPage({this.ifThen});
   final IfThen? ifThen;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final bool isUpdate = ifThen != null;
     final ifTextEditingController = TextEditingController();
     final thenTextEditingController = TextEditingController();
@@ -24,7 +24,7 @@ class AddPage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final addController = watch(AddProvider);
+          final addController = ref.watch(AddProvider);
           return Padding(
             padding: const EdgeInsets.all(16),
             child: Column(

@@ -1,15 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:if_then_app/controllers/ifthen_list_controller.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:if_then_app/views/add_edit_page.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/controllers/ifthen_list_controller.dart';
 import 'package:if_then_app/views/login_page.dart';
 
-class FavoriteIfThenListPage extends StatelessWidget {
+class FavoriteIfThenListPage extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text('\u{1F4AB}  お気に入りのイフゼン  \u{1F4AB}',
@@ -34,7 +34,7 @@ class FavoriteIfThenListPage extends StatelessWidget {
                                 return Consumer(
                                     builder: (context, watch, child) {
                                   final logOutController =
-                                      watch(LogOutProvider);
+                                      ref.watch(LogOutProvider);
                                   return AlertDialog(
                                     title: Text('ログアウトしますか？'),
                                     actions: <Widget>[
@@ -70,8 +70,8 @@ class FavoriteIfThenListPage extends StatelessWidget {
       body: Consumer(
         builder: (context, watch, child) {
           final myFavoriteIfThenList =
-              watch(myFavoriteIfThenListProvider).myFavoriteIfThenList;
-          final deleteController = watch(IfThenListProvider);
+              ref.watch(myFavoriteIfThenListProvider).myFavoriteIfThenList;
+          final deleteController = ref.watch(IfThenListProvider);
           return ListView(
             children: myFavoriteIfThenList
                 .map(
@@ -200,7 +200,7 @@ class FavoriteIfThenListPage extends StatelessWidget {
                                 )
                               : Consumer(builder: (context, watch, child) {
                                   final ifThenListController =
-                                      watch(IfThenListProvider);
+                                      ref.watch(IfThenListProvider);
                                   return IconButton(
                                     onPressed: () {
                                       ifThen.favoriteUserId!.contains(

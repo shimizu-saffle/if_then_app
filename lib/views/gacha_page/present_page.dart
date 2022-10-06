@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:if_then_app/controllers/random_ifthen_controller.dart';
 
-class PresentPage extends StatelessWidget {
+class PresentPage extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text('\u{1F973}  イフゼンガチャ  \u{1F973}',
@@ -29,7 +29,7 @@ class PresentPage extends StatelessWidget {
               height: 30,
             ),
             Consumer(builder: (context, watch, child) {
-              final randomController = watch(randomProvider);
+              final randomController = ref.watch(randomProvider);
               return Card(
                 child: Row(
                   children: [
@@ -100,7 +100,7 @@ class PresentPage extends StatelessWidget {
               height: 30,
             ),
             Consumer(builder: (context, watch, child) {
-              final randomController = watch(randomProvider);
+              final randomController = ref.watch(randomProvider);
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

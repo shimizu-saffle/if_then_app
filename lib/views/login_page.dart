@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:if_then_app/controllers/login_controller.dart';
 import 'package:sign_button/sign_button.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Column(
         children: [
@@ -30,8 +30,8 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           Consumer(builder: (context, watch, child) {
-            final googleLogInController = watch(GoogleLogInProvider);
-            final appleLogInController = watch(AppleLogInProvider);
+            final googleLogInController = ref.watch(GoogleLogInProvider);
+            final appleLogInController = ref.watch(AppleLogInProvider);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

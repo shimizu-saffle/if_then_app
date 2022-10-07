@@ -9,6 +9,8 @@ import 'add_edit_page.dart';
 import 'login_page.dart';
 
 class MyIfThenListPage extends HookConsumerWidget {
+  const MyIfThenListPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -20,7 +22,7 @@ class MyIfThenListPage extends HookConsumerWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onPressed: () async {
               await showDialog(
                 context: context,
@@ -35,27 +37,29 @@ class MyIfThenListPage extends HookConsumerWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return Consumer(
-                                    builder: (context, watch, child) {
-                                  final logOutController =
-                                      ref.watch(LogOutProvider);
-                                  return AlertDialog(
-                                    title: Text('ログアウトしますか？'),
-                                    actions: <Widget>[
-                                      ElevatedButton(
-                                        child: Text('OK'),
-                                        onPressed: () async {
-                                          logOutController.logout();
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => LoginPage(),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
+                                  builder: (context, watch, child) {
+                                    final logOutController =
+                                        ref.watch(logOutProvider);
+                                    return AlertDialog(
+                                      title: const Text('ログアウトしますか？'),
+                                      actions: <Widget>[
+                                        ElevatedButton(
+                                          child: const Text('OK'),
+                                          onPressed: () async {
+                                            await logOutController.logout();
+                                            await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginPage(),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               },
                             );
                             Navigator.of(context).pop();
@@ -72,12 +76,13 @@ class MyIfThenListPage extends HookConsumerWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final ifThenList = ref.watch(myIfThenListProvider).myIfThenList;
-          final deleteController = ref.watch(IfThenListProvider);
+          final ifThenList = ref.watch(myifThenListProvider).myIfThenList;
+          final deleteController = ref.watch(ifThenListProvider);
           return ListView(
             children: ifThenList
                 .map(
                   (ifThen) => Card(
+                    elevation: 3,
                     child: Row(
                       children: [
                         Expanded(
@@ -87,25 +92,25 @@ class MyIfThenListPage extends HookConsumerWidget {
                               children: [
                                 Row(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 13,
                                     ),
                                     Text(
                                       'if',
                                       style: GoogleFonts.yuseiMagic(
-                                        textStyle: TextStyle(
+                                        textStyle: const TextStyle(
                                           color: Colors.deepOrange,
                                           fontSize: 15,
                                           fontWeight: FontWeight.w300,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 24,
                                     ),
                                     Text(
-                                      '${ifThen.ifText!}',
-                                      style: TextStyle(height: 2.0),
+                                      ifThen.ifText!,
+                                      style: const TextStyle(height: 2),
                                     ),
                                   ],
                                 ),
@@ -114,19 +119,19 @@ class MyIfThenListPage extends HookConsumerWidget {
                                     Text(
                                       'Then',
                                       style: GoogleFonts.yuseiMagic(
-                                        textStyle: TextStyle(
+                                        textStyle: const TextStyle(
                                           color: Colors.deepOrange,
                                           fontSize: 15,
                                           fontWeight: FontWeight.w300,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Text(
-                                      '${ifThen.thenText!}',
-                                      style: TextStyle(height: 2.0),
+                                      ifThen.thenText!,
+                                      style: const TextStyle(height: 2),
                                     ),
                                   ],
                                 ),
@@ -138,7 +143,7 @@ class MyIfThenListPage extends HookConsumerWidget {
                           child: FirebaseAuth.instance.currentUser?.uid ==
                                   ifThen.userId
                               ? IconButton(
-                                  icon: Icon(Icons.more_vert),
+                                  icon: const Icon(Icons.more_vert),
                                   onPressed: () async {
                                     await showDialog(
                                       context: context,
@@ -153,7 +158,8 @@ class MyIfThenListPage extends HookConsumerWidget {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           AddPage(
-                                                              ifThen: ifThen),
+                                                        ifThen: ifThen,
+                                                      ),
                                                       fullscreenDialog: true,
                                                     ),
                                                   );
@@ -171,18 +177,22 @@ class MyIfThenListPage extends HookConsumerWidget {
                                                         (BuildContext context) {
                                                       return AlertDialog(
                                                         title: Text(
-                                                            '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？'),
+                                                          '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？',
+                                                        ),
                                                         actions: <Widget>[
                                                           ElevatedButton(
-                                                            child: Text('OK'),
+                                                            child: const Text(
+                                                              'OK',
+                                                            ),
                                                             onPressed:
                                                                 () async {
                                                               Navigator.of(
-                                                                      context)
-                                                                  .pop();
+                                                                context,
+                                                              ).pop();
                                                               await deleteController
                                                                   .ifThenDelete(
-                                                                      ifThen);
+                                                                ifThen,
+                                                              );
                                                             },
                                                           ),
                                                         ],
@@ -200,20 +210,24 @@ class MyIfThenListPage extends HookConsumerWidget {
                                     );
                                   },
                                 )
-                              : Consumer(builder: (context, watch, child) {
-                                  return IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.star,
-                                        size: 18.0, color: Colors.amberAccent),
-                                  );
-                                }),
+                              : Consumer(
+                                  builder: (context, watch, child) {
+                                    return IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.star,
+                                        size: 18,
+                                        color: Colors.amberAccent,
+                                      ),
+                                    );
+                                  },
+                                ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         )
                       ],
                     ),
-                    elevation: 3,
                   ),
                 )
                 .toList(),
@@ -228,12 +242,12 @@ class MyIfThenListPage extends HookConsumerWidget {
               await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddPage(),
+                  builder: (context) => const AddPage(),
                   fullscreenDialog: true,
                 ),
               );
             },
-            child: Icon(Icons.add, color: Colors.white),
+            child: const Icon(Icons.add, color: Colors.white),
           );
         },
       ),

@@ -8,16 +8,20 @@ import '../login_page.dart';
 import 'present_page.dart';
 
 class IfThenMixerPage extends HookConsumerWidget {
+  const IfThenMixerPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('\u{1F973}  イフゼンガチャ  \u{1F973}',
-            style: GoogleFonts.yuseiMagic()),
+        title: Text(
+          '\u{1F973}  イフゼンガチャ  \u{1F973}',
+          style: GoogleFonts.yuseiMagic(),
+        ),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onPressed: () async {
               await showDialog(
                 context: context,
@@ -32,27 +36,29 @@ class IfThenMixerPage extends HookConsumerWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return Consumer(
-                                    builder: (context, watch, child) {
-                                  final logOutController =
-                                      ref.watch(LogOutProvider);
-                                  return AlertDialog(
-                                    title: Text('ログアウトしますか？'),
-                                    actions: <Widget>[
-                                      ElevatedButton(
-                                        child: Text('OK'),
-                                        onPressed: () async {
-                                          logOutController.logout();
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => LoginPage(),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
+                                  builder: (context, watch, child) {
+                                    final logOutController =
+                                        ref.watch(logOutProvider);
+                                    return AlertDialog(
+                                      title: const Text('ログアウトしますか？'),
+                                      actions: <Widget>[
+                                        ElevatedButton(
+                                          child: const Text('OK'),
+                                          onPressed: () async {
+                                            await logOutController.logout();
+                                            await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginPage(),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               },
                             );
                             Navigator.of(context).pop();
@@ -67,51 +73,53 @@ class IfThenMixerPage extends HookConsumerWidget {
           )
         ],
       ),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset('images/gachagacha.png'),
-            Consumer(builder: (context, watch, child) {
-              final randomController = ref.watch(randomProvider);
-              return ElevatedButton(
-                child: Text('回す'),
-                onPressed: () async {
-                  await randomController.checkTodayTurnGachaTimes();
-                  final canTurn = ref.watch(randomProvider).canTurn;
-                  if (canTurn) {
-                    randomController.countTurningGacha();
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PresentPage(),
-                        fullscreenDialog: true,
-                      ),
-                    );
-                  } else {
-                    await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(
-                              'ガチャを回せるのは\n1日5回までだよ\u{1F60C}\nまた明日回してね\u{1F365}'),
-                          actions: <Widget>[
-                            ElevatedButton(
-                              child: Text('うん'),
-                              onPressed: () async {
-                                Navigator.of(context).pop();
-                              },
+            Consumer(
+              builder: (context, watch, child) {
+                final randomController = ref.watch(randomProvider);
+                return ElevatedButton(
+                  child: const Text('回す'),
+                  onPressed: () async {
+                    await randomController.checkTodayTurnGachaTimes();
+                    final canTurn = ref.watch(randomProvider).canTurn;
+                    if (canTurn) {
+                      await randomController.countTurningGacha();
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PresentPage(),
+                          fullscreenDialog: true,
+                        ),
+                      );
+                    } else {
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text(
+                              'ガチャを回せるのは\n1日5回までだよ\u{1F60C}\nまた明日回してね\u{1F365}',
                             ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                },
-              );
-            })
+                            actions: <Widget>[
+                              ElevatedButton(
+                                child: const Text('うん'),
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
+                );
+              },
+            )
           ],
         ),
       ),

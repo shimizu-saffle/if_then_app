@@ -6,11 +6,11 @@ import '../controllers/ifthen_list_controller.dart';
 import '../models/ifthen.dart';
 
 class AddPage extends HookConsumerWidget {
-  AddPage({this.ifThen});
+  const AddPage({super.key, this.ifThen});
   final IfThen? ifThen;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isUpdate = ifThen != null;
+    final isUpdate = ifThen != null;
     final ifTextEditingController = TextEditingController();
     final thenTextEditingController = TextEditingController();
 
@@ -32,11 +32,10 @@ class AddPage extends HookConsumerWidget {
               children: [
                 TextField(
                   maxLength: 17,
-                  maxLines: 1,
                   controller: ifTextEditingController,
-                  decoration: InputDecoration(
-                    labelText: "IF",
-                    hintText: "〇〇な時",
+                  decoration: const InputDecoration(
+                    labelText: 'IF',
+                    hintText: '〇〇な時',
                   ),
                   onChanged: (text) {
                     addController.newIfText = text;
@@ -44,29 +43,30 @@ class AddPage extends HookConsumerWidget {
                 ),
                 TextField(
                   maxLength: 17,
-                  maxLines: 1,
                   controller: thenTextEditingController,
-                  decoration:
-                      InputDecoration(labelText: "THEN", hintText: "〇〇する"),
+                  decoration: const InputDecoration(
+                    labelText: 'THEN',
+                    hintText: '〇〇する',
+                  ),
                   onChanged: (text) {
                     addController.newThenText = text;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     if (isUpdate) {
                       if (addController.newIfText.isEmpty) {
-                        throw (showDialog(
+                        throw showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('IFを入力してね\u{1F64F}'),
+                              title: const Text('IFを入力してね\u{1F64F}'),
                               actions: <Widget>[
                                 ElevatedButton(
-                                  child: Text('わかった'),
+                                  child: const Text('わかった'),
                                   onPressed: () async {
                                     Navigator.of(context).pop();
                                   },
@@ -74,16 +74,16 @@ class AddPage extends HookConsumerWidget {
                               ],
                             );
                           },
-                        ));
+                        );
                       } else if (addController.newThenText.isEmpty) {
-                        throw (showDialog(
+                        throw showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('THENを入力してね\u{1F64F}'),
+                              title: const Text('THENを入力してね\u{1F64F}'),
                               actions: <Widget>[
                                 ElevatedButton(
-                                  child: Text('わかった'),
+                                  child: const Text('わかった'),
                                   onPressed: () async {
                                     Navigator.of(context).pop();
                                   },
@@ -91,19 +91,19 @@ class AddPage extends HookConsumerWidget {
                               ],
                             );
                           },
-                        ));
+                        );
                       }
                       await addController.ifThenUpdate(ifThen!);
                     } else {
                       if (addController.newIfText.isEmpty) {
-                        throw (showDialog(
+                        throw showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('IFを入力してね\u{1F64F}'),
+                              title: const Text('IFを入力してね\u{1F64F}'),
                               actions: <Widget>[
                                 ElevatedButton(
-                                  child: Text('わかった'),
+                                  child: const Text('わかった'),
                                   onPressed: () async {
                                     Navigator.of(context).pop();
                                   },
@@ -111,16 +111,16 @@ class AddPage extends HookConsumerWidget {
                               ],
                             );
                           },
-                        ));
+                        );
                       } else if (addController.newThenText.isEmpty) {
-                        throw (showDialog(
+                        throw showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('THENを入力してね\u{1F64F}'),
+                              title: const Text('THENを入力してね\u{1F64F}'),
                               actions: <Widget>[
                                 ElevatedButton(
-                                  child: Text('わかった'),
+                                  child: const Text('わかった'),
                                   onPressed: () async {
                                     Navigator.of(context).pop();
                                   },
@@ -128,7 +128,7 @@ class AddPage extends HookConsumerWidget {
                               ],
                             );
                           },
-                        ));
+                        );
                       }
                       await addController.ifThenAdd();
                     }

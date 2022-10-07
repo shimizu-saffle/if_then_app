@@ -19,17 +19,18 @@ import 'views/timeline_page.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  flutterLocalNotificationsPlugin.show(
-      message.data.hashCode,
-      message.data['title'],
-      message.data['body'],
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          channel.id,
-          channel.name,
-          // channel.description, ※1
-        ),
-      ));
+  await flutterLocalNotificationsPlugin.show(
+    message.data.hashCode,
+    message.data['title'],
+    message.data['body'],
+    NotificationDetails(
+      android: AndroidNotificationDetails(
+        channel.id,
+        channel.name,
+        // channel.description, ※1
+      ),
+    ),
+  );
 }
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -46,11 +47,11 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
+  await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
   await Firebase.initializeApp();
-  FcmController fcmSettings = FcmController();
+  var fcmSettings = FcmController();
   fcmSettings.setRequestPermission();
   fcmSettings.iOSForegroundMessagesSettings();
   if (Platform.isAndroid) {
@@ -73,7 +74,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: true,
       title: 'イフゼン',
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -99,19 +99,19 @@ class MyApp extends StatelessWidget {
         'PresentPage': (context) => PresentPage(),
       },
       theme: ThemeData(
-          textTheme: GoogleFonts.notoSansTextTheme(),
-          primaryColor: Colors.deepOrange,
-          primarySwatch: Colors.deepOrange,
-          pageTransitionsTheme: const PageTransitionsTheme(
-            builders: <TargetPlatform, PageTransitionsBuilder>{
-              TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
-            },
-          )),
+        textTheme: GoogleFonts.notoSansTextTheme(),
+        primaryColor: Colors.deepOrange,
+        primarySwatch: Colors.deepOrange,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
+          },
+        ),
+      ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.deepOrange,
       ),
-      themeMode: ThemeMode.system,
       builder: EasyLoading.init(),
     );
   }

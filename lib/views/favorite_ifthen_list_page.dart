@@ -9,16 +9,20 @@ import 'add_edit_page.dart';
 import 'login_page.dart';
 
 class FavoriteIfThenListPage extends HookConsumerWidget {
+  const FavoriteIfThenListPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('\u{1F4AB}  お気に入りのイフゼン  \u{1F4AB}',
-            style: GoogleFonts.yuseiMagic()),
+        title: Text(
+          '\u{1F4AB}  お気に入りのイフゼン  \u{1F4AB}',
+          style: GoogleFonts.yuseiMagic(),
+        ),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onPressed: () async {
               await showDialog(
                 context: context,
@@ -33,30 +37,32 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return Consumer(
-                                    builder: (context, watch, child) {
-                                  final logOutController =
-                                      ref.watch(LogOutProvider);
-                                  return AlertDialog(
-                                    title: Text('ログアウトしますか？'),
-                                    actions: <Widget>[
-                                      ElevatedButton(
-                                        child: Text('OK'),
-                                        onPressed: () async {
-                                          logOutController.logout();
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => LoginPage(),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
+                                  builder: (context, watch, child) {
+                                    final logOutController =
+                                        ref.watch(logOutProvider);
+                                    return AlertDialog(
+                                      title: const Text('ログアウトしますか？'),
+                                      actions: <Widget>[
+                                        ElevatedButton(
+                                          child: const Text('OK'),
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                            await logOutController.logout();
+                                            await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginPage(),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               },
                             );
-                            Navigator.of(context).pop();
                           },
                         ),
                       ),
@@ -72,11 +78,12 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
         builder: (context, watch, child) {
           final myFavoriteIfThenList =
               ref.watch(myFavoriteIfThenListProvider).myFavoriteIfThenList;
-          final deleteController = ref.watch(IfThenListProvider);
+          final deleteController = ref.watch(ifThenListProvider);
           return ListView(
             children: myFavoriteIfThenList
                 .map(
                   (ifThen) => Card(
+                    elevation: 3,
                     child: Row(
                       children: [
                         Expanded(
@@ -86,25 +93,25 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                               children: [
                                 Row(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 13,
                                     ),
                                     Text(
                                       'if',
                                       style: GoogleFonts.yuseiMagic(
-                                        textStyle: TextStyle(
+                                        textStyle: const TextStyle(
                                           color: Colors.deepOrange,
                                           fontSize: 15,
                                           fontWeight: FontWeight.w300,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 24,
                                     ),
                                     Text(
-                                      '${ifThen.ifText!}',
-                                      style: TextStyle(height: 2.0),
+                                      ifThen.ifText!,
+                                      style: const TextStyle(height: 2),
                                     ),
                                   ],
                                 ),
@@ -113,19 +120,19 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                     Text(
                                       'Then',
                                       style: GoogleFonts.yuseiMagic(
-                                        textStyle: TextStyle(
+                                        textStyle: const TextStyle(
                                           color: Colors.deepOrange,
                                           fontSize: 15,
                                           fontWeight: FontWeight.w300,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Text(
-                                      '${ifThen.thenText!}',
-                                      style: TextStyle(height: 2.0),
+                                      ifThen.thenText!,
+                                      style: const TextStyle(height: 2),
                                     ),
                                   ],
                                 ),
@@ -137,7 +144,7 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                           child: FirebaseAuth.instance.currentUser?.uid ==
                                   ifThen.userId
                               ? IconButton(
-                                  icon: Icon(Icons.more_vert),
+                                  icon: const Icon(Icons.more_vert),
                                   onPressed: () async {
                                     await showDialog(
                                       context: context,
@@ -152,7 +159,8 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           AddPage(
-                                                              ifThen: ifThen),
+                                                        ifThen: ifThen,
+                                                      ),
                                                       fullscreenDialog: true,
                                                     ),
                                                   );
@@ -170,18 +178,22 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                                         (BuildContext context) {
                                                       return AlertDialog(
                                                         title: Text(
-                                                            '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？'),
+                                                          '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？',
+                                                        ),
                                                         actions: <Widget>[
                                                           ElevatedButton(
-                                                            child: Text('OK'),
+                                                            child: const Text(
+                                                              'OK',
+                                                            ),
                                                             onPressed:
                                                                 () async {
                                                               Navigator.of(
-                                                                      context)
-                                                                  .pop();
+                                                                context,
+                                                              ).pop();
                                                               await deleteController
                                                                   .ifThenDelete(
-                                                                      ifThen);
+                                                                ifThen,
+                                                              );
                                                             },
                                                           ),
                                                         ],
@@ -199,37 +211,40 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                     );
                                   },
                                 )
-                              : Consumer(builder: (context, watch, child) {
-                                  final ifThenListController =
-                                      ref.watch(IfThenListProvider);
-                                  return IconButton(
-                                    onPressed: () {
-                                      ifThen.favoriteUserId!.contains(
-                                              FirebaseAuth
-                                                  .instance.currentUser?.uid)
-                                          ? ifThenListController
-                                              .deleteFavoriteUserId(ifThen)
-                                          : ifThenListController
-                                              .saveFavoriteUserId(ifThen);
-                                    },
-                                    icon: Icon(
-                                      Icons.star,
-                                      size: 18.0,
-                                      color: ifThen.favoriteUserId!.contains(
-                                              FirebaseAuth
-                                                  .instance.currentUser?.uid)
-                                          ? Colors.amberAccent
-                                          : Colors.grey,
-                                    ),
-                                  );
-                                }),
+                              : Consumer(
+                                  builder: (context, watch, child) {
+                                    final ifThenListController =
+                                        ref.watch(ifThenListProvider);
+                                    return IconButton(
+                                      onPressed: () {
+                                        ifThen.favoriteUserId!.contains(
+                                          FirebaseAuth
+                                              .instance.currentUser?.uid,
+                                        )
+                                            ? ifThenListController
+                                                .deleteFavoriteUserId(ifThen)
+                                            : ifThenListController
+                                                .saveFavoriteUserId(ifThen);
+                                      },
+                                      icon: Icon(
+                                        Icons.star,
+                                        size: 18,
+                                        color: ifThen.favoriteUserId!.contains(
+                                          FirebaseAuth
+                                              .instance.currentUser?.uid,
+                                        )
+                                            ? Colors.amberAccent
+                                            : Colors.grey,
+                                      ),
+                                    );
+                                  },
+                                ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         )
                       ],
                     ),
-                    elevation: 3,
                   ),
                 )
                 .toList(),

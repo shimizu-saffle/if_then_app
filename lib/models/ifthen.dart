@@ -4,13 +4,13 @@ import 'package:firebase_core/firebase_core.dart';
 class IfThen {
   IfThen(DocumentSnapshot<Map<String, dynamic>> doc) {
     Firebase.initializeApp();
-    this.documentID = doc.id;
-    this.ifText = doc.data()!['ifText'];
-    this.thenText = doc.data()!['thenText'];
-    this.userId = doc.data()!['userId'];
-    this.createdAt = doc.data()!['createdAt'];
-    this.favoriteUserId = doc.data()!['favoriteUserId'];
-    this.serialNumber = doc.data()!['serialNumber'];
+    documentID = doc.id;
+    ifText = doc.data()!['ifText'];
+    thenText = doc.data()!['thenText'];
+    userId = doc.data()!['userId'];
+    createdAt = doc.data()!['createdAt'];
+    favoriteUserId = doc.data()!['favoriteUserId'];
+    serialNumber = doc.data()!['serialNumber'];
   }
 
   String? documentID;

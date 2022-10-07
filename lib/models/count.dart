@@ -4,8 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 class Count {
   Count(DocumentSnapshot<Map<String, dynamic>> doc) {
     Firebase.initializeApp();
-    this.count = doc.id;
-    this.total = doc.data()!['total'];
+    count = doc.id;
+    total = doc.data()!['total'];
   }
 
   String? count;

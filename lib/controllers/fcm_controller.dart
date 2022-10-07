@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../main.dart';
 
-final FcmProvider = ChangeNotifierProvider<FcmController>(
+final fcmProvider = ChangeNotifierProvider<FcmController>(
   (ref) => FcmController(),
 );
 
@@ -15,21 +15,13 @@ class FcmController extends ChangeNotifier {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings? settings;
 
-  setRequestPermission() async {
-    final settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
+  Future<void> setRequestPermission() async {
+    final settings = await messaging.requestPermission();
 
     return print('User granted permission: ${settings.authorizationStatus}');
   }
 
-  iOSForegroundMessagesSettings() async {
+  Future<void> iOSForegroundMessagesSettings() async {
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
@@ -38,16 +30,16 @@ class FcmController extends ChangeNotifier {
     );
   }
 
-  printToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
+  Future<void> printToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
     print(token);
   }
 
-  getSetToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
+  Future<void> getSetToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
 
     Future<void> saveTokenToDatabase(String token) async {
-      String userId = FirebaseAuth.instance.currentUser!.uid;
+      final userId = FirebaseAuth.instance.currentUser!.uid;
 
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
         'tokens': FieldValue.arrayUnion([token]),
@@ -59,18 +51,19 @@ class FcmController extends ChangeNotifier {
     FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   }
 
-  foregroundAndroidNotification() {
-    var initializationSettingsAndroid =
+  Future<void> foregroundAndroidNotification() async {
+    const initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettings =
+    const initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) {
+        final notification = message.notification;
+        final android = message.notification?.android;
+        if (notification != null && android != null) {
+          flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification.title,
             notification.body,
@@ -81,9 +74,11 @@ class FcmController extends ChangeNotifier {
                 // channel.description, ※1
                 icon: android.smallIcon,
               ),
-            ));
-      }
-    });
+            ),
+          );
+        }
+      },
+    );
     notifyListeners();
   }
 }

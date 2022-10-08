@@ -65,8 +65,6 @@ class RootPage extends HookConsumerWidget {
                 label: '',
               ),
               BottomNavigationBarItem(
-                ///todo
-                ///globeAsia => earthAsia 未確認
                 icon: Icon(FontAwesomeIcons.earthAsia), label: '',
               ),
               BottomNavigationBarItem(

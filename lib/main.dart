@@ -24,11 +24,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     message.data['title'],
     message.data['body'],
     NotificationDetails(
-      android: AndroidNotificationDetails(
-        channel.id,
-        channel.name,
-        channelDescription: channel.description
-      ),
+      android: AndroidNotificationDetails(channel.id, channel.name,
+          channelDescription: channel.description),
     ),
   );
 }
@@ -36,7 +33,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
-  description: 'This channel is used for important notifications.', // description
+  description:
+      'This channel is used for important notifications.', // description
   importance: Importance.high,
 );
 

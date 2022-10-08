@@ -44,7 +44,7 @@ class RandomIfThenController extends ChangeNotifier {
     randomThenText = await thenSnapshots.docs[0].data()['thenText'];
   }
 
-  Future addRandomToMyIfThen() async {
+  Future<void> addRandomToMyIfThen() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
     final itList = FirebaseFirestore.instance.collection('itList');
     final countRef =
@@ -76,7 +76,7 @@ class RandomIfThenController extends ChangeNotifier {
     });
   }
 
-  Future checkTodayTurnGachaTimes() async {
+  Future<void> checkTodayTurnGachaTimes() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
     final userDocument =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();

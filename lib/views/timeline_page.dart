@@ -48,6 +48,7 @@ class TimeLinePage extends HookConsumerWidget {
                                         ElevatedButton(
                                           child: const Text('OK'),
                                           onPressed: () async {
+                                            Navigator.of(context).pop();
                                             await logOutController.logout();
                                             await Navigator.push(
                                               context,
@@ -64,7 +65,6 @@ class TimeLinePage extends HookConsumerWidget {
                                 );
                               },
                             );
-                            Navigator.of(context).pop();
                           },
                         ),
                       ),
@@ -181,6 +181,7 @@ class TimeLineCard extends HookConsumerWidget {
                                           Center(
                                             child: SimpleDialogOption(
                                               onPressed: () async {
+                                                Navigator.of(context).pop();
                                                 await Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -191,7 +192,6 @@ class TimeLineCard extends HookConsumerWidget {
                                                     fullscreenDialog: true,
                                                   ),
                                                 );
-                                                Navigator.of(context).pop();
                                               },
                                               child: const Text('編集'),
                                             ),

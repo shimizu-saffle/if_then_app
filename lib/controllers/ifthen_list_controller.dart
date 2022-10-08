@@ -88,7 +88,7 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
-  Future ifThenDelete(IfThen ifThen) async {
+  Future<void> ifThenDelete(IfThen ifThen) async {
     final count =
         FirebaseFirestore.instance.collection('settings').doc('count');
 

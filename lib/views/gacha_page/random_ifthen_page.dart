@@ -107,7 +107,7 @@ class IfThenMixerPage extends HookConsumerWidget {
                             actions: <Widget>[
                               ElevatedButton(
                                 child: const Text('うん'),
-                                onPressed: () async {
+                                onPressed: () {
                                   Navigator.of(context).pop();
                                 },
                               ),

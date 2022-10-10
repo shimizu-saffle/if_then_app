@@ -65,7 +65,8 @@ class RootPage extends HookConsumerWidget {
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.earthAsia), label: '',
+                icon: Icon(FontAwesomeIcons.earthAsia),
+                label: '',
               ),
               BottomNavigationBarItem(
                 icon: Icon(

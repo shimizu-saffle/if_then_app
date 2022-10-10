@@ -47,9 +47,9 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
   ]);
   await Firebase.initializeApp();
-  var fcmSettings = FcmController();
-  fcmSettings.setRequestPermission();
-  fcmSettings.iOSForegroundMessagesSettings();
+  final fcmSettings = FcmController();
+  await fcmSettings.iOSForegroundMessagesSettings();
+  await fcmSettings.setRequestPermission();
   if (Platform.isAndroid) {
     await fcmSettings.foregroundAndroidNotification();
 
@@ -67,6 +67,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final currentUserInfo = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -81,10 +82,14 @@ class MyApp extends StatelessWidget {
               ),
             );
           }
-          if (snapshot.hasData) {
+          ///これでリビルドした際もログイン状態を保持できるのではないのか説を提唱したい
+          if (snapshot.hasData && currentUserInfo != null) {
             return RootPage();
+          } else if (currentUserInfo == null) {
+            return LoginPage();
+          } else {
+            return CircularProgressIndicator();
           }
-          return LoginPage();
         },
       ),
       routes: {

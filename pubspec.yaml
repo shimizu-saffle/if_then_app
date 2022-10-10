@@ -9,20 +9,20 @@ environment:
   sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
-  firebase_core: ^1.4.0
-  cloud_firestore: ^2.4.0
-  firebase_auth: ^3.0.1
-  font_awesome_flutter: ^10.2.1 #
-  google_fonts: ^3.0.1 #
-  firebase_messaging: ^10.0.4
-  flutter_local_notifications: ^12.0.0 # 
-  google_sign_in: ^5.4.2 #
-  cloud_functions: ^3.3.9 #
-  sign_in_with_apple: ^4.1.0 #
-  crypto: ^3.0.2 #
-  sign_button: ^2.0.2 #
-  flutter_easyloading: ^3.0.5 #
-  hooks_riverpod: ^2.0.2 #
+  firebase_core: ^1.24.0
+  cloud_firestore: ^3.5.1
+  firebase_auth: ^3.11.2
+  font_awesome_flutter: ^10.2.1
+  google_fonts: ^3.0.1
+  firebase_messaging: ^13.1.0
+  flutter_local_notifications: ^12.0.0
+  google_sign_in: ^5.4.2
+  cloud_functions: ^3.3.9
+  sign_in_with_apple: ^4.1.0
+  crypto: ^3.0.2
+  sign_button: ^2.0.2
+  flutter_easyloading: ^3.0.5
+  hooks_riverpod: ^2.0.2
 
   flutter:
     sdk: flutter

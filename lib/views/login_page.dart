@@ -44,26 +44,26 @@ class LoginPage extends HookConsumerWidget {
                       : SignInButton(
                           buttonType: ButtonType.apple,
                           onPressed: () async {
-                            await EasyLoading.show(status: 'ようこそ \u{1F450}');
+                            // await EasyLoading.show(status: 'ようこそ \u{1F450}');
                             try {
                               await appleLogInController.loginUserWithApple();
                               await Navigator.pushNamed(context, 'RootPage');
                             } catch (e) {
                               debugPrint('error');
                             }
-                            await EasyLoading.dismiss();
+                            // await EasyLoading.dismiss();
                           },
                         ),
                   const SizedBox(height: 25),
                   SignInButton(
                     buttonType: ButtonType.google,
                     onPressed: () async {
-                      await EasyLoading.show(status: 'ようこそ \u{1F450}');
+                      // await EasyLoading.show(status: 'ようこそ \u{1F450}');
                       await googleLogInController.loginUserWithGoogle();
                       if (FirebaseAuth.instance.currentUser?.uid != null) {
                         await Navigator.pushNamed(context, 'RootPage');
                       }
-                      await EasyLoading.dismiss();
+                      // EasyLoading.dismiss();
                     },
                   ),
                   const SizedBox(

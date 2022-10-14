@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../controllers/ifthen_list_controller.dart';
+import '../controllers/if_then_list_controller.dart';
 import '../controllers/login_controller.dart';
 import '../models/if_then.dart';
 import 'add_edit_page.dart';
@@ -26,7 +26,7 @@ class TimeLinePage extends HookConsumerWidget {
           IconButton(
             icon: const Icon(Icons.more_vert),
             onPressed: () async {
-              await showDialog(
+              await showDialog<SimpleDialog>(
                 context: context,
                 builder: (context) {
                   return SimpleDialog(
@@ -35,7 +35,7 @@ class TimeLinePage extends HookConsumerWidget {
                         child: SimpleDialogOption(
                           child: const Text('ログアウト'),
                           onPressed: () async {
-                            await showDialog(
+                            await showDialog<Consumer>(
                               context: context,
                               builder: (context) {
                                 return Consumer(
@@ -49,14 +49,17 @@ class TimeLinePage extends HookConsumerWidget {
                                           child: const Text('OK'),
                                           onPressed: () async {
                                             Navigator.of(context).pop();
-                                            await logOutController.logout();
-                                            await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const LoginPage(),
-                                              ),
-                                            );
+                                            await logOutController
+                                                .logout()
+                                                .then((value) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute<LoginPage>(
+                                                  builder: (context) =>
+                                                      const LoginPage(),
+                                                ),
+                                              );
+                                            });
                                           },
                                         ),
                                       ],
@@ -76,12 +79,14 @@ class TimeLinePage extends HookConsumerWidget {
           )
         ],
       ),
-      body: TimeLineCard(),
+      body: const TimeLineCard(),
     );
   }
 }
 
 class TimeLineCard extends HookConsumerWidget {
+  const TimeLineCard({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Consumer(
@@ -172,7 +177,7 @@ class TimeLineCard extends HookConsumerWidget {
                             ? IconButton(
                                 icon: const Icon(Icons.more_vert),
                                 onPressed: () async {
-                                  await showDialog(
+                                  await showDialog<SimpleDialog>(
                                     context: context,
                                     builder: (context) {
                                       return SimpleDialog(
@@ -183,7 +188,7 @@ class TimeLineCard extends HookConsumerWidget {
                                                 Navigator.of(context).pop();
                                                 await Navigator.push(
                                                   context,
-                                                  MaterialPageRoute(
+                                                  MaterialPageRoute<AddPage>(
                                                     builder: (context) =>
                                                         AddPage(
                                                       ifThen: ifThen,
@@ -198,7 +203,8 @@ class TimeLineCard extends HookConsumerWidget {
                                           Center(
                                             child: SimpleDialogOption(
                                               onPressed: () async {
-                                                await showDialog(
+                                                Navigator.of(context).pop();
+                                                await showDialog<AlertDialog>(
                                                   context: context,
                                                   builder: (context) {
                                                     return AlertDialog(
@@ -223,7 +229,6 @@ class TimeLineCard extends HookConsumerWidget {
                                                     );
                                                   },
                                                 );
-                                                Navigator.of(context).pop();
                                               },
                                               child: const Text('削除'),
                                             ),

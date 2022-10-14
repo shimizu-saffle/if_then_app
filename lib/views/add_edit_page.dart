@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../controllers/ifthen_list_controller.dart';
+import '../controllers/if_then_list_controller.dart';
 import '../models/if_then.dart';
 
 class AddPage extends HookConsumerWidget {
@@ -57,9 +57,10 @@ class AddPage extends HookConsumerWidget {
                 ),
                 ElevatedButton(
                   onPressed: () async {
+                    Navigator.of(context).pop();
                     if (isUpdate) {
                       if (addController.newIfText.isEmpty) {
-                        throw showDialog(
+                        await showDialog<AlertDialog>(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
@@ -76,7 +77,7 @@ class AddPage extends HookConsumerWidget {
                           },
                         );
                       } else if (addController.newThenText.isEmpty) {
-                        throw showDialog(
+                        await showDialog<AlertDialog>(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
@@ -96,7 +97,7 @@ class AddPage extends HookConsumerWidget {
                       await addController.ifThenUpdate(ifThen!);
                     } else {
                       if (addController.newIfText.isEmpty) {
-                        throw showDialog(
+                        await showDialog<AlertDialog>(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
@@ -113,7 +114,7 @@ class AddPage extends HookConsumerWidget {
                           },
                         );
                       } else if (addController.newThenText.isEmpty) {
-                        throw showDialog(
+                        await showDialog<AlertDialog>(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
@@ -132,7 +133,6 @@ class AddPage extends HookConsumerWidget {
                       }
                       await addController.ifThenAdd();
                     }
-                    Navigator.of(context).pop();
                   },
                   child: Text(isUpdate ? '更新する' : '追加する'),
                 )

@@ -119,9 +119,9 @@ class PresentPage extends HookConsumerWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
+                        await Navigator.pushNamed(context, 'RootPage');
                         await randomController.addRandomToMyIfThen();
                         await randomController.getRandomIfThen();
-                        await Navigator.pushNamed(context, 'RootPage');
                       },
                       child: const Text('はい'),
                     ),

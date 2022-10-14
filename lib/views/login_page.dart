@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,8 +46,10 @@ class LoginPage extends HookConsumerWidget {
                             await EasyLoading.show(status: 'ようこそ \u{1F450}!!!');
                             try {
                               await appleLogInController.loginUserWithApple();
-                              await EasyLoading.dismiss();
-                              await Navigator.pushNamed(context, 'RootPage');
+                              await EasyLoading.dismiss().then(
+                                (value) =>
+                                    Navigator.pushNamed(context, 'RootPage'),
+                              );
                             } on Exception catch (e) {
                               debugPrint('debug : $e');
                             }
@@ -59,11 +60,12 @@ class LoginPage extends HookConsumerWidget {
                     buttonType: ButtonType.google,
                     onPressed: () async {
                       await EasyLoading.show(status: 'ようこそ \u{1F450}');
-                      await googleLogInController.loginUserWithGoogle();
-                      if (FirebaseAuth.instance.currentUser?.uid != null) {
-                        await EasyLoading.dismiss();
-                        await Navigator.pushNamed(context, 'RootPage');
-                      }
+                      await googleLogInController.loginUserWithGoogle().then(
+                        (value) {
+                          EasyLoading.dismiss();
+                          Navigator.pushNamed(context, 'RootPage');
+                        },
+                      );
                     },
                   ),
                   const SizedBox(

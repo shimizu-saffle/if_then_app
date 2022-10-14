@@ -21,13 +21,13 @@ class IfThenListController extends ChangeNotifier {
   String newThenText = '';
 
   Future<void> getItListRealtime() async {
-    final snapshots =
-        FirebaseFirestore.instance.collection('itList').snapshots();
-    snapshots.listen((snapshot) {
+    FirebaseFirestore.instance
+        .collection('itList')
+        .snapshots()
+        .listen((snapshot) {
       final docs = snapshot.docs;
-      final itList = docs.map(IfThen.new).toList();
-      itList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-      ifThenList = itList;
+      ifThenList = docs.map(IfThen.new).toList();
+      ifThenList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       notifyListeners();
     });
   }
@@ -46,7 +46,7 @@ class IfThenListController extends ChangeNotifier {
     final count = Count(countSnapshot);
     final total = count.total;
 
-    await itList.add({
+    await itList.add(<String, dynamic>{
       'ifText': newIfText,
       'thenText': newThenText,
       'createdAt': Timestamp.now(),
@@ -63,7 +63,7 @@ class IfThenListController extends ChangeNotifier {
         .collection('itList')
         .doc(ifThen.documentID)
         .update({
-      'favoriteUserId': FieldValue.arrayUnion([favoriteUserId]),
+      'favoriteUserId': FieldValue.arrayUnion(<String>[favoriteUserId]),
     });
   }
 
@@ -74,7 +74,7 @@ class IfThenListController extends ChangeNotifier {
         .collection('itList')
         .doc(ifThen.documentID)
         .update({
-      'favoriteUserId': FieldValue.arrayRemove([favoriteUserId]),
+      'favoriteUserId': FieldValue.arrayRemove(<String>[favoriteUserId]),
     });
   }
 
@@ -117,32 +117,30 @@ class MyIfThenListController extends ChangeNotifier {
   List<IfThen> myFavoriteIfThenList = [];
 
   Future<void> getMyItListRealtime() async {
-    final snapshots = FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('itList')
         .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-        .snapshots();
-    snapshots.listen((snapshot) {
+        .snapshots()
+        .listen((snapshot) {
       final docs = snapshot.docs;
-      final itList = docs.map(IfThen.new).toList();
-      itList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-      myIfThenList = itList;
+      myIfThenList = docs.map(IfThen.new).toList();
+      myIfThenList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       notifyListeners();
     });
   }
 
   Future<void> getMyFavoriteItListRealtime() async {
-    final snapshots = FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('itList')
         .where(
           'favoriteUserId',
           arrayContains: FirebaseAuth.instance.currentUser?.uid,
         )
-        .snapshots();
-    snapshots.listen((snapshot) {
+        .snapshots()
+        .listen((snapshot) {
       final docs = snapshot.docs;
-      final itList = docs.map(IfThen.new).toList();
-      itList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-      myFavoriteIfThenList = itList;
+      myFavoriteIfThenList = docs.map(IfThen.new).toList();
+      myFavoriteIfThenList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       notifyListeners();
     });
   }

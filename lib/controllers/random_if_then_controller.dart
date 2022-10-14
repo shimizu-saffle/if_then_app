@@ -58,7 +58,7 @@ class RandomIfThenController extends ChangeNotifier {
     final count = Count(countSnapshot);
     final total = count.total;
 
-    await itList.add({
+    await itList.add(<String, dynamic>{
       'ifText': randomIfText,
       'thenText': randomThenText,
       'createdAt': Timestamp.now(),
@@ -72,7 +72,7 @@ class RandomIfThenController extends ChangeNotifier {
     final userId = FirebaseAuth.instance.currentUser!.uid;
 
     await FirebaseFirestore.instance.collection('users').doc(userId).update({
-      'turnGacha': FieldValue.arrayUnion([Timestamp.now()]),
+      'turnGacha': FieldValue.arrayUnion(<Timestamp>[Timestamp.now()]),
     });
   }
 
@@ -87,7 +87,7 @@ class RandomIfThenController extends ChangeNotifier {
 
     if (turnGacha.length > 6) {
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'turnGacha': FieldValue.arrayRemove([]),
+        'turnGacha': FieldValue.arrayRemove(<dynamic>[]),
       });
     }
 

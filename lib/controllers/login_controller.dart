@@ -43,7 +43,7 @@ class GoogleSignInController with ChangeNotifier {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.userId)
-          .set({
+          .set(<String, dynamic>{
         'createdAt': Timestamp.now(),
         'email': user.email,
         'tokens': user.tokens,
@@ -90,7 +90,7 @@ class GoogleSignInController with ChangeNotifier {
               .collection('users')
               .doc(authResult.user!.uid)
               .update({
-            'tokens': FieldValue.arrayUnion([token]),
+            'tokens': FieldValue.arrayUnion(<String>[token]),
           });
         }
 
@@ -134,7 +134,7 @@ class AppleSignInController with ChangeNotifier {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.userId)
-          .set({
+          .set(<String, dynamic>{
         'createdAt': Timestamp.now(),
         'email': user.email,
         'tokens': user.tokens,
@@ -189,7 +189,7 @@ class AppleSignInController with ChangeNotifier {
               .collection('users')
               .doc(authResult.user!.uid)
               .update({
-            'tokens': FieldValue.arrayUnion([token]),
+            'tokens': FieldValue.arrayUnion(<String>[token]),
           });
         }
 

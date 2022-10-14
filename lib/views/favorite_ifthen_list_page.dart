@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../controllers/ifthen_list_controller.dart';
+import '../controllers/if_then_list_controller.dart';
 import '../controllers/login_controller.dart';
 import 'add_edit_page.dart';
 import 'login_page.dart';
@@ -24,7 +24,7 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
           IconButton(
             icon: const Icon(Icons.more_vert),
             onPressed: () async {
-              await showDialog(
+              await showDialog<SimpleDialog>(
                 context: context,
                 builder: (context) {
                   return SimpleDialog(
@@ -33,7 +33,7 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                         child: SimpleDialogOption(
                           child: const Text('ログアウト'),
                           onPressed: () async {
-                            await showDialog(
+                            await showDialog<Consumer>(
                               context: context,
                               builder: (context) {
                                 return Consumer(
@@ -47,14 +47,18 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                           child: const Text('OK'),
                                           onPressed: () async {
                                             Navigator.of(context).pop();
-                                            await logOutController.logout();
-                                            await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const LoginPage(),
-                                              ),
-                                            );
+                                            await logOutController
+                                                .logout()
+                                                .then(
+                                                  (value) => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute<
+                                                        LoginPage>(
+                                                      builder: (context) =>
+                                                          const LoginPage(),
+                                                    ),
+                                                  ),
+                                                );
                                           },
                                         ),
                                       ],
@@ -146,7 +150,7 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                               ? IconButton(
                                   icon: const Icon(Icons.more_vert),
                                   onPressed: () async {
-                                    await showDialog(
+                                    await showDialog<SimpleDialog>(
                                       context: context,
                                       builder: (context) {
                                         return SimpleDialog(
@@ -154,9 +158,10 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                             Center(
                                               child: SimpleDialogOption(
                                                 onPressed: () async {
+                                                  Navigator.of(context).pop();
                                                   await Navigator.push(
                                                     context,
-                                                    MaterialPageRoute(
+                                                    MaterialPageRoute<AddPage>(
                                                       builder: (context) =>
                                                           AddPage(
                                                         ifThen: ifThen,
@@ -164,7 +169,6 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                                       fullscreenDialog: true,
                                                     ),
                                                   );
-                                                  Navigator.of(context).pop();
                                                 },
                                                 child: const Text('編集'),
                                               ),
@@ -172,7 +176,8 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                             Center(
                                               child: SimpleDialogOption(
                                                 onPressed: () async {
-                                                  await showDialog(
+                                                  Navigator.of(context).pop();
+                                                  await showDialog<AlertDialog>(
                                                     context: context,
                                                     builder: (context) {
                                                       return AlertDialog(
@@ -199,7 +204,6 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                                       );
                                                     },
                                                   );
-                                                  Navigator.of(context).pop();
                                                 },
                                                 child: const Text('削除'),
                                               ),

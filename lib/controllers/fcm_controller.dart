@@ -19,7 +19,8 @@ class FcmController extends ChangeNotifier {
     final settings = await messaging.requestPermission();
 
     return debugPrint(
-        'User granted permission: ${settings.authorizationStatus}');
+      'User granted permission: ${settings.authorizationStatus}',
+    );
   }
 
   Future<void> iOSForegroundMessagesSettings() async {
@@ -43,7 +44,7 @@ class FcmController extends ChangeNotifier {
       final userId = FirebaseAuth.instance.currentUser!.uid;
 
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'tokens': FieldValue.arrayUnion([token]),
+        'tokens': FieldValue.arrayUnion(<String>[token]),
       });
     }
 

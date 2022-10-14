@@ -23,7 +23,7 @@ class IfThenMixerPage extends HookConsumerWidget {
           IconButton(
             icon: const Icon(Icons.more_vert),
             onPressed: () async {
-              await showDialog(
+              await showDialog<SimpleDialog>(
                 context: context,
                 builder: (context) {
                   return SimpleDialog(
@@ -32,7 +32,8 @@ class IfThenMixerPage extends HookConsumerWidget {
                         child: SimpleDialogOption(
                           child: const Text('ログアウト'),
                           onPressed: () async {
-                            await showDialog(
+                            Navigator.of(context).pop();
+                            await showDialog<Consumer>(
                               context: context,
                               builder: (context) {
                                 return Consumer(
@@ -45,14 +46,18 @@ class IfThenMixerPage extends HookConsumerWidget {
                                         ElevatedButton(
                                           child: const Text('OK'),
                                           onPressed: () async {
-                                            await logOutController.logout();
-                                            await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const LoginPage(),
-                                              ),
-                                            );
+                                            await logOutController
+                                                .logout()
+                                                .then(
+                                                  (value) => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute<
+                                                        LoginPage>(
+                                                      builder: (context) =>
+                                                          const LoginPage(),
+                                                    ),
+                                                  ),
+                                                );
                                           },
                                         ),
                                       ],
@@ -61,7 +66,6 @@ class IfThenMixerPage extends HookConsumerWidget {
                                 );
                               },
                             );
-                            Navigator.of(context).pop();
                           },
                         ),
                       ),
@@ -88,16 +92,17 @@ class IfThenMixerPage extends HookConsumerWidget {
                     await randomController.checkTodayTurnGachaTimes();
                     final canTurn = ref.watch(randomProvider).canTurn;
                     if (canTurn) {
-                      await randomController.countTurningGacha();
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PresentPage(),
-                          fullscreenDialog: true,
-                        ),
-                      );
+                      await randomController.countTurningGacha().then(
+                            (value) => Navigator.push(
+                              context,
+                              MaterialPageRoute<PresentPage>(
+                                builder: (context) => const PresentPage(),
+                                fullscreenDialog: true,
+                              ),
+                            ),
+                          );
                     } else {
-                      await showDialog(
+                      await showDialog<AlertDialog>(
                         context: context,
                         builder: (context) {
                           return AlertDialog(

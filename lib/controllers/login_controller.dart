@@ -11,7 +11,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../models/usermodel.dart';
+import '../models/user_model.dart';
 
 final logOutProvider = ChangeNotifierProvider<LogOutController>(
   (ref) => LogOutController(),
@@ -50,8 +50,8 @@ class GoogleSignInController with ChangeNotifier {
         'userId': user.userId,
       });
       retVal = 'success';
-    } catch (e) {
-      print(e);
+    } on Exception catch (e) {
+      debugPrint('debug : $e');
     }
 
     return retVal;
@@ -101,8 +101,8 @@ class GoogleSignInController with ChangeNotifier {
       retVal = 'success';
     } on PlatformException catch (e) {
       retVal = e.message!;
-    } catch (e) {
-      print(e);
+    } on Exception catch (e) {
+      debugPrint('debug : $e');
     }
 
     return retVal;
@@ -141,8 +141,8 @@ class AppleSignInController with ChangeNotifier {
         'userId': user.userId,
       });
       retVal = 'success';
-    } catch (e) {
-      print(e);
+    } on Exception catch (e) {
+      debugPrint('debug : $e');
     }
 
     return retVal;
@@ -200,8 +200,8 @@ class AppleSignInController with ChangeNotifier {
       retVal = 'success';
     } on PlatformException catch (e) {
       retVal = e.message!;
-    } catch (e) {
-      print(e);
+    } on Exception catch (e) {
+      debugPrint('debug : $e');
     }
 
     return retVal;

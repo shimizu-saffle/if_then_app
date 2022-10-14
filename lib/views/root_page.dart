@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../controllers/bottom_navigation_controller.dart';
 import 'favorite_ifthen_list_page.dart';
 import 'gacha_page/random_ifthen_page.dart';
-import 'my_ifthen_list_page.dart';
-import 'timeline_page.dart';
+import 'my_if_then_list_page.dart';
+import 'time_line_page.dart';
 
 // ignore: must_be_immutable
 class RootPage extends HookConsumerWidget {

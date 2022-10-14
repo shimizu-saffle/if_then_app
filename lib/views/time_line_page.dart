@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../controllers/ifthen_list_controller.dart';
 import '../controllers/login_controller.dart';
-import '../models/ifthen.dart';
+import '../models/if_then.dart';
 import 'add_edit_page.dart';
 import 'login_page.dart';
 
@@ -28,7 +28,7 @@ class TimeLinePage extends HookConsumerWidget {
             onPressed: () async {
               await showDialog(
                 context: context,
-                builder: (BuildContext context) {
+                builder: (context) {
                   return SimpleDialog(
                     children: <Widget>[
                       Center(
@@ -37,7 +37,7 @@ class TimeLinePage extends HookConsumerWidget {
                           onPressed: () async {
                             await showDialog(
                               context: context,
-                              builder: (BuildContext context) {
+                              builder: (context) {
                                 return Consumer(
                                   builder: (context, watch, child) {
                                     final logOutController =
@@ -94,7 +94,7 @@ class TimeLineCard extends HookConsumerWidget {
               .snapshots(),
           builder: (
             context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot,
+            snapshot,
           ) {
             if (!snapshot.hasData) {
               return const Center(
@@ -105,9 +105,8 @@ class TimeLineCard extends HookConsumerWidget {
               return const Text('Something went wrong');
             }
             return ListView(
-              children: snapshot.data!.docs
-                  .map((DocumentSnapshot<Map<String, dynamic>> document) {
-                final data = document.data()!;
+              children: snapshot.data!.docs.map((document) {
+                final data = document.data();
                 final ifThen = IfThen(document);
                 return Card(
                   elevation: 3,
@@ -175,7 +174,7 @@ class TimeLineCard extends HookConsumerWidget {
                                 onPressed: () async {
                                   await showDialog(
                                     context: context,
-                                    builder: (BuildContext context) {
+                                    builder: (context) {
                                       return SimpleDialog(
                                         children: <Widget>[
                                           Center(
@@ -201,8 +200,7 @@ class TimeLineCard extends HookConsumerWidget {
                                               onPressed: () async {
                                                 await showDialog(
                                                   context: context,
-                                                  builder:
-                                                      (BuildContext context) {
+                                                  builder: (context) {
                                                     return AlertDialog(
                                                       title: Text(
                                                         '「${ifThen.ifText}${ifThen.thenText}」を削除しますか？',

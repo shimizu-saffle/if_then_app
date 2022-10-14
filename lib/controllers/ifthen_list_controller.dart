@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../models/count.dart';
-import '../models/ifthen.dart';
+import '../models/if_then.dart';
 
 final ifThenListProvider = ChangeNotifierProvider<IfThenListController>(
   (ref) => IfThenListController()..getItListRealtime(),
 );
 
-final AddProvider = ChangeNotifierProvider<IfThenListController>(
+final addProvider = ChangeNotifierProvider<IfThenListController>(
   (ref) => IfThenListController(),
 );
 
@@ -32,7 +32,7 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
-  Future ifThenAdd() async {
+  Future<void> ifThenAdd() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
     final itList = FirebaseFirestore.instance.collection('itList');
     final countRef =
@@ -78,7 +78,7 @@ class IfThenListController extends ChangeNotifier {
     });
   }
 
-  Future ifThenUpdate(IfThen ifThen) async {
+  Future<void> ifThenUpdate(IfThen ifThen) async {
     final document =
         FirebaseFirestore.instance.collection('itList').doc(ifThen.documentID);
     await document.update({

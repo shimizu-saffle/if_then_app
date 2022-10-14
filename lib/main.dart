@@ -13,9 +13,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'controllers/fcm_controller.dart';
 import 'views/gacha_page/present_page.dart';
 import 'views/login_page.dart';
-import 'views/my_ifthen_list_page.dart';
+import 'views/my_if_then_list_page.dart';
 import 'views/root_page.dart';
-import 'views/timeline_page.dart';
+import 'views/time_line_page.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -24,8 +24,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     message.data['title'],
     message.data['body'],
     NotificationDetails(
-      android: AndroidNotificationDetails(channel.id, channel.name,
-          channelDescription: channel.description),
+      android: AndroidNotificationDetails(
+        channel.id,
+        channel.name,
+        channelDescription: channel.description,
+      ),
     ),
   );
 }
@@ -67,6 +70,8 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({super.key});
+
   final currentUserInfo = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
@@ -82,22 +87,23 @@ class MyApp extends StatelessWidget {
               ),
             );
           }
+
           ///これでリビルドした際もログイン状態を保持できるのではないのか説を提唱したい
           if (snapshot.hasData && currentUserInfo != null) {
             return RootPage();
           } else if (currentUserInfo == null) {
-            return LoginPage();
+            return const LoginPage();
           } else {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         },
       ),
       routes: {
-        'LoginPage': (context) => LoginPage(),
+        'LoginPage': (context) => const LoginPage(),
         'RootPage': (context) => RootPage(),
-        'TimeLinePage': (context) => TimeLinePage(),
-        'MyIfThenListPage': (context) => MyIfThenListPage(),
-        'PresentPage': (context) => PresentPage(),
+        'TimeLinePage': (context) => const TimeLinePage(),
+        'MyIfThenListPage': (context) => const MyIfThenListPage(),
+        'PresentPage': (context) => const PresentPage(),
       },
       theme: ThemeData(
         textTheme: GoogleFonts.notoSansTextTheme(),

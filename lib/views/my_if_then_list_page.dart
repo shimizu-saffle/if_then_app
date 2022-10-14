@@ -26,7 +26,7 @@ class MyIfThenListPage extends HookConsumerWidget {
             onPressed: () async {
               await showDialog(
                 context: context,
-                builder: (BuildContext context) {
+                builder: (context) {
                   return SimpleDialog(
                     children: <Widget>[
                       Center(
@@ -35,7 +35,7 @@ class MyIfThenListPage extends HookConsumerWidget {
                           onPressed: () async {
                             await showDialog(
                               context: context,
-                              builder: (BuildContext context) {
+                              builder: (context) {
                                 return Consumer(
                                   builder: (context, watch, child) {
                                     final logOutController =
@@ -147,7 +147,7 @@ class MyIfThenListPage extends HookConsumerWidget {
                                   onPressed: () async {
                                     await showDialog(
                                       context: context,
-                                      builder: (BuildContext context) {
+                                      builder: (context) {
                                         return SimpleDialog(
                                           children: <Widget>[
                                             Center(
@@ -173,8 +173,7 @@ class MyIfThenListPage extends HookConsumerWidget {
                                                 onPressed: () async {
                                                   await showDialog(
                                                     context: context,
-                                                    builder:
-                                                        (BuildContext context) {
+                                                    builder: (context) {
                                                       return AlertDialog(
                                                         title: Text(
                                                           '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？',
@@ -187,8 +186,8 @@ class MyIfThenListPage extends HookConsumerWidget {
                                                             onPressed:
                                                                 () async {
                                                               Navigator.of(
-                                                                context,
-                                                              ).pop();
+                                                                      context)
+                                                                  .pop();
                                                               await deleteController
                                                                   .ifThenDelete(
                                                                 ifThen,

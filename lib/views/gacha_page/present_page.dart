@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../controllers/random_ifthen_controller.dart';
+import '../../controllers/random_if_then_controller.dart';
 
 class PresentPage extends HookConsumerWidget {
   const PresentPage({super.key});

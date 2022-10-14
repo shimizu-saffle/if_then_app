@@ -26,7 +26,7 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
             onPressed: () async {
               await showDialog(
                 context: context,
-                builder: (BuildContext context) {
+                builder: (context) {
                   return SimpleDialog(
                     children: <Widget>[
                       Center(
@@ -35,7 +35,7 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                           onPressed: () async {
                             await showDialog(
                               context: context,
-                              builder: (BuildContext context) {
+                              builder: (context) {
                                 return Consumer(
                                   builder: (context, watch, child) {
                                     final logOutController =
@@ -148,7 +148,7 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                   onPressed: () async {
                                     await showDialog(
                                       context: context,
-                                      builder: (BuildContext context) {
+                                      builder: (context) {
                                         return SimpleDialog(
                                           children: <Widget>[
                                             Center(
@@ -174,8 +174,7 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                                 onPressed: () async {
                                                   await showDialog(
                                                     context: context,
-                                                    builder:
-                                                        (BuildContext context) {
+                                                    builder: (context) {
                                                       return AlertDialog(
                                                         title: Text(
                                                           '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？',

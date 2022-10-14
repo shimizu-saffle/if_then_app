@@ -47,10 +47,10 @@ class LoginPage extends HookConsumerWidget {
                             await EasyLoading.show(status: 'ようこそ \u{1F450}!!!');
                             try {
                               await appleLogInController.loginUserWithApple();
-                              EasyLoading.dismiss();
+                              await EasyLoading.dismiss();
                               await Navigator.pushNamed(context, 'RootPage');
-                            } catch (e) {
-                              debugPrint('error');
+                            } on Exception catch (e) {
+                              debugPrint('debug : $e');
                             }
                           },
                         ),
@@ -61,7 +61,7 @@ class LoginPage extends HookConsumerWidget {
                       await EasyLoading.show(status: 'ようこそ \u{1F450}');
                       await googleLogInController.loginUserWithGoogle();
                       if (FirebaseAuth.instance.currentUser?.uid != null) {
-                        EasyLoading.dismiss();
+                        await EasyLoading.dismiss();
                         await Navigator.pushNamed(context, 'RootPage');
                       }
                     },

@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../controllers/ifthen_list_controller.dart';
-import '../models/ifthen.dart';
+import '../models/if_then.dart';
 
 class AddPage extends HookConsumerWidget {
   const AddPage({super.key, this.ifThen});
@@ -25,7 +25,7 @@ class AddPage extends HookConsumerWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final addController = ref.watch(AddProvider);
+          final addController = ref.watch(addProvider);
           return Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -61,7 +61,7 @@ class AddPage extends HookConsumerWidget {
                       if (addController.newIfText.isEmpty) {
                         throw showDialog(
                           context: context,
-                          builder: (BuildContext context) {
+                          builder: (context) {
                             return AlertDialog(
                               title: const Text('IFを入力してね\u{1F64F}'),
                               actions: <Widget>[
@@ -78,7 +78,7 @@ class AddPage extends HookConsumerWidget {
                       } else if (addController.newThenText.isEmpty) {
                         throw showDialog(
                           context: context,
-                          builder: (BuildContext context) {
+                          builder: (context) {
                             return AlertDialog(
                               title: const Text('THENを入力してね\u{1F64F}'),
                               actions: <Widget>[
@@ -98,7 +98,7 @@ class AddPage extends HookConsumerWidget {
                       if (addController.newIfText.isEmpty) {
                         throw showDialog(
                           context: context,
-                          builder: (BuildContext context) {
+                          builder: (context) {
                             return AlertDialog(
                               title: const Text('IFを入力してね\u{1F64F}'),
                               actions: <Widget>[
@@ -115,7 +115,7 @@ class AddPage extends HookConsumerWidget {
                       } else if (addController.newThenText.isEmpty) {
                         throw showDialog(
                           context: context,
-                          builder: (BuildContext context) {
+                          builder: (context) {
                             return AlertDialog(
                               title: const Text('THENを入力してね\u{1F64F}'),
                               actions: <Widget>[

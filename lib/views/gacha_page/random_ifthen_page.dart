@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../controllers/login_controller.dart';
-import '../../controllers/random_ifthen_controller.dart';
+import '../../controllers/random_if_then_controller.dart';
 import '../login_page.dart';
 import 'present_page.dart';
 
@@ -25,7 +25,7 @@ class IfThenMixerPage extends HookConsumerWidget {
             onPressed: () async {
               await showDialog(
                 context: context,
-                builder: (BuildContext context) {
+                builder: (context) {
                   return SimpleDialog(
                     children: <Widget>[
                       Center(
@@ -34,7 +34,7 @@ class IfThenMixerPage extends HookConsumerWidget {
                           onPressed: () async {
                             await showDialog(
                               context: context,
-                              builder: (BuildContext context) {
+                              builder: (context) {
                                 return Consumer(
                                   builder: (context, watch, child) {
                                     final logOutController =
@@ -99,7 +99,7 @@ class IfThenMixerPage extends HookConsumerWidget {
                     } else {
                       await showDialog(
                         context: context,
-                        builder: (BuildContext context) {
+                        builder: (context) {
                           return AlertDialog(
                             title: const Text(
                               'ガチャを回せるのは\n1日5回までだよ\u{1F60C}\nまた明日回してね\u{1F365}',

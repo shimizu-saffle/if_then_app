@@ -18,6 +18,6 @@ class IfThen {
   String? thenText;
   String? userId;
   Timestamp? createdAt;
-  List? favoriteUserId;
+  List<dynamic>? favoriteUserId;
   int? serialNumber;
 }

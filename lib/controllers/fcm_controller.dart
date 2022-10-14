@@ -18,7 +18,8 @@ class FcmController extends ChangeNotifier {
   Future<void> setRequestPermission() async {
     final settings = await messaging.requestPermission();
 
-    return print('User granted permission: ${settings.authorizationStatus}');
+    return debugPrint(
+        'User granted permission: ${settings.authorizationStatus}');
   }
 
   Future<void> iOSForegroundMessagesSettings() async {
@@ -32,7 +33,7 @@ class FcmController extends ChangeNotifier {
 
   Future<void> printToken() async {
     final token = await FirebaseMessaging.instance.getToken();
-    print(token);
+    debugPrint(token);
   }
 
   Future<void> getSetToken() async {
@@ -57,9 +58,9 @@ class FcmController extends ChangeNotifier {
     const initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
     FirebaseMessaging.onMessage.listen(
-      (RemoteMessage message) {
+      (message) {
         final notification = message.notification;
         final android = message.notification?.android;
         if (notification != null && android != null) {

@@ -50,7 +50,7 @@ class FavoriteIfThenListPage extends HookConsumerWidget {
                                             await logOutController
                                                 .logout()
                                                 .then(
-                                                  (value) => Navigator.push(
+                                                  (_) => Navigator.push(
                                                     context,
                                                     MaterialPageRoute<
                                                         LoginPage>(

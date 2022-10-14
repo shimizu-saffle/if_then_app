@@ -49,7 +49,7 @@ class IfThenMixerPage extends HookConsumerWidget {
                                             await logOutController
                                                 .logout()
                                                 .then(
-                                                  (value) => Navigator.push(
+                                                  (_) => Navigator.push(
                                                     context,
                                                     MaterialPageRoute<
                                                         LoginPage>(
@@ -93,7 +93,7 @@ class IfThenMixerPage extends HookConsumerWidget {
                     final canTurn = ref.watch(randomProvider).canTurn;
                     if (canTurn) {
                       await randomController.countTurningGacha().then(
-                            (value) => Navigator.push(
+                            (_) => Navigator.push(
                               context,
                               MaterialPageRoute<PresentPage>(
                                 builder: (context) => const PresentPage(),

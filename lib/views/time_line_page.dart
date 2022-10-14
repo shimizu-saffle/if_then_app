@@ -51,15 +51,16 @@ class TimeLinePage extends HookConsumerWidget {
                                             Navigator.of(context).pop();
                                             await logOutController
                                                 .logout()
-                                                .then((value) {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute<LoginPage>(
-                                                  builder: (context) =>
-                                                      const LoginPage(),
-                                                ),
-                                              );
-                                            });
+                                                .then(
+                                                  (_) => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute<
+                                                        LoginPage>(
+                                                      builder: (context) =>
+                                                          const LoginPage(),
+                                                    ),
+                                                  ),
+                                                );
                                           },
                                         ),
                                       ],

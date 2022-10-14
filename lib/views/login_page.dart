@@ -45,11 +45,12 @@ class LoginPage extends HookConsumerWidget {
                           onPressed: () async {
                             await EasyLoading.show(status: 'ようこそ \u{1F450}!!!');
                             try {
-                              await appleLogInController.loginUserWithApple();
-                              await EasyLoading.dismiss().then(
-                                (value) =>
-                                    Navigator.pushNamed(context, 'RootPage'),
-                              );
+                              await appleLogInController
+                                  .loginUserWithApple()
+                                  .then((_) {
+                                EasyLoading.dismiss();
+                                Navigator.pushNamed(context, 'RootPage');
+                              });
                             } on Exception catch (e) {
                               debugPrint('debug : $e');
                             }
@@ -61,7 +62,7 @@ class LoginPage extends HookConsumerWidget {
                     onPressed: () async {
                       await EasyLoading.show(status: 'ようこそ \u{1F450}');
                       await googleLogInController.loginUserWithGoogle().then(
-                        (value) {
+                        (_) {
                           EasyLoading.dismiss();
                           Navigator.pushNamed(context, 'RootPage');
                         },

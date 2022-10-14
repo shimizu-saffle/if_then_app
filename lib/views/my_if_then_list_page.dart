@@ -49,15 +49,15 @@ class MyIfThenListPage extends HookConsumerWidget {
                                           onPressed: () async {
                                             await logOutController
                                                 .logout()
-                                                .then((value) {
+                                                .then((_) =>
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute<LoginPage>(
                                                   builder: (context) =>
                                                       const LoginPage(),
                                                 ),
-                                              );
-                                            });
+                                              ),
+                                            );
                                           },
                                         ),
                                       ],

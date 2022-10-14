@@ -11,7 +11,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../models/userModel.dart';
+import '../models/usermodel.dart';
 
 final logOutProvider = ChangeNotifierProvider<LogOutController>(
   (ref) => LogOutController(),

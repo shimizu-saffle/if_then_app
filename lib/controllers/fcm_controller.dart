@@ -73,7 +73,7 @@ class FcmController extends ChangeNotifier {
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
-                // channel.description, ※1
+                channelDescription: channel.description,
                 icon: android.smallIcon,
               ),
             ),

@@ -33,8 +33,8 @@ class LogOutController extends ChangeNotifier {
 }
 
 class GoogleSignInController with ChangeNotifier {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  final _auth = FirebaseAuth.instance;
+  final _fcm = FirebaseMessaging.instance;
 
   Future<String> createUser(UserModel user) async {
     var retVal = 'error';
@@ -110,8 +110,8 @@ class GoogleSignInController with ChangeNotifier {
 }
 
 class AppleSignInController with ChangeNotifier {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  final _auth = FirebaseAuth.instance;
+  final _fcm = FirebaseMessaging.instance;
 
   String generateNonce([int length = 32]) {
     const charset =

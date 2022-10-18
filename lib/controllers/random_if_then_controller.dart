@@ -19,9 +19,11 @@ class RandomIfThenController extends ChangeNotifier {
   List<String> initFavoriteUserId = [];
   late bool canTurn;
 
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
   Future<void> getRandomIfThen() async {
-    final countRef =
-        FirebaseFirestore.instance.collection('settings').doc('count');
+    final countRef = _firestore.collection('settings').doc('count');
 
     final countSnapshot = await countRef.get();
     final count = Count(countSnapshot);
@@ -30,12 +32,12 @@ class RandomIfThenController extends ChangeNotifier {
     final randomSerialNumber1 = Random().nextInt(randomRange!) + 1;
     final randomSerialNumber2 = Random().nextInt(randomRange) + 1;
 
-    final ifSnapshots = await FirebaseFirestore.instance
+    final ifSnapshots = await _firestore
         .collection('itList')
         .where('serialNumber', isEqualTo: randomSerialNumber1)
         .get();
 
-    final thenSnapshots = await FirebaseFirestore.instance
+    final thenSnapshots = await _firestore
         .collection('itList')
         .where('serialNumber', isEqualTo: randomSerialNumber2)
         .get();
@@ -45,10 +47,9 @@ class RandomIfThenController extends ChangeNotifier {
   }
 
   Future<void> addRandomToMyIfThen() async {
-    final userId = FirebaseAuth.instance.currentUser!.uid;
-    final itList = FirebaseFirestore.instance.collection('itList');
-    final countRef =
-        FirebaseFirestore.instance.collection('settings').doc('count');
+    final userId = _auth.currentUser!.uid;
+    final itList = _firestore.collection('itList');
+    final countRef = _firestore.collection('settings').doc('count');
 
     await countRef.update({
       'total': FieldValue.increment(1),
@@ -69,24 +70,23 @@ class RandomIfThenController extends ChangeNotifier {
   }
 
   Future<void> countTurningGacha() async {
-    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final userId = _auth.currentUser!.uid;
 
-    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+    await _firestore.collection('users').doc(userId).update({
       'turnGacha': FieldValue.arrayUnion(<Timestamp>[Timestamp.now()]),
     });
   }
 
   Future<void> checkTodayTurnGachaTimes() async {
-    final userId = FirebaseAuth.instance.currentUser!.uid;
-    final userDocument =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    final userId = _auth.currentUser!.uid;
+    final userDocument = await _firestore.collection('users').doc(userId).get();
 
     final List<dynamic> list = await userDocument.data()!['turnGacha'] ?? [];
 
     final turnGacha = list.map((e) => (e as Timestamp).toDate()).toList();
 
     if (turnGacha.length > 6) {
-      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      await _firestore.collection('users').doc(userId).update({
         'turnGacha': FieldValue.arrayRemove(<dynamic>[]),
       });
     }

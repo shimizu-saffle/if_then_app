@@ -1,14 +1,17 @@
 import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/models/count.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../models/count.dart';
 
 final randomProvider = ChangeNotifierProvider<RandomIfThenController>(
-    (ref) => RandomIfThenController()
-      ..checkTodayTurnGachaTimes()
-      ..getRandomIfThen());
+  (ref) => RandomIfThenController()
+    ..checkTodayTurnGachaTimes()
+    ..getRandomIfThen(),
+);
 
 class RandomIfThenController extends ChangeNotifier {
   String? randomIfText;
@@ -16,16 +19,16 @@ class RandomIfThenController extends ChangeNotifier {
   List<String> initFavoriteUserId = [];
   late bool canTurn;
 
-  void getRandomIfThen() async {
-    final DocumentReference<Map<String, dynamic>> countRef =
+  Future<void> getRandomIfThen() async {
+    final countRef =
         FirebaseFirestore.instance.collection('settings').doc('count');
 
     final countSnapshot = await countRef.get();
     final count = Count(countSnapshot);
     final randomRange = count.total;
 
-    int randomSerialNumber1 = Random().nextInt(randomRange!) + 1;
-    int randomSerialNumber2 = Random().nextInt(randomRange) + 1;
+    final randomSerialNumber1 = Random().nextInt(randomRange!) + 1;
+    final randomSerialNumber2 = Random().nextInt(randomRange) + 1;
 
     final ifSnapshots = await FirebaseFirestore.instance
         .collection('itList')
@@ -41,13 +44,13 @@ class RandomIfThenController extends ChangeNotifier {
     randomThenText = await thenSnapshots.docs[0].data()['thenText'];
   }
 
-  Future addRandomToMyIfThen() async {
-    final String userId = FirebaseAuth.instance.currentUser!.uid;
+  Future<void> addRandomToMyIfThen() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
     final itList = FirebaseFirestore.instance.collection('itList');
-    final DocumentReference<Map<String, dynamic>> countRef =
+    final countRef =
         FirebaseFirestore.instance.collection('settings').doc('count');
 
-    countRef.update({
+    await countRef.update({
       'total': FieldValue.increment(1),
     });
 
@@ -55,7 +58,7 @@ class RandomIfThenController extends ChangeNotifier {
     final count = Count(countSnapshot);
     final total = count.total;
 
-    await itList.add({
+    await itList.add(<String, dynamic>{
       'ifText': randomIfText,
       'thenText': randomThenText,
       'createdAt': Timestamp.now(),
@@ -69,13 +72,13 @@ class RandomIfThenController extends ChangeNotifier {
     final userId = FirebaseAuth.instance.currentUser!.uid;
 
     await FirebaseFirestore.instance.collection('users').doc(userId).update({
-      'turnGacha': FieldValue.arrayUnion([Timestamp.now()]),
+      'turnGacha': FieldValue.arrayUnion(<Timestamp>[Timestamp.now()]),
     });
   }
 
-  Future checkTodayTurnGachaTimes() async {
-    final String userId = FirebaseAuth.instance.currentUser!.uid;
-    final DocumentSnapshot<Map<String, dynamic>> userDocument =
+  Future<void> checkTodayTurnGachaTimes() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final userDocument =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
     final List<dynamic> list = await userDocument.data()!['turnGacha'] ?? [];
@@ -84,15 +87,17 @@ class RandomIfThenController extends ChangeNotifier {
 
     if (turnGacha.length > 6) {
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'turnGacha': FieldValue.arrayRemove([]),
+        'turnGacha': FieldValue.arrayRemove(<dynamic>[]),
       });
     }
 
     canTurn = turnGacha
-            .where((e) =>
-                e.day == DateTime.now().day &&
-                e.year == DateTime.now().year &&
-                e.month == DateTime.now().month)
+            .where(
+              (e) =>
+                  e.day == DateTime.now().day &&
+                  e.year == DateTime.now().year &&
+                  e.month == DateTime.now().month,
+            )
             .length <
         5;
     notifyListeners();

@@ -1,93 +1,96 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:if_then_app/models/userModel.dart';
-import 'dart:convert';
-import 'dart:math';
-import 'package:crypto/crypto.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-final LogOutProvider = ChangeNotifierProvider<LogOutController>(
+import '../models/user_model.dart';
+
+final logOutProvider = ChangeNotifierProvider<LogOutController>(
   (ref) => LogOutController(),
 );
 
-final GoogleLogInProvider = ChangeNotifierProvider<GoogleSignInController>(
+final googleLogInProvider = ChangeNotifierProvider<GoogleSignInController>(
   (ref) => GoogleSignInController(),
 );
 
-final AppleLogInProvider = ChangeNotifierProvider<AppleSignInController>(
+final appleLogInProvider = ChangeNotifierProvider<AppleSignInController>(
   (ref) => AppleSignInController(),
 );
 
 class LogOutController extends ChangeNotifier {
-  Future logout() async {
+  Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
   }
 }
 
 class GoogleSignInController with ChangeNotifier {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  final _auth = FirebaseAuth.instance;
+  final _fcm = FirebaseMessaging.instance;
 
   Future<String> createUser(UserModel user) async {
-    String retVal = "error";
+    var retVal = 'error';
 
     try {
       await FirebaseFirestore.instance
-          .collection("users")
+          .collection('users')
           .doc(user.userId)
-          .set({
+          .set(<String, dynamic>{
         'createdAt': Timestamp.now(),
         'email': user.email,
         'tokens': user.tokens,
         'userId': user.userId,
       });
-      retVal = "success";
-    } catch (e) {
-      print(e);
+      retVal = 'success';
+    } on Exception catch (e) {
+      debugPrint('debug : $e');
     }
 
     return retVal;
   }
 
   Future<String> loginUserWithGoogle() async {
-    String retVal = "error";
+    var retVal = 'error';
 
     try {
-      final _googleUser = await GoogleSignIn().signIn();
-      GoogleSignInAuthentication _googleAuth =
-          await _googleUser!.authentication;
+      final googleUser = await GoogleSignIn().signIn();
+      final googleAuth = await googleUser!.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: _googleAuth.idToken, accessToken: _googleAuth.accessToken);
+        idToken: googleAuth.idToken,
+        accessToken: googleAuth.accessToken,
+      );
 
-      UserCredential _authResult = await _auth.signInWithCredential(credential);
+      final authResult = await _auth.signInWithCredential(credential);
 
-      String? token = await _fcm.getToken();
+      final token = await _fcm.getToken();
 
-      if (_authResult.additionalUserInfo!.isNewUser) {
-        UserModel _user = UserModel(
-          userId: _authResult.user!.uid,
-          email: _authResult.user!.email,
+      if (authResult.additionalUserInfo!.isNewUser) {
+        final user = UserModel(
+          userId: authResult.user!.uid,
+          email: authResult.user!.email,
           createdAt: Timestamp.now(),
           tokens: await _fcm.getToken(),
         );
-        String _returnString = await createUser(_user);
-        if (_returnString == "success") {
-          retVal = "success";
+        final returnString = await createUser(user);
+        if (returnString == 'success') {
+          retVal = 'success';
         }
       } else {
         Future<void> saveTokenToDatabase(String token) async {
           await FirebaseFirestore.instance
               .collection('users')
-              .doc(_authResult.user!.uid)
+              .doc(authResult.user!.uid)
               .update({
-            'tokens': FieldValue.arrayUnion([token]),
+            'tokens': FieldValue.arrayUnion(<String>[token]),
           });
         }
 
@@ -95,11 +98,11 @@ class GoogleSignInController with ChangeNotifier {
 
         FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
       }
-      retVal = "success";
+      retVal = 'success';
     } on PlatformException catch (e) {
       retVal = e.message!;
-    } catch (e) {
-      print(e);
+    } on Exception catch (e) {
+      debugPrint('debug : $e');
     }
 
     return retVal;
@@ -107,11 +110,11 @@ class GoogleSignInController with ChangeNotifier {
 }
 
 class AppleSignInController with ChangeNotifier {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  final _auth = FirebaseAuth.instance;
+  final _fcm = FirebaseMessaging.instance;
 
   String generateNonce([int length = 32]) {
-    final charset =
+    const charset =
         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
     final random = Random.secure();
     return List.generate(length, (_) => charset[random.nextInt(charset.length)])
@@ -125,28 +128,28 @@ class AppleSignInController with ChangeNotifier {
   }
 
   Future<String> createUser(UserModel user) async {
-    String retVal = "error";
+    var retVal = 'error';
 
     try {
       await FirebaseFirestore.instance
-          .collection("users")
+          .collection('users')
           .doc(user.userId)
-          .set({
+          .set(<String, dynamic>{
         'createdAt': Timestamp.now(),
         'email': user.email,
         'tokens': user.tokens,
         'userId': user.userId,
       });
-      retVal = "success";
-    } catch (e) {
-      print(e);
+      retVal = 'success';
+    } on Exception catch (e) {
+      debugPrint('debug : $e');
     }
 
     return retVal;
   }
 
   Future<String> loginUserWithApple() async {
-    String retVal = "error";
+    var retVal = 'error';
 
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
@@ -159,35 +162,34 @@ class AppleSignInController with ChangeNotifier {
       nonce: nonce,
     );
 
-    final oauthCredential = OAuthProvider("apple.com").credential(
+    final oauthCredential = OAuthProvider('apple.com').credential(
       idToken: appleCredential.identityToken,
       rawNonce: rawNonce,
     );
 
     try {
-      UserCredential _authResult =
-          await _auth.signInWithCredential(oauthCredential);
+      final authResult = await _auth.signInWithCredential(oauthCredential);
 
-      String? token = await _fcm.getToken();
+      final token = await _fcm.getToken();
 
-      if (_authResult.additionalUserInfo!.isNewUser) {
-        UserModel _user = UserModel(
-          userId: _authResult.user!.uid,
-          email: _authResult.user!.email,
+      if (authResult.additionalUserInfo!.isNewUser) {
+        final user = UserModel(
+          userId: authResult.user!.uid,
+          email: authResult.user!.email,
           createdAt: Timestamp.now(),
           tokens: await _fcm.getToken(),
         );
-        String _returnString = await createUser(_user);
-        if (_returnString == "success") {
-          retVal = "success";
+        final returnString = await createUser(user);
+        if (returnString == 'success') {
+          retVal = 'success';
         }
       } else {
         Future<void> saveTokenToDatabase(String token) async {
           await FirebaseFirestore.instance
               .collection('users')
-              .doc(_authResult.user!.uid)
+              .doc(authResult.user!.uid)
               .update({
-            'tokens': FieldValue.arrayUnion([token]),
+            'tokens': FieldValue.arrayUnion(<String>[token]),
           });
         }
 
@@ -195,11 +197,11 @@ class AppleSignInController with ChangeNotifier {
 
         FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
       }
-      retVal = "success";
+      retVal = 'success';
     } on PlatformException catch (e) {
       retVal = e.message!;
-    } catch (e) {
-      print(e);
+    } on Exception catch (e) {
+      debugPrint('debug : $e');
     }
 
     return retVal;

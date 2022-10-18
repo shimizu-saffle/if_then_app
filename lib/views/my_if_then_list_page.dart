@@ -1,15 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:if_then_app/controllers/login_controller.dart';
-import 'package:if_then_app/views/add_edit_page.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/controllers/ifthen_list_controller.dart';
-import 'package:if_then_app/views/login_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class MyIfThenListPage extends StatelessWidget {
+import '../controllers/if_then_list_controller.dart';
+import '../controllers/login_controller.dart';
+import 'add_edit_page.dart';
+import 'login_page.dart';
+
+class MyIfThenListPage extends HookConsumerWidget {
+  const MyIfThenListPage({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -19,45 +22,50 @@ class MyIfThenListPage extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onPressed: () async {
-              await showDialog(
+              await showDialog<SimpleDialog>(
                 context: context,
-                builder: (BuildContext context) {
+                builder: (context) {
                   return SimpleDialog(
                     children: <Widget>[
                       Center(
                         child: SimpleDialogOption(
                           child: const Text('ログアウト'),
                           onPressed: () async {
-                            await showDialog(
+                            Navigator.of(context).pop();
+                            await showDialog<Consumer>(
                               context: context,
-                              builder: (BuildContext context) {
+                              builder: (context) {
                                 return Consumer(
-                                    builder: (context, watch, child) {
-                                  final logOutController =
-                                      watch(LogOutProvider);
-                                  return AlertDialog(
-                                    title: Text('ログアウトしますか？'),
-                                    actions: <Widget>[
-                                      ElevatedButton(
-                                        child: Text('OK'),
-                                        onPressed: () async {
-                                          logOutController.logout();
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => LoginPage(),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
+                                  builder: (context, watch, child) {
+                                    final logOutController =
+                                        ref.watch(logOutProvider);
+                                    return AlertDialog(
+                                      title: const Text('ログアウトしますか？'),
+                                      actions: <Widget>[
+                                        ElevatedButton(
+                                          child: const Text('OK'),
+                                          onPressed: () async {
+                                            await logOutController
+                                                .logout()
+                                                .then((_) =>
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute<LoginPage>(
+                                                  builder: (context) =>
+                                                      const LoginPage(),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               },
                             );
-                            Navigator.of(context).pop();
                           },
                         ),
                       ),
@@ -71,12 +79,13 @@ class MyIfThenListPage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final ifThenList = watch(myIfThenListProvider).myIfThenList;
-          final deleteController = watch(IfThenListProvider);
+          final ifThenList = ref.watch(myifThenListProvider).myIfThenList;
+          final deleteController = ref.watch(ifThenListProvider);
           return ListView(
             children: ifThenList
                 .map(
                   (ifThen) => Card(
+                    elevation: 3,
                     child: Row(
                       children: [
                         Expanded(
@@ -86,25 +95,25 @@ class MyIfThenListPage extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 13,
                                     ),
                                     Text(
                                       'if',
                                       style: GoogleFonts.yuseiMagic(
-                                        textStyle: TextStyle(
+                                        textStyle: const TextStyle(
                                           color: Colors.deepOrange,
                                           fontSize: 15,
                                           fontWeight: FontWeight.w300,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 24,
                                     ),
                                     Text(
-                                      '${ifThen.ifText!}',
-                                      style: TextStyle(height: 2.0),
+                                      ifThen.ifText!,
+                                      style: const TextStyle(height: 2),
                                     ),
                                   ],
                                 ),
@@ -113,19 +122,19 @@ class MyIfThenListPage extends StatelessWidget {
                                     Text(
                                       'Then',
                                       style: GoogleFonts.yuseiMagic(
-                                        textStyle: TextStyle(
+                                        textStyle: const TextStyle(
                                           color: Colors.deepOrange,
                                           fontSize: 15,
                                           fontWeight: FontWeight.w300,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Text(
-                                      '${ifThen.thenText!}',
-                                      style: TextStyle(height: 2.0),
+                                      ifThen.thenText!,
+                                      style: const TextStyle(height: 2),
                                     ),
                                   ],
                                 ),
@@ -137,26 +146,27 @@ class MyIfThenListPage extends StatelessWidget {
                           child: FirebaseAuth.instance.currentUser?.uid ==
                                   ifThen.userId
                               ? IconButton(
-                                  icon: Icon(Icons.more_vert),
+                                  icon: const Icon(Icons.more_vert),
                                   onPressed: () async {
-                                    await showDialog(
+                                    await showDialog<SimpleDialog>(
                                       context: context,
-                                      builder: (BuildContext context) {
+                                      builder: (context) {
                                         return SimpleDialog(
                                           children: <Widget>[
                                             Center(
                                               child: SimpleDialogOption(
                                                 onPressed: () async {
+                                                  Navigator.of(context).pop();
                                                   await Navigator.push(
                                                     context,
-                                                    MaterialPageRoute(
+                                                    MaterialPageRoute<AddPage>(
                                                       builder: (context) =>
                                                           AddPage(
-                                                              ifThen: ifThen),
+                                                        ifThen: ifThen,
+                                                      ),
                                                       fullscreenDialog: true,
                                                     ),
                                                   );
-                                                  Navigator.of(context).pop();
                                                 },
                                                 child: const Text('編集'),
                                               ),
@@ -164,31 +174,34 @@ class MyIfThenListPage extends StatelessWidget {
                                             Center(
                                               child: SimpleDialogOption(
                                                 onPressed: () async {
-                                                  await showDialog(
+                                                  Navigator.of(context).pop();
+                                                  await showDialog<AlertDialog>(
                                                     context: context,
-                                                    builder:
-                                                        (BuildContext context) {
+                                                    builder: (context) {
                                                       return AlertDialog(
                                                         title: Text(
-                                                            '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？'),
+                                                          '「${ifThen.ifText!}${ifThen.thenText!}」を削除しますか？',
+                                                        ),
                                                         actions: <Widget>[
                                                           ElevatedButton(
-                                                            child: Text('OK'),
+                                                            child: const Text(
+                                                              'OK',
+                                                            ),
                                                             onPressed:
                                                                 () async {
                                                               Navigator.of(
-                                                                      context)
-                                                                  .pop();
+                                                                context,
+                                                              ).pop();
                                                               await deleteController
                                                                   .ifThenDelete(
-                                                                      ifThen);
+                                                                ifThen,
+                                                              );
                                                             },
                                                           ),
                                                         ],
                                                       );
                                                     },
                                                   );
-                                                  Navigator.of(context).pop();
                                                 },
                                                 child: const Text('削除'),
                                               ),
@@ -199,20 +212,24 @@ class MyIfThenListPage extends StatelessWidget {
                                     );
                                   },
                                 )
-                              : Consumer(builder: (context, watch, child) {
-                                  return IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.star,
-                                        size: 18.0, color: Colors.amberAccent),
-                                  );
-                                }),
+                              : Consumer(
+                                  builder: (context, watch, child) {
+                                    return IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.star,
+                                        size: 18,
+                                        color: Colors.amberAccent,
+                                      ),
+                                    );
+                                  },
+                                ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         )
                       ],
                     ),
-                    elevation: 3,
                   ),
                 )
                 .toList(),
@@ -226,13 +243,13 @@ class MyIfThenListPage extends StatelessWidget {
             onPressed: () async {
               await Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => AddPage(),
+                MaterialPageRoute<AddPage>(
+                  builder: (context) => const AddPage(),
                   fullscreenDialog: true,
                 ),
               );
             },
-            child: Icon(Icons.add, color: Colors.white),
+            child: const Icon(Icons.add, color: Colors.white),
           );
         },
       ),

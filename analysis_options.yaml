@@ -1,1 +1,15 @@
 include: analysis_options.yaml
+#kosukeニキのルール
+#https://github.com/KosukeSaigusa/mottai-flutter-app/blob/main/analysis_options.yaml
+#残り22個のエラー&アラートが残っています。
+
+analyzer:
+  exclude:
+    - lib/**/**.freezed.dart
+    - lib/**/**.g.dart
+  errors:
+    invalid_annotation_target: ignore
+linter:
+  rules:
+    prefer_single_quotes: true
+    require_trailing_commas: true

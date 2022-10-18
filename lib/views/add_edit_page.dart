@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:if_then_app/models/ifthen.dart';
-import 'package:if_then_app/controllers/ifthen_list_controller.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AddPage extends StatelessWidget {
-  AddPage({this.ifThen});
+import '../controllers/if_then_list_controller.dart';
+import '../models/if_then.dart';
+
+class AddPage extends HookConsumerWidget {
+  const AddPage({super.key, this.ifThen});
   final IfThen? ifThen;
   @override
-  Widget build(BuildContext context) {
-    final bool isUpdate = ifThen != null;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isUpdate = ifThen != null;
     final ifTextEditingController = TextEditingController();
     final thenTextEditingController = TextEditingController();
 
@@ -24,18 +25,17 @@ class AddPage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final addController = watch(AddProvider);
+          final addController = ref.watch(addProvider);
           return Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 TextField(
                   maxLength: 17,
-                  maxLines: 1,
                   controller: ifTextEditingController,
-                  decoration: InputDecoration(
-                    labelText: "IF",
-                    hintText: "〇〇な時",
+                  decoration: const InputDecoration(
+                    labelText: 'IF',
+                    hintText: '〇〇な時',
                   ),
                   onChanged: (text) {
                     addController.newIfText = text;
@@ -43,29 +43,31 @@ class AddPage extends StatelessWidget {
                 ),
                 TextField(
                   maxLength: 17,
-                  maxLines: 1,
                   controller: thenTextEditingController,
-                  decoration:
-                      InputDecoration(labelText: "THEN", hintText: "〇〇する"),
+                  decoration: const InputDecoration(
+                    labelText: 'THEN',
+                    hintText: '〇〇する',
+                  ),
                   onChanged: (text) {
                     addController.newThenText = text;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
                 ElevatedButton(
                   onPressed: () async {
+                    Navigator.of(context).pop();
                     if (isUpdate) {
                       if (addController.newIfText.isEmpty) {
-                        throw (showDialog(
+                        await showDialog<AlertDialog>(
                           context: context,
-                          builder: (BuildContext context) {
+                          builder: (context) {
                             return AlertDialog(
-                              title: Text('IFを入力してね\u{1F64F}'),
+                              title: const Text('IFを入力してね\u{1F64F}'),
                               actions: <Widget>[
                                 ElevatedButton(
-                                  child: Text('わかった'),
+                                  child: const Text('わかった'),
                                   onPressed: () async {
                                     Navigator.of(context).pop();
                                   },
@@ -73,16 +75,16 @@ class AddPage extends StatelessWidget {
                               ],
                             );
                           },
-                        ));
+                        );
                       } else if (addController.newThenText.isEmpty) {
-                        throw (showDialog(
+                        await showDialog<AlertDialog>(
                           context: context,
-                          builder: (BuildContext context) {
+                          builder: (context) {
                             return AlertDialog(
-                              title: Text('THENを入力してね\u{1F64F}'),
+                              title: const Text('THENを入力してね\u{1F64F}'),
                               actions: <Widget>[
                                 ElevatedButton(
-                                  child: Text('わかった'),
+                                  child: const Text('わかった'),
                                   onPressed: () async {
                                     Navigator.of(context).pop();
                                   },
@@ -90,19 +92,19 @@ class AddPage extends StatelessWidget {
                               ],
                             );
                           },
-                        ));
+                        );
                       }
                       await addController.ifThenUpdate(ifThen!);
                     } else {
                       if (addController.newIfText.isEmpty) {
-                        throw (showDialog(
+                        await showDialog<AlertDialog>(
                           context: context,
-                          builder: (BuildContext context) {
+                          builder: (context) {
                             return AlertDialog(
-                              title: Text('IFを入力してね\u{1F64F}'),
+                              title: const Text('IFを入力してね\u{1F64F}'),
                               actions: <Widget>[
                                 ElevatedButton(
-                                  child: Text('わかった'),
+                                  child: const Text('わかった'),
                                   onPressed: () async {
                                     Navigator.of(context).pop();
                                   },
@@ -110,16 +112,16 @@ class AddPage extends StatelessWidget {
                               ],
                             );
                           },
-                        ));
+                        );
                       } else if (addController.newThenText.isEmpty) {
-                        throw (showDialog(
+                        await showDialog<AlertDialog>(
                           context: context,
-                          builder: (BuildContext context) {
+                          builder: (context) {
                             return AlertDialog(
-                              title: Text('THENを入力してね\u{1F64F}'),
+                              title: const Text('THENを入力してね\u{1F64F}'),
                               actions: <Widget>[
                                 ElevatedButton(
-                                  child: Text('わかった'),
+                                  child: const Text('わかった'),
                                   onPressed: () async {
                                     Navigator.of(context).pop();
                                   },
@@ -127,11 +129,10 @@ class AddPage extends StatelessWidget {
                               ],
                             );
                           },
-                        ));
+                        );
                       }
                       await addController.ifThenAdd();
                     }
-                    Navigator.of(context).pop();
                   },
                   child: Text(isUpdate ? '更新する' : '追加する'),
                 )

@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/main.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final FcmProvider = ChangeNotifierProvider<FcmController>(
+import '../main.dart';
+
+final fcmProvider = ChangeNotifierProvider<FcmController>(
   (ref) => FcmController(),
 );
 
@@ -14,21 +15,15 @@ class FcmController extends ChangeNotifier {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings? settings;
 
-  setRequestPermission() async {
-    final settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
+  Future<void> setRequestPermission() async {
+    final settings = await messaging.requestPermission();
 
-    return print('User granted permission: ${settings.authorizationStatus}');
+    return debugPrint(
+      'User granted permission: ${settings.authorizationStatus}',
+    );
   }
 
-  iOSForegroundMessagesSettings() async {
+  Future<void> iOSForegroundMessagesSettings() async {
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
@@ -37,19 +32,19 @@ class FcmController extends ChangeNotifier {
     );
   }
 
-  printToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    print(token);
+  Future<void> printToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
+    debugPrint(token);
   }
 
-  getSetToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
+  Future<void> getSetToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
 
     Future<void> saveTokenToDatabase(String token) async {
-      String userId = FirebaseAuth.instance.currentUser!.uid;
+      final userId = FirebaseAuth.instance.currentUser!.uid;
 
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'tokens': FieldValue.arrayUnion([token]),
+        'tokens': FieldValue.arrayUnion(<String>[token]),
       });
     }
 
@@ -58,18 +53,19 @@ class FcmController extends ChangeNotifier {
     FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   }
 
-  foregroundAndroidNotification() {
-    var initializationSettingsAndroid =
+  Future<void> foregroundAndroidNotification() async {
+    const initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettings =
+    const initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    FirebaseMessaging.onMessage.listen(
+      (message) {
+        final notification = message.notification;
+        final android = message.notification?.android;
+        if (notification != null && android != null) {
+          flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification.title,
             notification.body,
@@ -77,12 +73,14 @@ class FcmController extends ChangeNotifier {
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
-                channel.description,
+                channelDescription: channel.description,
                 icon: android.smallIcon,
               ),
-            ));
-      }
-    });
+            ),
+          );
+        }
+      },
+    );
     notifyListeners();
   }
 }

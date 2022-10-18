@@ -1,60 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:if_then_app/controllers/login_controller.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:if_then_app/controllers/random_ifthen_controller.dart';
-import 'package:if_then_app/views/login_page.dart';
-import 'package:if_then_app/views/gacha_page/present_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class IfThenMixerPage extends StatelessWidget {
+import '../../controllers/login_controller.dart';
+import '../../controllers/random_if_then_controller.dart';
+import '../login_page.dart';
+import 'present_page.dart';
+
+class IfThenMixerPage extends HookConsumerWidget {
+  const IfThenMixerPage({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('\u{1F973}  イフゼンガチャ  \u{1F973}',
-            style: GoogleFonts.yuseiMagic()),
+        title: Text(
+          '\u{1F973}  イフゼンガチャ  \u{1F973}',
+          style: GoogleFonts.yuseiMagic(),
+        ),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onPressed: () async {
-              await showDialog(
+              await showDialog<SimpleDialog>(
                 context: context,
-                builder: (BuildContext context) {
+                builder: (context) {
                   return SimpleDialog(
                     children: <Widget>[
                       Center(
                         child: SimpleDialogOption(
                           child: const Text('ログアウト'),
                           onPressed: () async {
-                            await showDialog(
+                            Navigator.of(context).pop();
+                            await showDialog<Consumer>(
                               context: context,
-                              builder: (BuildContext context) {
+                              builder: (context) {
                                 return Consumer(
-                                    builder: (context, watch, child) {
-                                  final logOutController =
-                                      watch(LogOutProvider);
-                                  return AlertDialog(
-                                    title: Text('ログアウトしますか？'),
-                                    actions: <Widget>[
-                                      ElevatedButton(
-                                        child: Text('OK'),
-                                        onPressed: () async {
-                                          logOutController.logout();
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => LoginPage(),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
+                                  builder: (context, watch, child) {
+                                    final logOutController =
+                                        ref.watch(logOutProvider);
+                                    return AlertDialog(
+                                      title: const Text('ログアウトしますか？'),
+                                      actions: <Widget>[
+                                        ElevatedButton(
+                                          child: const Text('OK'),
+                                          onPressed: () async {
+                                            await logOutController
+                                                .logout()
+                                                .then(
+                                                  (_) => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute<
+                                                        LoginPage>(
+                                                      builder: (context) =>
+                                                          const LoginPage(),
+                                                    ),
+                                                  ),
+                                                );
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               },
                             );
-                            Navigator.of(context).pop();
                           },
                         ),
                       ),
@@ -66,51 +77,54 @@ class IfThenMixerPage extends StatelessWidget {
           )
         ],
       ),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset('images/gachagacha.png'),
-            Consumer(builder: (context, watch, child) {
-              final randomController = watch(randomProvider);
-              return ElevatedButton(
-                child: Text('回す'),
-                onPressed: () async {
-                  await randomController.checkTodayTurnGachaTimes();
-                  final canTurn = watch(randomProvider).canTurn;
-                  if (canTurn) {
-                    randomController.countTurningGacha();
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PresentPage(),
-                        fullscreenDialog: true,
-                      ),
-                    );
-                  } else {
-                    await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(
-                              'ガチャを回せるのは\n1日5回までだよ\u{1F60C}\nまた明日回してね\u{1F365}'),
-                          actions: <Widget>[
-                            ElevatedButton(
-                              child: Text('うん'),
-                              onPressed: () async {
-                                Navigator.of(context).pop();
-                              },
+            Consumer(
+              builder: (context, watch, child) {
+                final randomController = ref.watch(randomProvider);
+                return ElevatedButton(
+                  child: const Text('回す'),
+                  onPressed: () async {
+                    await randomController.checkTodayTurnGachaTimes();
+                    final canTurn = ref.watch(randomProvider).canTurn;
+                    if (canTurn) {
+                      await randomController.countTurningGacha().then(
+                            (_) => Navigator.push(
+                              context,
+                              MaterialPageRoute<PresentPage>(
+                                builder: (context) => const PresentPage(),
+                                fullscreenDialog: true,
+                              ),
                             ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                },
-              );
-            })
+                          );
+                    } else {
+                      await showDialog<AlertDialog>(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text(
+                              'ガチャを回せるのは\n1日5回までだよ\u{1F60C}\nまた明日回してね\u{1F365}',
+                            ),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                child: const Text('うん'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
+                );
+              },
+            )
           ],
         ),
       ),

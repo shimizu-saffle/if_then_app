@@ -11,7 +11,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../models/user_model.dart';
+import '../models/user/user_model.dart';
+
 
 final logOutProvider = ChangeNotifierProvider<LogOutController>(
   (ref) => LogOutController(),
@@ -76,8 +77,8 @@ class GoogleSignInController with ChangeNotifier {
       if (authResult.additionalUserInfo!.isNewUser) {
         final user = UserModel(
           userId: authResult.user!.uid,
-          email: authResult.user!.email,
-          createdAt: Timestamp.now(),
+          email: authResult.user!.email!,
+          createdAt: DateTime.now(),
           tokens: await _fcm.getToken(),
         );
         final returnString = await createUser(user);
@@ -175,8 +176,8 @@ class AppleSignInController with ChangeNotifier {
       if (authResult.additionalUserInfo!.isNewUser) {
         final user = UserModel(
           userId: authResult.user!.uid,
-          email: authResult.user!.email,
-          createdAt: Timestamp.now(),
+          email: authResult.user!.email!,
+          createdAt: DateTime.now(),
           tokens: await _fcm.getToken(),
         );
         final returnString = await createUser(user);

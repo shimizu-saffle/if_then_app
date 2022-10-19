@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../models/count.dart';
+import '../utils/uuid.dart';
 
 final randomProvider = ChangeNotifierProvider<RandomIfThenController>(
   (ref) => RandomIfThenController()
@@ -20,43 +18,59 @@ class RandomIfThenController extends ChangeNotifier {
   late bool canTurn;
 
   Future<void> getRandomIfThen() async {
-    final countRef =
-        FirebaseFirestore.instance.collection('settings').doc('count');
-
-    final countSnapshot = await countRef.get();
-    final count = Count(countSnapshot);
-    final randomRange = count.total;
-
-    final randomSerialNumber1 = Random().nextInt(randomRange!) + 1;
-    final randomSerialNumber2 = Random().nextInt(randomRange) + 1;
-
+    //Uuidを発行してserialNumberが保持しているUuidと比較
+    //Uuid以上かつ一番近いserialNumberのドキュメントを取得
+    //Uuid以上にserialNumberが無い場合は0から一番近いserialNumberのドキュメントを取得  -- 未実装
     final ifSnapshots = await FirebaseFirestore.instance
         .collection('itList')
-        .where('serialNumber', isEqualTo: randomSerialNumber1)
+        .where(
+          'serialNumber',
+          isGreaterThanOrEqualTo: uuid,
+        )
+        .limit(1)
         .get();
+
+    if (ifSnapshots.docs.isEmpty) {
+      final ifSnapshotTo0 = await FirebaseFirestore.instance
+          .collection('itList')
+          .where(
+            'serialNumber',
+            isGreaterThanOrEqualTo: '0',
+          )
+          .limit(1)
+          .get();
+      randomIfText = await ifSnapshotTo0.docs[0].data()['ifText'];
+    } else {
+      randomIfText = await ifSnapshots.docs[0].data()['ifText'];
+    }
 
     final thenSnapshots = await FirebaseFirestore.instance
         .collection('itList')
-        .where('serialNumber', isEqualTo: randomSerialNumber2)
+        .where(
+          'serialNumber',
+          isGreaterThanOrEqualTo: uuid,
+        )
+        .limit(1)
         .get();
 
-    randomIfText = await ifSnapshots.docs[0].data()['ifText'];
-    randomThenText = await thenSnapshots.docs[0].data()['thenText'];
+    if (thenSnapshots.docs.isEmpty) {
+      final thenSnapshotTo0 = await FirebaseFirestore.instance
+          .collection('itList')
+          .where(
+            'serialNumber',
+            isGreaterThanOrEqualTo: '0',
+          )
+          .limit(1)
+          .get();
+      randomThenText = await thenSnapshotTo0.docs[0].data()['thenText'];
+    } else {
+      randomThenText = await thenSnapshots.docs[0].data()['thenText'];
+    }
   }
 
   Future<void> addRandomToMyIfThen() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
     final itList = FirebaseFirestore.instance.collection('itList');
-    final countRef =
-        FirebaseFirestore.instance.collection('settings').doc('count');
-
-    await countRef.update({
-      'total': FieldValue.increment(1),
-    });
-
-    final countSnapshot = await countRef.get();
-    final count = Count(countSnapshot);
-    final total = count.total;
 
     await itList.add(<String, dynamic>{
       'ifText': randomIfText,
@@ -64,7 +78,7 @@ class RandomIfThenController extends ChangeNotifier {
       'createdAt': Timestamp.now(),
       'userId': userId,
       'favoriteUserId': initFavoriteUserId,
-      'serialNumber': total
+      'serialNumber': uuid
     });
   }
 

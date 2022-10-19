@@ -19,5 +19,5 @@ class IfThen {
   String? userId;
   Timestamp? createdAt;
   List<dynamic>? favoriteUserId;
-  int? serialNumber;
+  String? serialNumber;
 }

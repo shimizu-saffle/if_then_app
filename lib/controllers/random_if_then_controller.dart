@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../models/count.dart';
 import '../utils/uuid.dart';
 
 final randomProvider = ChangeNotifierProvider<RandomIfThenController>(
@@ -24,7 +25,7 @@ class RandomIfThenController extends ChangeNotifier {
     final ifSnapshots = await FirebaseFirestore.instance
         .collection('itList')
         .where(
-          'serialNumber',
+          'uuid',
           isGreaterThanOrEqualTo: uuid,
         )
         .limit(1)
@@ -34,7 +35,7 @@ class RandomIfThenController extends ChangeNotifier {
       final ifSnapshotTo0 = await FirebaseFirestore.instance
           .collection('itList')
           .where(
-            'serialNumber',
+            'uuid',
             isGreaterThanOrEqualTo: '0',
           )
           .limit(1)
@@ -47,7 +48,7 @@ class RandomIfThenController extends ChangeNotifier {
     final thenSnapshots = await FirebaseFirestore.instance
         .collection('itList')
         .where(
-          'serialNumber',
+          'uuid',
           isGreaterThanOrEqualTo: uuid,
         )
         .limit(1)
@@ -57,7 +58,7 @@ class RandomIfThenController extends ChangeNotifier {
       final thenSnapshotTo0 = await FirebaseFirestore.instance
           .collection('itList')
           .where(
-            'serialNumber',
+            'uuid',
             isGreaterThanOrEqualTo: '0',
           )
           .limit(1)
@@ -71,6 +72,16 @@ class RandomIfThenController extends ChangeNotifier {
   Future<void> addRandomToMyIfThen() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
     final itList = FirebaseFirestore.instance.collection('itList');
+    final countRef =
+        FirebaseFirestore.instance.collection('settings').doc('count');
+
+    await countRef.update({
+      'total': FieldValue.increment(1),
+    });
+
+    final countSnapshot = await countRef.get();
+    final count = Count(countSnapshot);
+    final total = count.total;
 
     await itList.add(<String, dynamic>{
       'ifText': randomIfText,
@@ -78,7 +89,8 @@ class RandomIfThenController extends ChangeNotifier {
       'createdAt': Timestamp.now(),
       'userId': userId,
       'favoriteUserId': initFavoriteUserId,
-      'serialNumber': uuid
+      'serialNumber': total,
+      'uuid': uuid,
     });
   }
 

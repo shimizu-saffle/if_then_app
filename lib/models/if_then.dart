@@ -11,6 +11,7 @@ class IfThen {
     createdAt = doc.data()!['createdAt'];
     favoriteUserId = doc.data()!['favoriteUserId'];
     serialNumber = doc.data()!['serialNumber'];
+    uuid = doc.data()!['uuid'];
   }
 
   String? documentID;
@@ -19,5 +20,6 @@ class IfThen {
   String? userId;
   Timestamp? createdAt;
   List<dynamic>? favoriteUserId;
-  String? serialNumber;
+  int? serialNumber;
+  String? uuid;
 }

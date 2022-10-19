@@ -20,7 +20,7 @@ class RandomIfThenController extends ChangeNotifier {
   Future<void> getRandomIfThen() async {
     //Uuidを発行してserialNumberが保持しているUuidと比較
     //Uuid以上かつ一番近いserialNumberのドキュメントを取得
-    //Uuid以上にserialNumberが無い場合は0から一番近いserialNumberのドキュメントを取得  -- 未実装
+    //Uuid以上にserialNumberが無い場合は0から一番近いserialNumberのドキュメントを取得
     final ifSnapshots = await FirebaseFirestore.instance
         .collection('itList')
         .where(

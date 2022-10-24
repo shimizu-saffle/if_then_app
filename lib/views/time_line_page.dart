@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:if_then_app/views/xxxxxxx.dart';
 
 import '../controllers/if_then_list_controller.dart';
 import '../controllers/login_controller.dart';
@@ -24,15 +23,6 @@ class TimeLinePage extends HookConsumerWidget {
         ),
         automaticallyImplyLeading: false,
         actions: [
-          ///↓後に削除
-          IconButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Xxxxxxx()));
-              },
-              icon: Icon(Icons.abc)),
-
-          ///↑後に削除
           IconButton(
             icon: const Icon(Icons.more_vert),
             onPressed: () async {

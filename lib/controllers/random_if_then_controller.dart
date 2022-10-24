@@ -18,11 +18,13 @@ class RandomIfThenController extends ChangeNotifier {
   List<String> initFavoriteUserId = [];
   late bool canTurn;
 
+  final _store = FirebaseFirestore.instance;
+
   Future<void> getRandomIfThen() async {
     //Uuidを発行してserialNumberが保持しているUuidと比較
     //Uuid以上かつ一番近いserialNumberのドキュメントを取得
     //Uuid以上にserialNumberが無い場合は0から一番近いserialNumberのドキュメントを取得
-    final ifSnapshots = await FirebaseFirestore.instance
+    final ifSnapshots = await _store
         .collection('itList')
         .where(
           'uuid',
@@ -32,7 +34,7 @@ class RandomIfThenController extends ChangeNotifier {
         .get();
 
     if (ifSnapshots.docs.isEmpty) {
-      final ifSnapshotTo0 = await FirebaseFirestore.instance
+      final ifSnapshotTo0 = await _store
           .collection('itList')
           .where(
             'uuid',
@@ -45,7 +47,7 @@ class RandomIfThenController extends ChangeNotifier {
       randomIfText = await ifSnapshots.docs[0].data()['ifText'];
     }
 
-    final thenSnapshots = await FirebaseFirestore.instance
+    final thenSnapshots = await _store
         .collection('itList')
         .where(
           'uuid',
@@ -55,7 +57,7 @@ class RandomIfThenController extends ChangeNotifier {
         .get();
 
     if (thenSnapshots.docs.isEmpty) {
-      final thenSnapshotTo0 = await FirebaseFirestore.instance
+      final thenSnapshotTo0 = await _store
           .collection('itList')
           .where(
             'uuid',
@@ -66,14 +68,14 @@ class RandomIfThenController extends ChangeNotifier {
       randomThenText = await thenSnapshotTo0.docs[0].data()['thenText'];
     } else {
       randomThenText = await thenSnapshots.docs[0].data()['thenText'];
+      debugPrint('debug : $randomIfText');
     }
   }
 
   Future<void> addRandomToMyIfThen() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    final itList = FirebaseFirestore.instance.collection('itList');
-    final countRef =
-        FirebaseFirestore.instance.collection('settings').doc('count');
+    final itList = _store.collection('itList');
+    final countRef = _store.collection('settings').doc('count');
 
     await countRef.update({
       'total': FieldValue.increment(1),
@@ -97,22 +99,21 @@ class RandomIfThenController extends ChangeNotifier {
   Future<void> countTurningGacha() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
 
-    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+    await _store.collection('users').doc(userId).update({
       'turnGacha': FieldValue.arrayUnion(<Timestamp>[Timestamp.now()]),
     });
   }
 
   Future<void> checkTodayTurnGachaTimes() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    final userDocument =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    final userDocument = await _store.collection('users').doc(userId).get();
 
     final List<dynamic> list = await userDocument.data()!['turnGacha'] ?? [];
 
     final turnGacha = list.map((e) => (e as Timestamp).toDate()).toList();
 
     if (turnGacha.length > 6) {
-      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      await _store.collection('users').doc(userId).update({
         'turnGacha': FieldValue.arrayRemove(<dynamic>[]),
       });
     }

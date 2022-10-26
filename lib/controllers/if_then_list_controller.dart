@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:if_then_app/utils/uuid.dart';
+
 
 import '../models/count.dart';
 import '../models/if_then.dart';
@@ -19,24 +21,30 @@ class IfThenListController extends ChangeNotifier {
   List<String> initFavoriteUserId = [];
   String newIfText = '';
   String newThenText = '';
+  final _auth = FirebaseAuth.instance;
+  final _store = FirebaseFirestore.instance;
 
   Future<void> getItListRealtime() async {
-    FirebaseFirestore.instance
+    _store
         .collection('itList')
         .snapshots()
         .listen((snapshot) {
       final docs = snapshot.docs;
-      ifThenList = docs.map(IfThen.new).toList();
-      ifThenList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      ifThenList = docs.map((doc) => IfThen(doc)).toList();
+
+      // ifThenList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      // ↑↑エラー発生
+      // aに値が入らず
+      // _CastError (Null check operator used on a null value)
       notifyListeners();
     });
   }
 
   Future<void> ifThenAdd() async {
-    final userId = FirebaseAuth.instance.currentUser!.uid;
-    final itList = FirebaseFirestore.instance.collection('itList');
+    final userId =_auth.currentUser!.uid;
+    final itList = _store.collection('itList');
     final countRef =
-        FirebaseFirestore.instance.collection('settings').doc('count');
+        _store.collection('settings').doc('count');
 
     await countRef.update({
       'total': FieldValue.increment(1),
@@ -52,14 +60,15 @@ class IfThenListController extends ChangeNotifier {
       'createdAt': Timestamp.now(),
       'userId': userId,
       'favoriteUserId': initFavoriteUserId,
-      'serialNumber': total
+      'serialNumber': total,
+      'uuid': uuid,
     });
   }
 
   Future<void> saveFavoriteUserId(IfThen ifThen) async {
-    final favoriteUserId = FirebaseAuth.instance.currentUser!.uid;
+    final favoriteUserId = _auth.currentUser!.uid;
 
-    await FirebaseFirestore.instance
+    await _store
         .collection('itList')
         .doc(ifThen.documentID)
         .update({
@@ -68,9 +77,9 @@ class IfThenListController extends ChangeNotifier {
   }
 
   Future<void> deleteFavoriteUserId(IfThen ifThen) async {
-    final favoriteUserId = FirebaseAuth.instance.currentUser!.uid;
+    final favoriteUserId = _auth.currentUser!.uid;
 
-    await FirebaseFirestore.instance
+    await _store
         .collection('itList')
         .doc(ifThen.documentID)
         .update({
@@ -80,7 +89,7 @@ class IfThenListController extends ChangeNotifier {
 
   Future<void> ifThenUpdate(IfThen ifThen) async {
     final document =
-        FirebaseFirestore.instance.collection('itList').doc(ifThen.documentID);
+        _store.collection('itList').doc(ifThen.documentID);
     await document.update({
       'ifText': newIfText,
       'thenText': newThenText,
@@ -90,9 +99,9 @@ class IfThenListController extends ChangeNotifier {
 
   Future<void> ifThenDelete(IfThen ifThen) async {
     final count =
-        FirebaseFirestore.instance.collection('settings').doc('count');
+        _store.collection('settings').doc('count');
 
-    await FirebaseFirestore.instance
+    await _store
         .collection('itList')
         .doc(ifThen.documentID)
         .delete();
@@ -116,10 +125,12 @@ class MyIfThenListController extends ChangeNotifier {
   List<IfThen> myIfThenList = [];
   List<IfThen> myFavoriteIfThenList = [];
 
+  final _auth = FirebaseAuth.instance;
+
   Future<void> getMyItListRealtime() async {
     FirebaseFirestore.instance
         .collection('itList')
-        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .where('userId', isEqualTo: _auth.currentUser?.uid)
         .snapshots()
         .listen((snapshot) {
       final docs = snapshot.docs;
@@ -134,7 +145,7 @@ class MyIfThenListController extends ChangeNotifier {
         .collection('itList')
         .where(
           'favoriteUserId',
-          arrayContains: FirebaseAuth.instance.currentUser?.uid,
+          arrayContains: _auth.currentUser?.uid,
         )
         .snapshots()
         .listen((snapshot) {
